@@ -19,10 +19,18 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     // キャラクターコントローラ（カプセルコライダ）の移動量
     private Vector3 velocity;
     //速度
-    private float runSpeed = 40.0f;
+    private float runSpeed = 5.0f;
+
+    //ジャンプフラグ
+    public bool jumpFlag = false;
+    // ジャンプ威力
+    private float jumpPower = 7.0f;
 
     //アニメーション
     public Animator anim;
+
+    //キャラクターの位置や向きのキャッシュ用
+    public Transform transformCache;
 
 
     public void SetFlag(bool f)
@@ -40,10 +48,11 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
         player = GameObject.FindWithTag("Player");
         //重力や摩擦
         rb = player.GetComponent<Rigidbody>();
-
         // Animatorコンポーネントを取得する
         anim = player.GetComponent<Animator>();
 
+        //Transformをキャッシュする
+        transformCache = transform;
     }
 
     // Update is called once per frame
@@ -55,13 +64,25 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
             return;
         }
 
+        //プレイヤーの向きの反転
+        if ((transformCache.localScale.z < 0 && moveDirection > 0.1) || (transformCache.localScale.z > 0 && moveDirection < -0.1))
+        {
+            transformCache.localScale = new Vector3(transformCache.localScale.x, transformCache.localScale.y, transform.localScale.z * (-1));
+        }
+
         // Animator側で設定している"Speed"パラメタにhを渡す
         anim.SetFloat("Speed", moveDirection);
-        // 以下、キャラクターの移動処理
-        velocity = new Vector3(moveDirection, 0, 0);
-        rb.velocity = new Vector3(velocity.x * runSpeed, rb.velocity.y, 0);
+        //キャラクターの移動処理
+        rb.velocity = new Vector3(moveDirection * runSpeed, rb.velocity.y, 0);
 
-        Debug.Log(rb.velocity);
+        //ジャンプ
+        if(jumpFlag == true)
+        {
+            //上方向に力を加える
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+            anim.SetBool("Jump", true);     // Animatorにジャンプに切り替えるフラグを送る
+            jumpFlag = false;
+        }
 
     }
 }

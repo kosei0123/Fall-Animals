@@ -43,7 +43,7 @@ public class ScreenTouch : MonoBehaviour
             //縦3分割の1番上をタップ(ジャンプ)
             if(Input.mousePosition.y >= screenUp)
             {
-                Debug.Log("J");
+                characterMainMove.jumpFlag = true;
             }
             //縦3分割の上から2番目をタップ(移動)
             else if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
@@ -84,6 +84,21 @@ public class ScreenTouch : MonoBehaviour
                     characterMainMove.moveDirection = -1.0f;
                 }
 
+            }
+        }
+
+        //タップ解除
+        if (Input.GetMouseButtonUp(0))
+        {
+            //横2分割の右側をタップ解除(右移動)
+            if (Input.mousePosition.x > screenMiddle)
+            {
+                characterMainMove.moveDirection = 0.0f;
+            }
+            //横2分割の左側をタップ解除(左移動)
+            else if (Input.mousePosition.x <= screenMiddle)
+            {
+                characterMainMove.moveDirection = 0.0f;
             }
         }
         
