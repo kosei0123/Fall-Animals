@@ -25,7 +25,7 @@ public class TitleTap : MonoBehaviour
         //画面のどこかをタップした際の動作
         if (Input.GetMouseButton(0))
         {
-            SceneManager.LoadScene("SelectPlayerName");
+            SceneManager.LoadScene("EnterLobby");
         }
 
     }

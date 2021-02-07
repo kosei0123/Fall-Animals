@@ -36,6 +36,15 @@ public class ScreenTouch : MonoBehaviour
             //CharacterMainMoveのスクリプトを使用する
             characterMainMove = target.GetComponent<CharacterMainMove>();
         }
+        //nullでない場合、何度も呼び出される
+        else if (target != null && characterMainMove != null)
+        {
+            //自分の画面の自キャラのみ操作できるようにする
+            if (characterMainMove.onlineflag == false)
+            {
+                return;
+            }
+        }
 
         //タップした瞬間
         if (Input.GetMouseButtonDown(0))
@@ -44,6 +53,7 @@ public class ScreenTouch : MonoBehaviour
             if(Input.mousePosition.y >= screenUp)
             {
                 characterMainMove.jumpFlag = true;
+                characterMainMove.jumpCount++;
             }
             //縦3分割の上から2番目をタップ(移動)
             else if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
