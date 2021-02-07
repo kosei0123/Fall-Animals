@@ -83,7 +83,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
         //ニックネームを表示
         NameText.text = PhotonNetwork.LocalPlayer.NickName;
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main,player.transform.position + nickNamePositionTweak);
-        Debug.Log(NameText.rectTransform.position);
 
         //プレイヤーの向きの反転
         if ((transformCache.localScale.z < 0 && moveDirection > 0.1) || (transformCache.localScale.z > 0 && moveDirection < -0.1))

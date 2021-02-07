@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class TitleTap : MonoBehaviour
 {
@@ -27,7 +28,6 @@ public class TitleTap : MonoBehaviour
         {
             SceneManager.LoadScene("EnterLobby");
         }
-
     }
 
     //テキストの点滅表示を行う関数

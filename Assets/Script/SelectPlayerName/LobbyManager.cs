@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -30,12 +31,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Lobby");
+        Debug.Log("Join");
+
+        //ルームの作成・入室
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    //部屋への参加に失敗した際は、作成する
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+
         //RoomOptionsの用意
         RoomOptions roomOptions = new RoomOptions();
         //PlayerのMac人数を指定
-        roomOptions.MaxPlayers = 2;
-
-        //ルームの作成・入室
-        PhotonNetwork.JoinOrCreateRoom("Game Room", roomOptions, TypedLobby.Default);
+        roomOptions.MaxPlayers = 4;
+        //ルームの作成
+        PhotonNetwork.CreateRoom("Room" + Random.Range(1,100),roomOptions);
     }
 }

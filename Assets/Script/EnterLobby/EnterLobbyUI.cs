@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 public class EnterLobbyUI : MonoBehaviourPunCallbacks
 {
@@ -15,19 +16,21 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Photonに接続できていなければ、Photonに接続する
+        if (PhotonNetwork.IsConnected == false)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-
         //現在何人のプレイヤーがPhotonに接続しているのかを表示
-        ConnectCountText.text = "接続プレイヤー：" + PhotonNetwork.CountOfPlayers.ToString() + " / 20" ;
-        
+        ConnectCountText.text = "接続プレイヤー：" + PhotonNetwork.CountOfPlayers.ToString() + " / 20";
 
         //Photonに接続人数がMaxでない時にボタン押下可能
-        if (PhotonNetwork.CountOfPlayers <= 2)
+        if (PhotonNetwork.CountOfPlayers <= 20)
         {
             EnterLobbyButton.interactable = true;
         }
@@ -43,11 +46,7 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         //Photonに接続人数がMaxでない時に画面遷移する
         if (PhotonNetwork.CountOfPlayers <= 20)
         {
-            //Photonに接続できていなければ、Photonに接続する
-            if (PhotonNetwork.IsConnected == false)
-            {
-                PhotonNetwork.ConnectUsingSettings();
-            }
+            
             //画面遷移
             SceneManager.LoadScene("SelectPlayerName");
         }

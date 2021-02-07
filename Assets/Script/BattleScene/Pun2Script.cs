@@ -131,56 +131,74 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //    }
             //}
         }
-        //if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
-        //{
-        //    //プレイキャラのオブジェクトを生成
-        //    animal = PhotonNetwork.Instantiate("animal1", new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-        //    animal.name = "animal3";
+        if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
+        {
+            //プレイキャラのオブジェクトを生成
+            animal = PhotonNetwork.Instantiate("animal1", new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = "animal3";
 
-        //    //敵情報を取得する
-        //    foreach (var p in PhotonNetwork.PlayerList)
-        //    {
-        //        if (PhotonNetwork.LocalPlayer.UserId != p.UserId)
-        //        {
-        //            playerInformation = p;
-        //            break;
-        //        }
-        //    }
-        //    //自分情報を取得する
-        //    foreach (var p in PhotonNetwork.PlayerList)
-        //    {
-        //        if (PhotonNetwork.LocalPlayer.UserId == p.UserId)
-        //        {
-        //            player2Information = p;
-        //            break;
-        //        }
-        //    }
-        //}
-        //if (PhotonNetwork.LocalPlayer.ActorNumber >= 4)
-        //{
-        //    //プレイキャラのオブジェクトを生成
-        //    animal = PhotonNetwork.Instantiate("animal1", new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-        //    animal.name = "animal4";
+            //UnityChanControlScriptWithRgidBody
+            //Scriptを設定し、フラグを指定する。
+            animal.GetComponent<CharacterMainMove>().SetFlag(true);
+            //ScreenTouch
+            //Scriptを設定し、オブジェクトを取得する。
+            screenTouch.GetComponent<ScreenTouch>().target = animal;
+            //GroundCheck
+            //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
+            animal.transform.GetChild(6).gameObject.GetComponent<GroundCheck>().target = animal;
+            ////敵情報を取得する
+            //foreach (var p in PhotonNetwork.PlayerList)
+            //{
+            //    if (PhotonNetwork.LocalPlayer.UserId != p.UserId)
+            //    {
+            //        playerInformation = p;
+            //        break;
+            //    }
+            //}
+            ////自分情報を取得する
+            //foreach (var p in PhotonNetwork.PlayerList)
+            //{
+            //    if (PhotonNetwork.LocalPlayer.UserId == p.UserId)
+            //    {
+            //        player2Information = p;
+            //        break;
+            //    }
+            //}
+        }
+        if (PhotonNetwork.LocalPlayer.ActorNumber >= 4)
+        {
+            //プレイキャラのオブジェクトを生成
+            animal = PhotonNetwork.Instantiate("animal1", new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = "animal4";
 
-        //    //敵情報を取得する
-        //    foreach (var p in PhotonNetwork.PlayerList)
-        //    {
-        //        if (PhotonNetwork.LocalPlayer.UserId != p.UserId)
-        //        {
-        //            playerInformation = p;
-        //            break;
-        //        }
-        //    }
-        //    //自分情報を取得する
-        //    foreach (var p in PhotonNetwork.PlayerList)
-        //    {
-        //        if (PhotonNetwork.LocalPlayer.UserId == p.UserId)
-        //        {
-        //            player2Information = p;
-        //            break;
-        //        }
-        //    }
-        //}
+            //UnityChanControlScriptWithRgidBody
+            //Scriptを設定し、フラグを指定する。
+            animal.GetComponent<CharacterMainMove>().SetFlag(true);
+            //ScreenTouch
+            //Scriptを設定し、オブジェクトを取得する。
+            screenTouch.GetComponent<ScreenTouch>().target = animal;
+            //GroundCheck
+            //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
+            animal.transform.GetChild(6).gameObject.GetComponent<GroundCheck>().target = animal;
+            ////敵情報を取得する
+            //foreach (var p in PhotonNetwork.PlayerList)
+            //{
+            //    if (PhotonNetwork.LocalPlayer.UserId != p.UserId)
+            //    {
+            //        playerInformation = p;
+            //        break;
+            //    }
+            //}
+            ////自分情報を取得する
+            //foreach (var p in PhotonNetwork.PlayerList)
+            //{
+            //    if (PhotonNetwork.LocalPlayer.UserId == p.UserId)
+            //    {
+            //        player2Information = p;
+            //        break;
+            //    }
+            //}
+        }
     }
 
 }

@@ -36,4 +36,16 @@ public class SelectPlayerLogin : MonoBehaviour
         //画面遷移
         SceneManager.LoadScene("BattleScene");
     }
+
+    //表示処理
+    private void OnGUI()
+    {
+
+
+        GUI.TextField(new Rect(150, 30, 150, 70), "Room名 : " + PhotonNetwork.CurrentRoom.Name);
+        //GUI.TextField(new Rect(400, 30, 150, 70), "HP(2P) : " + samplePun2Script.GetPlayer2Information().CustomProperties["HP"].ToString());
+
+        //GUI.TextField(new Rect(650, 30, 150, 70), "HP(3P) : ".ToString());
+        //GUI.TextField(new Rect(900, 30, 150, 70), "HP(4P) : ".ToString());
+    }
 }
