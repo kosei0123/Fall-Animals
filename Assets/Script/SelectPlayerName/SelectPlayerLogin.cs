@@ -34,7 +34,7 @@ public class SelectPlayerLogin : MonoBehaviour
         PhotonNetwork.LocalPlayer.NickName = nickname;
 
         //画面遷移
-        SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene("WaitingRoom");
     }
 
     //表示処理

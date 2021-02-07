@@ -43,9 +43,34 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         //RoomOptionsの用意
         RoomOptions roomOptions = new RoomOptions();
+        //入室の可否
+        roomOptions.IsOpen = true;
         //PlayerのMac人数を指定
-        roomOptions.MaxPlayers = 4;
+        roomOptions.MaxPlayers = 2;
+
+        //カスタムプロパティの設定
+        roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable()
+        {
+            //待機所内の人数カウント
+            {"WaitingRoomPlayerCount", 0}
+        };
+        //ロビーにカスタムプロパティの情報を表示させる
+        roomOptions.CustomRoomPropertiesForLobby = new string[]
+        {
+            "WaitingRoomPlayerCount",
+        };
+
         //ルームの作成
         PhotonNetwork.CreateRoom("Room" + Random.Range(1,100),roomOptions);
+    }
+
+    //ルームオプションを更新する
+    public static void UpdateRoomOptions(bool newIsOpen)
+    {
+        //入室の可否変更
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = newIsOpen;
+        }
     }
 }
