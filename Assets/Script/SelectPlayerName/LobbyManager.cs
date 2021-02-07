@@ -46,7 +46,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //入室の可否
         roomOptions.IsOpen = true;
         //PlayerのMac人数を指定
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = 1;
 
         //カスタムプロパティの設定
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable()
