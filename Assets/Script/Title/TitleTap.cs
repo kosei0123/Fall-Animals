@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class TitleTap : MonoBehaviour
 {
@@ -25,9 +26,8 @@ public class TitleTap : MonoBehaviour
         //画面のどこかをタップした際の動作
         if (Input.GetMouseButton(0))
         {
-            SceneManager.LoadScene("SelectPlayerName");
+            SceneManager.LoadScene("EnterLobby");
         }
-
     }
 
     //テキストの点滅表示を行う関数
