@@ -11,6 +11,9 @@ public class WaitingPlayerCount : MonoBehaviour
     [SerializeField]
     private Text WaitingPlayerCountText;
 
+    //プレイヤー番号
+    public static int playerCreatedNumber;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +21,8 @@ public class WaitingPlayerCount : MonoBehaviour
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+        //プレイヤー番号の決定
+        playerCreatedNumber = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
     }
 
     // Update is called once per frame

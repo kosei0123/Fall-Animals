@@ -4,13 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
 
-public class CharacterMainMove : MonoBehaviourPunCallbacks
+public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 {
+    //Pun2Scriptのpublic定数を使う
+    Pun2Script pun2Script;
+
     //初期状態でfalseを入れ、オンライン時に自プレイヤーのみ操作できるようにする
     public bool onlineflag = false;
 
-    // プレイヤーへの参照
-    public GameObject player;
     //キャラクターにかかる重力や摩擦
     public Rigidbody rb;
     //キャラクターのニックネームを取得
@@ -19,7 +20,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     private Vector3 nickNamePositionTweak = new Vector3(0, 2.0f, 0);
     //プレイヤーのワールド座標
     private Vector3 playerWorldPosition;
-
+    //ラグ時の位置予想
+    private Vector3 networkPosition;
 
     //キャラクターの移動方向
     [HideInInspector]
@@ -30,7 +32,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     //ジャンプフラグ
     public bool jumpFlag = false;
     // ジャンプ威力
-    private float jumpPower = 7.0f;
+    public float jumpPower = 7.0f;
     //ジャンプ回数
     public int jumpCount = 0;
 
@@ -45,6 +47,12 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     //地面チェックのコライダー
     public static Collider groudCheck_Collider;
 
+    //ニックネームフラグ
+    public bool animal1NickNameFlag = false;
+    public bool animal2NickNameFlag = false;
+    public bool animal3NickNameFlag = false;
+    public bool animal4NickNameFlag = false;
+
 
     public void SetFlag(bool f)
     {
@@ -54,15 +62,16 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        //Pun2Scriptのpublic定数を使う
+        pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
+
         //FPSを60に設定
         Application.targetFrameRate = 60;
 
-        //プレイヤーへの参照
-        player = GameObject.FindWithTag("Player");
         //重力や摩擦
-        rb = player.GetComponent<Rigidbody>();
+        rb = this.GetComponent<Rigidbody>();
         // Animatorコンポーネントを取得する
-        anim = player.GetComponent<Animator>();
+        anim = this.GetComponent<Animator>();
 
         //Transformをキャッシュする
         transformCache = transform;
@@ -74,6 +83,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+
         //自分の画面の自キャラのみ操作できるようにする
         if (onlineflag == false)
         {
@@ -84,7 +94,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
         groudCheck_Collider.enabled = true;
         //ニックネームを表示
         NameText.text = PhotonNetwork.LocalPlayer.NickName;
-        NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main,player.transform.position + nickNamePositionTweak);
+        //NameText.text = pun2Script.GetAnimalInformation().NickName;
+        NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
 
         //プレイヤーの向きの反転
         if ((transformCache.localScale.z < 0 && moveDirection > 0.1) || (transformCache.localScale.z > 0 && moveDirection < -0.1))
@@ -98,16 +109,19 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
         
         //画面外にでないように制御
         //定義
-        playerWorldPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position);
+        playerWorldPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
         //条件式
-        if ((playerWorldPosition.x > 150.0f && playerWorldPosition.x < Screen.width - 150.0f) ||
-            (playerWorldPosition.x <= 150.0f && moveDirection > 0.1) || (playerWorldPosition.x >= Screen.width - 150.0f && moveDirection < -0.1))
+        if ((playerWorldPosition.x > 0 && playerWorldPosition.x < Screen.width) ||
+            (playerWorldPosition.x <= 0 && moveDirection > 0.1) || (playerWorldPosition.x >= Screen.width && moveDirection < -0.1))
         {
             //キャラクターの移動処理
             rb.velocity = new Vector3(moveDirection * runSpeed, rb.velocity.y, 0);
         }
+        else
+        {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+        }
 
-        Debug.Log(rb.transform.position);
 
         //ジャンプ
         if (jumpFlag == true && jumpCount == 1)
@@ -144,5 +158,57 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
 
         }
 
+    }
+
+    //同期
+    [System.Obsolete]
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            //データの送信
+            //名前
+            stream.SendNext(this.name);
+            //位置と加速度
+            stream.SendNext(rb.velocity);
+        }
+        else
+        {
+            //データの受信
+            //名前
+            gameObject.name = (string)stream.ReceiveNext();
+            //位置と加速度
+            GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
+
+            if (animal1NickNameFlag == false || animal2NickNameFlag == false || animal3NickNameFlag == false || animal4NickNameFlag == false)
+            {
+                ShowNickName();
+            }
+        }
+    }
+
+    //他プレイヤー画面にてニックネームの共有
+    private void ShowNickName()
+    {
+        if (gameObject.name == "animal1")
+        {
+            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
+            animal1NickNameFlag = true;
+        }
+        if (gameObject.name == "animal2")
+        {
+            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
+            animal2NickNameFlag = true;
+        }
+        if (gameObject.name == "animal3")
+        {
+            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
+            animal3NickNameFlag = true;
+        }
+        if (gameObject.name == "animal4")
+        {
+            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
+            animal4NickNameFlag = true;
+        }
     }
 }

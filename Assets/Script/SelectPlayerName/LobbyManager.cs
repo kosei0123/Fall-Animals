@@ -56,12 +56,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable()
         {
             //待機所内の人数カウント
-            {"WaitingRoomPlayerCount", 0}
+            {"WaitingRoomPlayerCount", 0},
+            //残り人数カウント
+            {"RemainingPlayerCount", 0}
         };
         //ロビーにカスタムプロパティの情報を表示させる
         roomOptions.CustomRoomPropertiesForLobby = new string[]
         {
             "WaitingRoomPlayerCount",
+            "RemainingPlayerCount",
         };
 
         //ルームの作成
