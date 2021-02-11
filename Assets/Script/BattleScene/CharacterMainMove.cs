@@ -17,6 +17,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
     public Text NameText;
     //ニックネームの表示位置の調整
     private Vector3 nickNamePositionTweak = new Vector3(0, 2.0f, 0);
+    //プレイヤーのワールド座標
+    private Vector3 playerWorldPosition;
 
 
     //キャラクターの移動方向
@@ -90,13 +92,25 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks
             transformCache.localScale = new Vector3(transformCache.localScale.x, transformCache.localScale.y, transformCache.localScale.z * (-1));
         }
 
-        // Animator側で設定している"Speed"パラメタにhを渡す
+        // Animator側で設定している"Speed"パラメタにmoveDirectionを渡す
         anim.SetFloat("Speed", moveDirection);
-        //キャラクターの移動処理
-        rb.velocity = new Vector3(moveDirection * runSpeed, rb.velocity.y, 0);
+
+        
+        //画面外にでないように制御
+        //定義
+        playerWorldPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position);
+        //条件式
+        if ((playerWorldPosition.x > 150.0f && playerWorldPosition.x < Screen.width - 150.0f) ||
+            (playerWorldPosition.x <= 150.0f && moveDirection > 0.1) || (playerWorldPosition.x >= Screen.width - 150.0f && moveDirection < -0.1))
+        {
+            //キャラクターの移動処理
+            rb.velocity = new Vector3(moveDirection * runSpeed, rb.velocity.y, 0);
+        }
+
+        Debug.Log(rb.transform.position);
 
         //ジャンプ
-        if(jumpFlag == true && jumpCount == 1)
+        if (jumpFlag == true && jumpCount == 1)
         {
             //上方向に力を加える
             rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);

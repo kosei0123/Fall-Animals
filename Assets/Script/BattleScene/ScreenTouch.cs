@@ -56,7 +56,7 @@ public class ScreenTouch : MonoBehaviour
                 characterMainMove.jumpCount++;
             }
             //縦3分割の上から2番目をタップ(移動)
-            else if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
+            if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
             {
                 //横2分割の右側をタップ(右移動)
                 if (Input.mousePosition.x > screenMiddle)
@@ -71,7 +71,7 @@ public class ScreenTouch : MonoBehaviour
                 
             }
             //縦3分割の1番下をタップ(しゃがみ)
-            else if (Input.mousePosition.y <= screenDown)
+            if (Input.mousePosition.y <= screenDown && characterMainMove.isGround == true)
             {
                 Debug.Log("D");
             }

@@ -7,10 +7,14 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    //Room入室時にtrueを返す
+    public bool joinedRoomFlag;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Room入室時にtrueを返す
+        joinedRoomFlag = false;
     }
 
     // Update is called once per frame
@@ -45,7 +49,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         //入室の可否
         roomOptions.IsOpen = true;
-        //PlayerのMac人数を指定
+        //PlayerのMax人数を指定
         roomOptions.MaxPlayers = 1;
 
         //カスタムプロパティの設定
@@ -62,6 +66,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         //ルームの作成
         PhotonNetwork.CreateRoom("Room" + Random.Range(1,100),roomOptions);
+    }
+
+    //部屋に入室した時
+    public override void OnJoinedRoom()
+    {
+        joinedRoomFlag = true;
     }
 
     //ルームオプションを更新する

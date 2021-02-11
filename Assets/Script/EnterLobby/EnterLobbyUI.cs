@@ -8,6 +8,9 @@ using Photon.Realtime;
 
 public class EnterLobbyUI : MonoBehaviourPunCallbacks
 {
+    //LobbyManagerスクリプトのpublic定数使用
+    LobbyManager lobbyManager;
+
     //Photon接続人数を表示
     public Text ConnectCountText;
     //Buttonのコンポーネントを取得
@@ -16,6 +19,9 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        //LobbyManagerスクリプトのpublic定数使用
+        lobbyManager = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
+
         //Photonに接続できていなければ、Photonに接続する
         if (PhotonNetwork.IsConnected == false)
         {
@@ -44,7 +50,7 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
     public void OnClick_EnterLobbyButton()
     {
         //Photonに接続人数がMaxでない時に画面遷移する
-        if (PhotonNetwork.CountOfPlayers <= 20)
+        if (PhotonNetwork.CountOfPlayers <= 20 && lobbyManager.joinedRoomFlag == true)
         {
             
             //画面遷移
