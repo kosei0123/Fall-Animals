@@ -6,13 +6,18 @@ using Photon.Realtime;
 
 public class Pun2Script : MonoBehaviourPunCallbacks
 {
+    //CharacterMainMoveのスクリプトを使う
+    CharacterMainMove characterMainMove;
     //TitleTapのScriptを使う
     ScreenTouch screenTouch;
+    //EndDialogの関数等を使う
+    EndDialog endDialog;
 
     //プレイヤーのオブジェクト
     public GameObject animal;
     //岩のオブジェクト
     private GameObject rock;
+    
 
     //情報取得に使う
     private Player animalInformation;
@@ -22,15 +27,30 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
     //岩の生成時間
     private float rockCreateTime = 0;
+    //バトル開始時間
+    private float battleStartTime;
+
+    //rankingを表示する
+    public int battleRanking = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         //TitleTapのScriptを使う
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
+        //EndDialogの関数等を使う
+        endDialog = GameObject.Find("DialogCanvas").GetComponent<EndDialog>();
 
+        //ルーム内カスタムプロパティにて残り人数に追加
+        var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + PhotonNetwork.CurrentRoom.MaxPlayers;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+
+        //ルームに入室後の設定
         JoinedRoom();
 
+        //バトル開始時間の設定
+        battleStartTime = 5.0f;
     }
 
     // Update is called once per frame
@@ -50,9 +70,25 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             rockCreateTime -= Time.deltaTime;
         }
 
+        //自分の画面の自キャラのみ操作できるようにする
+        if (characterMainMove.onlineflag == false)
+        {
+            return;
+        }
+
         //プレイヤーリストの情報を取得
         GetPlayerInformation();
-        
+
+        //バトル開始時間
+        if (battleStartTime >= 0)
+        {
+            battleStartTime -= Time.deltaTime;
+        }
+        else
+        {
+            Check();
+        }
+
     }
 
     //animalの情報を返す
@@ -91,11 +127,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             prps["NAME"] = "animal1";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-            //ルーム内カスタムプロパティにて残り人数に追加
-            var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-            PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + 1;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
+            //Pun2Script
+            //Scriptを設定し、フラグを指定する。
+            characterMainMove = animal.GetComponent<CharacterMainMove>();
             //CharacterMainMove
             //Scriptを設定し、フラグを指定する。
             animal.GetComponent<CharacterMainMove>().SetFlag(true);
@@ -122,11 +156,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             prps["NAME"] = "animal2";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-            //ルーム内カスタムプロパティにて残り人数に追加
-            var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-            PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + 1;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
+            //Pun2Script
+            //Scriptを設定し、フラグを指定する。
+            characterMainMove = animal.GetComponent<CharacterMainMove>();
             //CharacterMainMove
             //Scriptを設定し、フラグを指定する。
             animal.GetComponent<CharacterMainMove>().SetFlag(true);
@@ -152,11 +184,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             prps["NAME"] = "animal3";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-            //ルーム内カスタムプロパティにて残り人数に追加
-            var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-            PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + 1;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
+            //Pun2Script
+            //Scriptを設定し、フラグを指定する。
+            characterMainMove = animal.GetComponent<CharacterMainMove>();
             //CharacterMainMove
             //Scriptを設定し、フラグを指定する。
             animal.GetComponent<CharacterMainMove>().SetFlag(true);
@@ -182,11 +212,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             prps["NAME"] = "animal4";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-            //ルーム内カスタムプロパティにて残り人数に追加
-            var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-            PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + 1;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
+            //Pun2Script
+            //Scriptを設定し、フラグを指定する。
+            characterMainMove = animal.GetComponent<CharacterMainMove>();
             //CharacterMainMove
             //Scriptを設定し、フラグを指定する。
             animal.GetComponent<CharacterMainMove>().SetFlag(true);
@@ -274,6 +302,29 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.1f, 0), Quaternion.identity, 0);
             rock.name = "Rock5";
         }
+    }
+
+    //勝敗のチェック
+    private void Check()
+    {
+        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1)
+        {
+            //動きを止める
+            characterMainMove.onlineflag = false;
+            characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+            //順位の確定と取得
+            battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
+
+            //終了時のダイアログ表示
+            endDialog.DialogPanelActive(battleRanking);
+        }
+    }
+
+    //順位表示処理
+    private void OnGUI()
+    {
+        GUI.TextField(new Rect(150, 30, 150, 70), "残り人数 : " + (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"]);
+
     }
 
 }

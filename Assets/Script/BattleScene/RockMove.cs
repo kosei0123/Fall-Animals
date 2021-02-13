@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class RockMove : MonoBehaviourPunCallbacks
+public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
 {
     //岩にかかる重力や摩擦
     private Rigidbody rbRock;
     //時間計測
     private float rockTime;
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,13 +50,46 @@ public class RockMove : MonoBehaviourPunCallbacks
     void Update()
     {
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || rockTime >= 15.0f ||
-            (rbRock.velocity.x >= -0.3f && rbRock.velocity.x <= 0.3f))
+        if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || rockTime >= 15.0f)
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
 
         //岩が作られてからの時間計測
         rockTime += Time.deltaTime;
+    }
+
+    //オブジェクトと接触した瞬間に呼び出される
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag != "Obstacle")
+        {
+            return;
+        }
+
+        //ぶつかって止まってしまった際は消去する
+        if (rbRock.velocity.x >= -0.3f && rbRock.velocity.x <= 0.3f)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+    }
+
+    //同期
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            //データの送信
+            //加速度
+            stream.SendNext(rbRock.velocity);
+
+        }
+        else
+        {
+            //データの受信
+            //加速度
+            GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
+
+        }
     }
 }
