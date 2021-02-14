@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -17,7 +18,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     public GameObject animal;
     //岩のオブジェクト
     private GameObject rock;
-    
+
+    //プレイキャラの名前取得
+    public string animalName;
 
     //情報取得に使う
     private Player animalInformation;
@@ -43,14 +46,14 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
         //ルーム内カスタムプロパティにて残り人数に追加
         var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-        PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + PhotonNetwork.CurrentRoom.MaxPlayers;
+        PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n + (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
 
         //ルームに入室後の設定
         JoinedRoom();
 
         //バトル開始時間の設定
-        battleStartTime = 5.0f;
+        battleStartTime = 10.0f;
     }
 
     // Update is called once per frame
@@ -119,12 +122,19 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
         if (WaitingPlayerCount.playerCreatedNumber == 1)
         {
+            ////プレイキャラの名前取得
+            //animalName = "Giraffe";
+            ////プレイキャラのオブジェクトを生成
+            //animal = PhotonNetwork.Instantiate(animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(270.0f, 90.0f, 0.0f), 0);
+
+            //プレイキャラの名前取得
+            animalName = "animal1";
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate("animal1", new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = "animal1";
+            animal = PhotonNetwork.Instantiate(animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = animalName + "1";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
-            prps["NAME"] = "animal1";
+            prps["NAME"] = "Ani1";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -142,18 +152,20 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             animal.GetComponent<Damaged>().target = animal;
             //GroundCheck
             //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
-            animal.transform.GetChild(6).gameObject.GetComponent<GroundCheck>().target = animal;
+            animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
 
 
         }
         if (WaitingPlayerCount.playerCreatedNumber == 2)
         {
+            //プレイキャラの名前取得
+            animalName = "animal1";
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate("animal1", new Vector3(-1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = "animal2";
+            animal = PhotonNetwork.Instantiate(animalName, new Vector3(-1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = animalName + "2";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
-            prps["NAME"] = "animal2";
+            prps["NAME"] = "Ani2";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -176,12 +188,14 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         }
         if (WaitingPlayerCount.playerCreatedNumber == 3)
         {
+            //プレイキャラの名前取得
+            animalName = "animal1";
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate("animal1", new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = "animal3";
+            animal = PhotonNetwork.Instantiate(animalName, new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = animalName + "3";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
-            prps["NAME"] = "animal3";
+            prps["NAME"] = "Ani3";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -204,12 +218,14 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         }
         if (WaitingPlayerCount.playerCreatedNumber == 4)
         {
+            //プレイキャラの名前取得
+            animalName = "animal1";
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate("animal1", new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = "animal4";
+            animal = PhotonNetwork.Instantiate(animalName, new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            animal.name = animalName + "4";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
-            prps["NAME"] = "animal4";
+            prps["NAME"] = "Ani4";
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -237,19 +253,19 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     {
         foreach(var p in PhotonNetwork.PlayerList)
         {
-            if ((string)p.CustomProperties["NAME"] == "animal1")
+            if ((string)p.CustomProperties["NAME"] == "Ani1")
             {
                 animalInformation = p;
             }
-            if ((string)p.CustomProperties["NAME"] == "animal2")
+            if ((string)p.CustomProperties["NAME"] == "Ani2")
             {
                 animal2Information = p;
             }
-            if ((string)p.CustomProperties["NAME"] == "animal3")
+            if ((string)p.CustomProperties["NAME"] == "Ani3")
             {
                 animal3Information = p;
             }
-            if ((string)p.CustomProperties["NAME"] == "animal4")
+            if ((string)p.CustomProperties["NAME"] == "Ani4")
             {
                 animal4Information = p;
             }
@@ -323,8 +339,40 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //順位表示処理
     private void OnGUI()
     {
-        GUI.TextField(new Rect(150, 30, 150, 70), "残り人数 : " + (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"]);
-
+        //GUI.TextField(new Rect(150, 30, 150, 70), "残り人数 : " + (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"]);
     }
 
+
+    //アプリケーション一時停止時
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Pun2Script_PhotonOff();
+        }
+    }
+
+    //アプリケーション終了時
+    private void OnApplicationQuit()
+    {
+        Pun2Script_PhotonOff();
+    }
+
+    //Photon接続解除や画面の遷移
+    private void Pun2Script_PhotonOff()
+    {
+        //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
+        var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n - 1;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
+        }
+
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+    }
 }

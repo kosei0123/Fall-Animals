@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class SelectPlayerLogin : MonoBehaviour
+public class SelectPlayerNameUI : MonoBehaviour
 {
     //ニックネーム取得用
     private string nickname;
@@ -13,7 +13,7 @@ public class SelectPlayerLogin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -21,6 +21,7 @@ public class SelectPlayerLogin : MonoBehaviour
     {
     }
 
+    //SelectNameButton押下した際の挙動
     public void OnClick_SelectNameButton()
     {
         nickname = GameObject.Find("InputField").GetComponent<InputField>().text;
@@ -35,6 +36,19 @@ public class SelectPlayerLogin : MonoBehaviour
 
         //画面遷移
         SceneManager.LoadScene("WaitingRoom");
+    }
+
+    //メニューボタン押下した際の挙動
+    public void OnClick_MenuButton()
+    {
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
+        }
+
+        //画面遷移
+        SceneManager.LoadScene("Menu");
     }
 
     //表示処理

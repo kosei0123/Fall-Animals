@@ -30,10 +30,13 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     private float runSpeed = 5.0f;
 
     //ジャンプフラグ
+    [HideInInspector]
     public bool jumpFlag = false;
     // ジャンプ威力
+    [HideInInspector]
     public float jumpPower = 7.0f;
     //ジャンプ回数
+    [HideInInspector]
     public int jumpCount = 0;
 
     //アニメーション
@@ -45,7 +48,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //地面にいるかフラグ
     public bool isGround = false;
     //地面チェックのコライダー
-    public static Collider groudCheck_Collider;
+    public Collider groudCheck_Collider;
 
     //ニックネームフラグ
     public bool animal1NickNameFlag = false;
@@ -75,9 +78,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
         //Transformをキャッシュする
         transformCache = transform;
-
-        //地面チェックのコライダー
-        groudCheck_Collider = GameObject.Find("GroundCheck").GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
@@ -190,24 +190,24 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //他プレイヤー画面にてニックネームの共有
     private void ShowNickName()
     {
-        if (gameObject.name == "animal1")
+        if (gameObject.name == pun2Script.animalName + "1")
         {
-            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
             animal1NickNameFlag = true;
         }
-        if (gameObject.name == "animal2")
+        if (gameObject.name == pun2Script.animalName + "2")
         {
-            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
             animal2NickNameFlag = true;
         }
-        if (gameObject.name == "animal3")
+        if (gameObject.name == pun2Script.animalName + "3")
         {
-            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
             animal3NickNameFlag = true;
         }
-        if (gameObject.name == "animal4")
+        if (gameObject.name == pun2Script.animalName + "4")
         {
-            gameObject.transform.GetChild(7).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
             animal4NickNameFlag = true;
         }
     }

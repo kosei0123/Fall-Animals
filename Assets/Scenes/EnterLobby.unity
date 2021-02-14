@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f9cfe5160ee14554aa3d9ad798c4350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joinedRoomFlag: 0
 --- !u!4 &176069849
 Transform:
   m_ObjectHideFlags: 0
@@ -179,7 +180,7 @@ GameObject:
   - component: {fileID: 268554503}
   - component: {fileID: 268554502}
   m_Layer: 5
-  m_Name: HomeButton
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,7 +251,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1840354473}
         m_TargetAssemblyTypeName: EnterLobbyUI, Assembly-CSharp
-        m_MethodName: OnClick_HomeButton
+        m_MethodName: OnClick_MenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -368,7 +369,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: HOME
+  m_Text: "\u30E1\u30CB\u30E5\u30FC"
 --- !u!222 &334180690
 CanvasRenderer:
   m_ObjectHideFlags: 0

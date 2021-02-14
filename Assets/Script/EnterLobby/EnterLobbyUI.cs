@@ -62,8 +62,8 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         }
     }
 
-    //ホームに戻るボタン押下
-    public void OnClick_HomeButton()
+    //メニューに戻るボタン押下
+    public void OnClick_MenuButton()
     {
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
@@ -72,6 +72,6 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         }
 
         //画面遷移
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("Menu");
     }
 }
