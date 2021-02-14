@@ -122,11 +122,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
         if (WaitingPlayerCount.playerCreatedNumber == 1)
         {
-            ////プレイキャラの名前取得
+            //プレイキャラの名前取得
             //animalName = "Giraffe";
-            ////プレイキャラのオブジェクトを生成
-            //animal = PhotonNetwork.Instantiate(animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(270.0f, 90.0f, 0.0f), 0);
-
+            
             //プレイキャラの名前取得
             animalName = "animal1";
             //プレイキャラのオブジェクトを生成
