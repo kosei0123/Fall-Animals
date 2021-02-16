@@ -190,25 +190,36 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //他プレイヤー画面にてニックネームの共有
     private void ShowNickName()
     {
-        if (gameObject.name == pun2Script.animalName + "1")
+        if (gameObject.name == SelectCharacterUI.animalName + "1")
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
             animal1NickNameFlag = true;
         }
-        if (gameObject.name == pun2Script.animalName + "2")
+        if (gameObject.name == SelectCharacterUI.animalName + "2")
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
             animal2NickNameFlag = true;
         }
-        if (gameObject.name == pun2Script.animalName + "3")
+        if (gameObject.name == SelectCharacterUI.animalName + "3")
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
             animal3NickNameFlag = true;
         }
-        if (gameObject.name == pun2Script.animalName + "4")
+        if (gameObject.name == SelectCharacterUI.animalName + "4")
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
             animal4NickNameFlag = true;
         }
+    }
+
+    //順位表示処理
+    private void OnGUI()
+    {
+        if(onlineflag == false)
+        {
+            return;
+        }
+        //GUI.TextField(new Rect(400, 30, 150, 70), "isGround : " + isGround);
+
     }
 }

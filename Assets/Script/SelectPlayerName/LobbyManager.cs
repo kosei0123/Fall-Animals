@@ -51,6 +51,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomOptions.IsOpen = true;
         //PlayerのMax人数を指定
         roomOptions.MaxPlayers = 1;
+        //去っていくプレイヤーが生成したオブジェクトが破壊されないようにする
+        //roomOptions.CleanupCacheOnLeave = false;
 
         //カスタムプロパティの設定
         roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable()

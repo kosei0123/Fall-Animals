@@ -68,6 +68,7 @@ public class EndDialog : MonoBehaviour
                     getCoin = 40;
                     break;
                 default:
+                    getCoin = 40;
                     break;
             }
         }
@@ -85,6 +86,7 @@ public class EndDialog : MonoBehaviour
                     getCoin = 30;
                     break;
                 default:
+                    getCoin = 30;
                     break;
             }
         }
@@ -99,6 +101,7 @@ public class EndDialog : MonoBehaviour
                     getCoin = 20;
                     break;
                 default:
+                    getCoin = 20;
                     break;
             }
         }
@@ -110,6 +113,7 @@ public class EndDialog : MonoBehaviour
                     getCoin = 10;
                     break;
                 default:
+                    getCoin = 10;
                     break;
             }
         }
@@ -120,14 +124,14 @@ public class EndDialog : MonoBehaviour
     //ダイアログの「再接続」選択
     public void OnClick_AgainButton()
     {
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
         {
             PhotonNetwork.Disconnect();
         }
-
-        //画面遷移
-        SceneManager.LoadScene("Menu");
     }
 
     //ダイアログの「終了」選択

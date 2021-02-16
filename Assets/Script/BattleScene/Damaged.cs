@@ -27,6 +27,7 @@ public class Damaged : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //一定距離落下後に消去
         if (characterMainMove.transformCache.position.y < -50)
         {
@@ -44,13 +45,11 @@ public class Damaged : MonoBehaviour
     //オブジェクトと接触した瞬間に呼び出される
     void OnCollisionEnter(Collision other)
     {
-
         //自分の操作キャラでなければ抜ける
         if (characterMainMove.onlineflag == false)
         {
             return;
         }
-
 
         //岩にあたり落下する
         if (this.gameObject.layer == 10 && other.gameObject.tag == "Obstacle")
@@ -71,6 +70,7 @@ public class Damaged : MonoBehaviour
 
             //レイヤーを変更し、下に落ちていく
             this.gameObject.layer = 9;
+            this.gameObject.transform.GetChild(0).gameObject.layer = 9;
             //上方向に力を加える
             characterMainMove.jumpPower = 5.0f;
             characterMainMove.rb.AddForce(Vector3.up * characterMainMove.jumpPower, ForceMode.VelocityChange);

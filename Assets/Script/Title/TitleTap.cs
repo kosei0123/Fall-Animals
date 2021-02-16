@@ -7,6 +7,9 @@ using Photon.Pun;
 
 public class TitleTap : MonoBehaviour
 {
+    //TitleManagerのpublic定数を取得
+    TitleManager titleManager;
+
     //TapTextオブジェクトを指定する
     [SerializeField]
     private Text TapText;
@@ -14,7 +17,8 @@ public class TitleTap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //TitleManagerのpublic定数を取得
+        titleManager = GameObject.Find("TitleManager").GetComponent<TitleManager>();
     }
 
     // Update is called once per frame
@@ -24,8 +28,12 @@ public class TitleTap : MonoBehaviour
         TapText.color = GetAlphaColor(TapText.color);
 
         //画面のどこかをタップした際の動作
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonUp(0))
         {
+            //オブジェクトの消去
+            Destroy(titleManager.titleAnimal);
+            Destroy(titleManager.titleRock);
+            //画面遷移
             SceneManager.LoadScene("Menu");
         }
     }

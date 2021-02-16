@@ -18,6 +18,9 @@ public class ScreenTouch : MonoBehaviour
     public float screenMiddle;
 
 
+    private int test = 0;
+    private int test2 = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +47,10 @@ public class ScreenTouch : MonoBehaviour
             {
                 return;
             }
+        }
+        else
+        {
+            return;
         }
 
         //マルチタップの実装
@@ -147,9 +154,11 @@ public class ScreenTouch : MonoBehaviour
         //タップした瞬間
         if (Input.GetMouseButtonDown(0))
         {
+            test = 1;
             //縦3分割の1番上をタップ(ジャンプ)
-            if (Input.mousePosition.y >= screenUp)
+            if (Input.mousePosition.y >= screenUp && characterMainMove.jumpCount == 0)
             {
+                test2 = 1;
                 characterMainMove.jumpFlag = true;
                 characterMainMove.jumpCount++;
             }
@@ -208,5 +217,13 @@ public class ScreenTouch : MonoBehaviour
                 characterMainMove.moveDirection = 0.0f;
             }
         }
+    }
+
+    //順位表示処理
+    private void OnGUI()
+    {
+        //GUI.TextField(new Rect(150, 30, 150, 70), "test : " + test);
+        //GUI.TextField(new Rect(650, 30, 150, 70), "test2 : " + test2);
+
     }
 }

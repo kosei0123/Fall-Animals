@@ -35,7 +35,7 @@ public class SelectPlayerNameUI : MonoBehaviour
         PhotonNetwork.LocalPlayer.NickName = nickname;
 
         //画面遷移
-        SceneManager.LoadScene("WaitingRoom");
+        SceneManager.LoadScene("SelectCharacter");
     }
 
     //メニューボタン押下した際の挙動

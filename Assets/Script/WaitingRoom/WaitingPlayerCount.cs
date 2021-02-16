@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class WaitingPlayerCount : MonoBehaviour
+public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 {
     //待機人数の表示
     [SerializeField]
@@ -70,13 +70,13 @@ public class WaitingPlayerCount : MonoBehaviour
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n - 1;
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
 
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
         {
             PhotonNetwork.Disconnect();
         }
-
-        //画面遷移
-        SceneManager.LoadScene("Menu");
     }
 }
