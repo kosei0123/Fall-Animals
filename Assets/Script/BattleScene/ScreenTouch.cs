@@ -51,104 +51,108 @@ public class ScreenTouch : MonoBehaviour
             return;
         }
 
+//iPhoneまたはANDROIDでの動作
+#if UNITY_IPHONE || UNITY_ANDROID
         //マルチタップの実装
-        //var touchCount = Input.touchCount;
+        var touchCount = Input.touchCount;
 
-        //for(var i = 0; i < touchCount; i++)
-        //{
-        //    var touch = Input.GetTouch(i);
-        //    switch (touch.phase)
-        //    {
-        //        //画面に指が触れたときの処理
-        //        case TouchPhase.Began:
-        //            //縦3分割の1番上をタップ(ジャンプ)
-        //            if (touch.position.y >= screenUp)
-        //            {
-        //                characterMainMove.jumpFlag = true;
-        //                characterMainMove.jumpCount++;
-        //            }
-        //            //縦3分割の上から2番目をタップ(移動)
-        //            if (touch.position.y < screenUp && touch.position.y > screenDown)
-        //            {
-        //                //横2分割の右側をタップ(右移動)
-        //                if (touch.position.x > screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = 1.0f;
-        //                }
-        //                //横2分割の左側をタップ(左移動)
-        //                else if (touch.position.x <= screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = -1.0f;
-        //                }
+        for (var i = 0; i < touchCount; i++)
+        {
+            var touch = Input.GetTouch(i);
+            switch (touch.phase)
+            {
+                //画面に指が触れたときの処理
+                case TouchPhase.Began:
+                    //縦3分割の1番上をタップ(ジャンプ)
+                    if (touch.position.y >= screenUp)
+                    {
+                        characterMainMove.jumpFlag = true;
+                        characterMainMove.jumpCount++;
+                    }
+                    //縦3分割の上から2番目をタップ(移動)
+                    if (touch.position.y < screenUp && touch.position.y > screenDown)
+                    {
+                        //横2分割の右側をタップ(右移動)
+                        if (touch.position.x > screenMiddle)
+                        {
+                            characterMainMove.moveDirection = 1.0f;
+                        }
+                        //横2分割の左側をタップ(左移動)
+                        else if (touch.position.x <= screenMiddle)
+                        {
+                            characterMainMove.moveDirection = -1.0f;
+                        }
 
-        //            }
-        //            //縦3分割の1番下をタップ(しゃがみ)
-        //            if (touch.position.y <= screenDown && characterMainMove.isGround == true)
-        //            {
-        //                Debug.Log("D");
-        //            }
-        //            break;
+                    }
+                    //縦3分割の1番下をタップ(しゃがみ)
+                    if (touch.position.y <= screenDown && characterMainMove.isGround == true)
+                    {
+                        Debug.Log("D");
+                    }
+                    break;
 
-        //        //画面上で指が動いたときの処理
-        //        case TouchPhase.Moved:
-        //            //縦3分割の上から2番目をタップ(移動)
-        //            if (touch.position.y < screenUp && touch.position.y > screenDown)
-        //            {
-        //                //横2分割の右側をタップ(右移動)
-        //                if (touch.position.x > screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = 1.0f;
-        //                }
-        //                //横2分割の左側をタップ(左移動)
-        //                else if (touch.position.x <= screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = -1.0f;
-        //                }
-        //            }
-        //            break;
+                //画面上で指が動いたときの処理
+                case TouchPhase.Moved:
+                    //縦3分割の上から2番目をタップ(移動)
+                    if (touch.position.y < screenUp && touch.position.y > screenDown)
+                    {
+                        //横2分割の右側をタップ(右移動)
+                        if (touch.position.x > screenMiddle)
+                        {
+                            characterMainMove.moveDirection = 1.0f;
+                        }
+                        //横2分割の左側をタップ(左移動)
+                        else if (touch.position.x <= screenMiddle)
+                        {
+                            characterMainMove.moveDirection = -1.0f;
+                        }
+                    }
+                    break;
 
-        //        //画面に触れてはいるが動いていないときの処理
-        //        case TouchPhase.Stationary:
-        //            //縦3分割の上から2番目をタップ(移動)
-        //            if (touch.position.y < screenUp && touch.position.y > screenDown)
-        //            {
-        //                //横2分割の右側をタップ(右移動)
-        //                if (touch.position.x > screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = 1.0f;
-        //                }
-        //                //横2分割の左側をタップ(左移動)
-        //                else if (touch.position.x <= screenMiddle)
-        //                {
-        //                    characterMainMove.moveDirection = -1.0f;
-        //                }
-        //            }
-        //            break;
+                //画面に触れてはいるが動いていないときの処理
+                case TouchPhase.Stationary:
+                    //縦3分割の上から2番目をタップ(移動)
+                    if (touch.position.y < screenUp && touch.position.y > screenDown)
+                    {
+                        //横2分割の右側をタップ(右移動)
+                        if (touch.position.x > screenMiddle)
+                        {
+                            characterMainMove.moveDirection = 1.0f;
+                        }
+                        //横2分割の左側をタップ(左移動)
+                        else if (touch.position.x <= screenMiddle)
+                        {
+                            characterMainMove.moveDirection = -1.0f;
+                        }
+                    }
+                    break;
 
-        //        //画面から指が離れたときの処理
-        //        case TouchPhase.Ended:
-        //            //横2分割の右側をタップ解除(右移動)
-        //            if (touch.position.x > screenMiddle)
-        //            {
-        //                characterMainMove.moveDirection = 0.0f;
-        //            }
-        //            //横2分割の左側をタップ解除(左移動)
-        //            else if (touch.position.x <= screenMiddle)
-        //            {
-        //                characterMainMove.moveDirection = 0.0f;
-        //            }
-        //            break;
+                //画面から指が離れたときの処理
+                case TouchPhase.Ended:
+                    //横2分割の右側をタップ解除(右移動)
+                    if (touch.position.x > screenMiddle)
+                    {
+                        characterMainMove.moveDirection = 0.0f;
+                    }
+                    //横2分割の左側をタップ解除(左移動)
+                    else if (touch.position.x <= screenMiddle)
+                    {
+                        characterMainMove.moveDirection = 0.0f;
+                    }
+                    break;
 
-        //        //システムがタッチの追跡をキャンセルしたときの処理
-        //        case TouchPhase.Canceled:
-        //            break;
+                //システムがタッチの追跡をキャンセルしたときの処理
+                case TouchPhase.Canceled:
+                    break;
 
-        //        default:
-        //            break;
-        //    }
-        //}
+                default:
+                    break;
+            }
+        }
+#endif
 
-        //PCでの動作
+//エディタでの動作
+#if UNITY_EDITOR
         //タップした瞬間
         if (Input.GetMouseButtonDown(0))
         {
@@ -214,6 +218,7 @@ public class ScreenTouch : MonoBehaviour
             }
         }
     }
+#endif
 
     //順位表示処理
     private void OnGUI()

@@ -50,7 +50,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //入室の可否
         roomOptions.IsOpen = true;
         //PlayerのMax人数を指定
-        roomOptions.MaxPlayers = 2;
+        roomOptions.MaxPlayers = 1;
         //去っていくプレイヤーが生成したオブジェクトが破壊されないようにする
         //roomOptions.CleanupCacheOnLeave = false;
 
