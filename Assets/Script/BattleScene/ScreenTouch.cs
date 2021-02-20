@@ -17,10 +17,6 @@ public class ScreenTouch : MonoBehaviour
     [HideInInspector]
     public float screenMiddle;
 
-
-    private int test = 0;
-    private int test2 = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +24,8 @@ public class ScreenTouch : MonoBehaviour
         screenUp = (Screen.height * 2) / 3;
         screenDown = Screen.height / 3;
         screenMiddle = Screen.width  / 2;
+        Debug.Log(Screen.height);
+        Debug.Log(Screen.width);
     }
 
     // Update is called once per frame
@@ -154,11 +152,9 @@ public class ScreenTouch : MonoBehaviour
         //タップした瞬間
         if (Input.GetMouseButtonDown(0))
         {
-            test = 1;
             //縦3分割の1番上をタップ(ジャンプ)
             if (Input.mousePosition.y >= screenUp && characterMainMove.jumpCount == 0)
             {
-                test2 = 1;
                 characterMainMove.jumpFlag = true;
                 characterMainMove.jumpCount++;
             }

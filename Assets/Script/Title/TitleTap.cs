@@ -9,6 +9,8 @@ public class TitleTap : MonoBehaviour
 {
     //TitleManagerのpublic定数を取得
     TitleManager titleManager;
+    //AdMobTitleAdvertinsingのpublic定数を取得
+    AdMobTitleAdvertinsing adMobTitleAdvertinsing;
 
     //TapTextオブジェクトを指定する
     [SerializeField]
@@ -19,6 +21,8 @@ public class TitleTap : MonoBehaviour
     {
         //TitleManagerのpublic定数を取得
         titleManager = GameObject.Find("TitleManager").GetComponent<TitleManager>();
+        //AdMobTitleAdvertinsingのpublic定数を取得
+        adMobTitleAdvertinsing = GameObject.Find("TitleAdvertising").GetComponent<AdMobTitleAdvertinsing>();
     }
 
     // Update is called once per frame
@@ -33,6 +37,8 @@ public class TitleTap : MonoBehaviour
             //オブジェクトの消去
             Destroy(titleManager.titleAnimal);
             Destroy(titleManager.titleRock);
+            adMobTitleAdvertinsing.bannerView.Hide();
+            adMobTitleAdvertinsing.bannerView.Destroy();
             //画面遷移
             SceneManager.LoadScene("Menu");
         }

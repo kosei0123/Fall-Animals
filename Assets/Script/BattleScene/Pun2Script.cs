@@ -13,6 +13,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     ScreenTouch screenTouch;
     //EndDialogの関数等を使う
     EndDialog endDialog;
+    //Timerのpublic定数を使う
+    Timer timer;
 
     //プレイヤーのオブジェクト
     public GameObject animal;
@@ -22,10 +24,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //情報取得に使う
     private Player[] animalInformation = { null, null, null, null };
 
-    //岩の生成時間
-    private float rockCreateTime = 0;
-    //バトル開始時間
-    private float battleStartTime;
+    //岩の生成時間(初期値設定)
+    private float rockCreateTime = 2;
 
     //rankingを表示する
     public int battleRanking = 0;
@@ -44,17 +44,30 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
         //EndDialogの関数等を使う
         endDialog = GameObject.Find("DialogCanvas").GetComponent<EndDialog>();
+        //Timerのpublic定数を使う
+        timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
 
         //ルームに入室後の設定
         JoinedRoom();
-
-        //バトル開始時間の設定
-        battleStartTime = 10.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //マスタークライアントのみで処理(マスタークライアントのonlineflagがfalseでも岩を作る)
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //岩を作る
+            if (rockCreateTime <= 0)
+            {
+                RockCreated();
+                rockCreateTime = Random.Range(1, 5);
+            }
+
+            //岩の生成時間を減らす
+            rockCreateTime -= Time.deltaTime;
+        }
+
         //自分の画面の自キャラのみ操作できるようにする
         if (characterMainMove.onlineflag == false)
         {
@@ -67,34 +80,24 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //切断確認
             GetDisconnect();
 
-            if (battleStartTime <= 9)
+            if (timer.elapsedTime >= 1.0f)
             {
                 //生成プレイヤーの数を取得
                 GetCreatedPlayerCount();
             }
-            
-            //岩を作る
-            if (rockCreateTime <= 0)
-            {
-                RockCreated();
-                rockCreateTime = Random.Range(1, 5);
-            }
-
-            //岩の生成時間を減らす
-            rockCreateTime -= Time.deltaTime;
         }
 
         //プレイヤーリストの情報を取得
         GetPlayerInformation();
 
-        //バトル開始時間
-        if (battleStartTime >= 0)
-        {
-            battleStartTime -= Time.deltaTime;
-        }
-        else
+        //バトル終了
+        if (timer.battleTime <= 0 && timer.mugenFlag == false)
         {
             Check();
+        }
+        else if (timer.elapsedTime >= 3.0f && timer.mugenFlag == true)
+        {
+            CheckMugen();
         }
 
     }
@@ -129,7 +132,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = SelectCharacterUI.animalName + "1";
+            animal.name = "animal1";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani1";
@@ -158,7 +161,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = SelectCharacterUI.animalName + "2";
+            animal.name = "animal2";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani2";
@@ -186,7 +189,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = SelectCharacterUI.animalName + "3";
+            animal.name = "animal3";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani3";
@@ -214,7 +217,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
-            animal.name = SelectCharacterUI.animalName + "4";
+            animal.name = "animal4";
             //自分の名前を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani4";
@@ -311,8 +314,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //岩のインスタンス化
     private void RockCreated()
     {
-        //ランダム値取得
-        int randomrock = Random.Range(0,999);
+        //ランダム値取得(0 ~ 999)
+        int randomrock = Random.Range(0,1000);
 
         //右に出現
         //ゆっくり
@@ -355,7 +358,22 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     }
 
     //勝敗のチェック
+    //残り2以上残っていても時間がくれば決着がつく
     private void Check()
+    {
+        //動きを止める
+        characterMainMove.onlineflag = false;
+        characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+        //順位の確定と取得
+        battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
+
+        //終了時のダイアログ表示
+        endDialog.DialogPanelActive(battleRanking);
+    }
+
+    //勝敗のチェック(時間無制限)
+    //1位が決まるまで終わらない
+    private void CheckMugen()
     {
         if ((int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1)
         {
@@ -407,6 +425,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //順位表示処理
     private void OnGUI()
     {
-        GUI.TextField(new Rect(150, 30, 150, 70), "残り人数 : " + (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"]);
+        //GUI.TextField(new Rect(150, 30, 150, 70), "残り人数 : " + (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"]);
     }
 }

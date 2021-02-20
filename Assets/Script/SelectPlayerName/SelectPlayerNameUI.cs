@@ -9,16 +9,21 @@ public class SelectPlayerNameUI : MonoBehaviour
 {
     //ニックネーム取得用
     private string nickname;
+    //ルーム名表示用
+    [SerializeField]
+    private Text RoomText;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        //ルーム名表示
+        RoomText.text = PhotonNetwork.CurrentRoom.Name;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
     }
 
     //SelectNameButton押下した際の挙動
@@ -56,7 +61,7 @@ public class SelectPlayerNameUI : MonoBehaviour
     {
 
 
-        GUI.TextField(new Rect(150, 30, 150, 70), "Room名 : " + PhotonNetwork.CurrentRoom.Name);
+        //GUI.TextField(new Rect(150, 30, 150, 70), "Room名 : " + PhotonNetwork.CurrentRoom.Name);
         //GUI.TextField(new Rect(400, 30, 150, 70), "HP(2P) : " + samplePun2Script.GetPlayer2Information().CustomProperties["HP"].ToString());
 
         //GUI.TextField(new Rect(650, 30, 150, 70), "HP(3P) : ".ToString());

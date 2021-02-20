@@ -80,14 +80,16 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         if (stream.IsWriting)
         {
             //データの送信
-            //加速度
+            //位置と加速度
+            stream.SendNext(rbRock.position);
             stream.SendNext(rbRock.velocity);
 
         }
         else
         {
             //データの受信
-            //加速度
+            //位置と加速度
+            GetComponent<Rigidbody>().position = (Vector3)stream.ReceiveNext();
             GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
 
         }
