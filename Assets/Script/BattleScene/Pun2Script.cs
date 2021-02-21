@@ -40,6 +40,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        //イベントを受け取るように設定
+        PhotonNetwork.IsMessageQueueRunning = true;
+
         //TitleTapのScriptを使う
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
         //EndDialogの関数等を使う
@@ -410,6 +413,13 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["DISCONNECT"] = true;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //シーン切り替え時に消えないオブジェクトの削除
+        if(animal != null)
+        {
+            PhotonNetwork.Destroy(animal);
+        }
+        
 
         //画面遷移
         SceneManager.LoadScene("Menu");

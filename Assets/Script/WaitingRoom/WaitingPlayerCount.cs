@@ -14,15 +14,27 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //プレイヤー番号
     public static int playerCreatedNumber;
 
+    //スタート時間を設定する
+    [SerializeField]
+    private Text StartTimeText;
+    private float waitingBattleStartTime;
+
     // Start is called before the first frame update
     void Start()
     {
+        //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
         //プレイヤー番号の決定
         playerCreatedNumber = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
+
+        //プレイヤーが入っていた時にバトルスタート時間を設定する
+        waitingBattleStartTime = 5.0f;
+
     }
 
     // Update is called once per frame
@@ -30,14 +42,36 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //待機人数の表示
         WaitingPlayerCountText.text = "ルーム内待機中プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+        //バトルスタート時間を表示する
+        StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
 
-        //MaxPlayerに達した段階で画面遷移(仮)
-        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers)
+        //バトルスタート時間を減らしていく
+        if (PhotonNetwork.IsMasterClient)
+        {
+            waitingBattleStartTime -= Time.deltaTime;
+
+            //バトル時間を同期する
+            PhotonView photonView = PhotonView.Get(this);
+            photonView.RPC("StartTimeValue", RpcTarget.All, waitingBattleStartTime);
+        }
+
+        
+
+        //MaxPlayerに達した段階で画面遷移、または時間が0になったとき
+        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || waitingBattleStartTime <= 0)
         {
             //入室できないようにする
             LobbyManager.UpdateRoomOptions(false);
+
+            //イベントを受け取らないように設定
+            PhotonNetwork.IsMessageQueueRunning = false;
+
             //画面遷移
-            SceneManager.LoadScene("BattleScene");
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SceneManager.LoadScene("BattleScene");
+            }
+            
         }
     }
 
@@ -45,6 +79,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     public void OnClick_MenuButton()
     {
         WaitingPlayerCount_PhotonOff();
+    }
+
+    [PunRPC]
+    //スタート時間を共有する
+    private void StartTimeValue(float value)
+    {
+        //スタート時間を設定する
+        waitingBattleStartTime = value;
     }
 
     //アプリケーション一時停止時

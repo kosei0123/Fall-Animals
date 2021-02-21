@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -50,7 +50,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //入室の可否
         roomOptions.IsOpen = true;
         //PlayerのMax人数を指定
-        roomOptions.MaxPlayers = 1;
+        roomOptions.MaxPlayers = 4;
         //去っていくプレイヤーが生成したオブジェクトが破壊されないようにする
         //roomOptions.CleanupCacheOnLeave = false;
 
@@ -86,6 +86,34 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.InRoom)
         {
             PhotonNetwork.CurrentRoom.IsOpen = newIsOpen;
+        }
+    }
+
+    //アプリケーション一時停止時
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            WaitingPlayerCount_PhotonOff();
+        }
+    }
+
+    //アプリケーション終了時
+    private void OnApplicationQuit()
+    {
+        WaitingPlayerCount_PhotonOff();
+    }
+
+    //Photon接続解除や画面の遷移
+    private void WaitingPlayerCount_PhotonOff()
+    {
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
         }
     }
 }
