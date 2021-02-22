@@ -29,7 +29,7 @@ public class Damaged : MonoBehaviour
     {
 
         //一定距離落下後に消去
-        if (characterMainMove.transformCache.position.y < -50)
+        if (this.transform.position.y < -50)
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
@@ -57,6 +57,9 @@ public class Damaged : MonoBehaviour
             //動きを止める
             characterMainMove.onlineflag = false;
             characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+
+            //バトル終了フラグをtrueにする
+            pun2Script.battleFinishFlag = true;
 
             //アニメーションの設定
             characterMainMove.anim.SetBool("Death", true);

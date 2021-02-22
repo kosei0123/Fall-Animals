@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 {
+    //SoundManagerスクリプトの関数使用
+    SoundManager soundManager;
+
     //待機人数の表示
     [SerializeField]
     private Text WaitingPlayerCountText;
@@ -22,6 +25,9 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
         //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
         PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -78,6 +84,9 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //メニューボタンを押下した際の挙動
     public void OnClick_MenuButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //画面遷移等
         WaitingPlayerCount_PhotonOff();
     }
 

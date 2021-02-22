@@ -90,6 +90,12 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             return;
         }
 
+        //Transformをキャッシュする
+        if (transformCache == null)
+        {
+            transformCache = transform;
+        }
+
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
         //ニックネームを表示

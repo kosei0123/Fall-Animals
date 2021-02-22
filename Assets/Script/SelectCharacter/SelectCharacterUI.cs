@@ -7,6 +7,9 @@ using Photon.Pun;
 
 public class SelectCharacterUI : MonoBehaviour
 {
+    //SoundManagerスクリプトの関数使用
+    SoundManager soundManager;
+
     //Buttonのコンポーネントを取得
     [SerializeField]
     private Button SelectCharacterOKButton;
@@ -18,10 +21,17 @@ public class SelectCharacterUI : MonoBehaviour
     //プレイキャラの名前取得
     public static string animalName;
 
+    //一定時間操作がなかった時に接続を切る用
+    private float disconnectTime;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //時間の設定(20秒)
+        disconnectTime = 20;
     }
 
     // Update is called once per frame
@@ -41,19 +51,48 @@ public class SelectCharacterUI : MonoBehaviour
             SelectCharacterText.text = animalName;
         }
 
-        
-    }
+        //一定時間操作がなかった時に退出
+        if (disconnectTime > 0)
+        {
+            disconnectTime -= Time.deltaTime;
+        }
+        else
+        {
+            //画面遷移
+            SceneManager.LoadScene("Menu");
 
+            //Photonに接続を解除する
+            if (PhotonNetwork.IsConnected == true)
+            {
+                PhotonNetwork.Disconnect();
+            }
+        }
+
+    }
+    
     //Giraffeボタン押下した際の処理
     public void OnClick_GiraffeButton()
     {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
         animalName = "Giraffe";
+    }
+
+    //Elephantボタン押下した際の処理
+    public void OnClick_ElephantButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Elephant";
     }
 
     //Unityちゃんボタン押下した際の処理
     public void OnClick_UnityChanButton()
     {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
         animalName = "animal1";
     }
@@ -61,6 +100,9 @@ public class SelectCharacterUI : MonoBehaviour
     //キャラ選択後に画面遷移を行う
     public void OnClick_SelectCharacterOKButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //画面遷移
         SceneManager.LoadScene("WaitingRoom");
     }
 
@@ -73,6 +115,8 @@ public class SelectCharacterUI : MonoBehaviour
             PhotonNetwork.Disconnect();
         }
 
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("Menu");
     }

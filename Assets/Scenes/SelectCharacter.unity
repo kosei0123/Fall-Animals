@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 91369635}
   - component: {fileID: 91369634}
   m_Layer: 5
-  m_Name: GiraffePanel (1)
+  m_Name: ElephantPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 458445959}
   - component: {fileID: 458445958}
   m_Layer: 5
-  m_Name: GiraffeText
+  m_Name: ElephantText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -892,7 +892,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Giraffe
+  m_Text: Elephant
 --- !u!222 &458445959
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1557,8 +1557,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 226134761}
   m_HandleRect: {fileID: 226134760}
   m_Direction: 2
-  m_Value: 1.0000002
-  m_Size: 0.5555555
+  m_Value: 1
+  m_Size: 0.5555556
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1869,7 +1869,7 @@ GameObject:
   - component: {fileID: 1276507052}
   - component: {fileID: 1276507051}
   m_Layer: 5
-  m_Name: GiraffeButton
+  m_Name: ElephantButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1937,7 +1937,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1276507052}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1861550656}
+        m_TargetAssemblyTypeName: SelectCharacterUI, Assembly-CSharp
+        m_MethodName: OnClick_ElephantButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1276507052
 MonoBehaviour:
   m_ObjectHideFlags: 0
