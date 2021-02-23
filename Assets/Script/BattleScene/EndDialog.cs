@@ -5,8 +5,11 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class EndDialog : MonoBehaviour
+public class EndDialog : MonoBehaviourPunCallbacks
 {
+    //SoundManagerのスクリプトの関数使用
+    SoundManager soundManager;
+
     //バトル終了時のダイアログ
     [SerializeField]
     private GameObject DialogPanel;
@@ -17,11 +20,16 @@ public class EndDialog : MonoBehaviour
     //ゲットコイン表示
     [SerializeField]
     private Text GetCoinText;
+    private int getTotalCoin;
+
+    //取得したコインの値
+    private int getCoin;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
     }
 
     // Update is called once per frame
@@ -40,7 +48,8 @@ public class EndDialog : MonoBehaviour
         RankingText.text = ranking.ToString() + " 位 ";
 
         //ゲットコインの表示
-        GetCoinText.text = GetCoin(ranking).ToString() + "コインGET";
+        getTotalCoin += GetCoin(ranking);
+        GetCoinText.text = getTotalCoin.ToString() + "コインGET";
         //デバイスの保持する
         PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + GetCoin(ranking));
     }
@@ -48,8 +57,6 @@ public class EndDialog : MonoBehaviour
     //ゲットするコインの計算
     private int GetCoin(int ranking)
     {
-        int getCoin = 0;
-
         //ゲットするコインは人数により変動する
         if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == 4)
         {
@@ -124,19 +131,25 @@ public class EndDialog : MonoBehaviour
     //ダイアログの「再接続」選択
     public void OnClick_AgainButton()
     {
-        //画面遷移
-        SceneManager.LoadScene("Menu");
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
 
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
         {
             PhotonNetwork.Disconnect();
         }
+
+        //画面遷移
+        SceneManager.LoadScene("Menu");
     }
 
     //ダイアログの「終了」選択
     public void OnClick_EndButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         Application.Quit();
     }
 }

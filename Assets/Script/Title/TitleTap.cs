@@ -10,7 +10,9 @@ public class TitleTap : MonoBehaviour
     //TitleManagerのpublic定数を取得
     TitleManager titleManager;
     //AdMobTitleAdvertinsingのpublic定数を取得
-    AdMobTitleAdvertinsing adMobTitleAdvertinsing;
+    AdMobTitleAdvertising adMobTitleAdvertinsing;
+    //SoundManagerスクリプトの関数使用
+    SoundManager soundManager;
 
     //TapTextオブジェクトを指定する
     [SerializeField]
@@ -22,7 +24,10 @@ public class TitleTap : MonoBehaviour
         //TitleManagerのpublic定数を取得
         titleManager = GameObject.Find("TitleManager").GetComponent<TitleManager>();
         //AdMobTitleAdvertinsingのpublic定数を取得
-        adMobTitleAdvertinsing = GameObject.Find("TitleAdvertising").GetComponent<AdMobTitleAdvertinsing>();
+        adMobTitleAdvertinsing = GameObject.Find("TitleAdvertising").GetComponent<AdMobTitleAdvertising>();
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
     }
 
     // Update is called once per frame
@@ -39,6 +44,8 @@ public class TitleTap : MonoBehaviour
             Destroy(titleManager.titleRock);
             adMobTitleAdvertinsing.bannerView.Hide();
             adMobTitleAdvertinsing.bannerView.Destroy();
+            //SEの使用
+            soundManager.SEManager("Title_sound1");
             //画面遷移
             SceneManager.LoadScene("Menu");
         }

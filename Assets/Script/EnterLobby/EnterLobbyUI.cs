@@ -10,6 +10,8 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
 {
     //LobbyManagerスクリプトのpublic定数使用
     LobbyManager lobbyManager;
+    //SoundManagerスクリプトの関数使用
+    SoundManager soundManager;
 
     //Photon接続人数を表示
     public Text ConnectCountText;
@@ -21,7 +23,10 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
     {
         //LobbyManagerスクリプトのpublic定数使用
         lobbyManager = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
 
+        
         //Photonに接続できていなければ、Photonに接続する
         if (PhotonNetwork.IsConnected == false)
         {
@@ -44,6 +49,7 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         {
             EnterLobbyButton.interactable = false;
         }
+
     }
 
     //ロビーに参加するボタン押下
@@ -52,7 +58,8 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         //Photonに接続人数がMaxでない時に画面遷移する
         if (PhotonNetwork.CountOfPlayers <= 20 && lobbyManager.joinedRoomFlag == true)
         {
-            
+            //SEの使用
+            soundManager.SEManager("Button_sound1");
             //画面遷移
             SceneManager.LoadScene("SelectPlayerName");
         }
@@ -71,6 +78,8 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
             PhotonNetwork.Disconnect();
         }
 
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("Menu");
     }

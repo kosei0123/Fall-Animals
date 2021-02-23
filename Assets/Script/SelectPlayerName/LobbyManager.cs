@@ -3,24 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     //Room入室時にtrueを返す
     public bool joinedRoomFlag;
 
+    //一定時間操作がなかった時に接続を切る用
+    private float disconnectTime;
+
     // Start is called before the first frame update
     void Start()
     {
         //Room入室時にtrueを返す
         joinedRoomFlag = false;
+
+        //時間の設定(20秒)
+        disconnectTime = 20;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //一定時間操作がなかった時に退出
+        if (disconnectTime > 0)
+        {
+            disconnectTime -= Time.deltaTime;
+        }
+        else
+        {
+            //画面遷移
+            SceneManager.LoadScene("Menu");
+
+            //Photonに接続を解除する
+            if (PhotonNetwork.IsConnected == true)
+            {
+                PhotonNetwork.Disconnect();
+            }
+        }
     }
 
     // Update is called once per frame
@@ -50,7 +71,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //入室の可否
         roomOptions.IsOpen = true;
         //PlayerのMax人数を指定
-        roomOptions.MaxPlayers = 1;
+        roomOptions.MaxPlayers = 4;
         //去っていくプレイヤーが生成したオブジェクトが破壊されないようにする
         //roomOptions.CleanupCacheOnLeave = false;
 
@@ -86,6 +107,34 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.InRoom)
         {
             PhotonNetwork.CurrentRoom.IsOpen = newIsOpen;
+        }
+    }
+
+    //アプリケーション一時停止時
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            WaitingPlayerCount_PhotonOff();
+        }
+    }
+
+    //アプリケーション終了時
+    private void OnApplicationQuit()
+    {
+        WaitingPlayerCount_PhotonOff();
+    }
+
+    //Photon接続解除や画面の遷移
+    private void WaitingPlayerCount_PhotonOff()
+    {
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
         }
     }
 }

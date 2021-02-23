@@ -30,16 +30,22 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //rankingを表示する
     public int battleRanking = 0;
 
-    //生成されたプレイヤーの数を取得し終わえたかを確認
+    //生成されたプレイヤーの数を取得し終えたかを確認
     private bool createdPlayerStartFlag = false;
     private int createdPlayerStartCount = 0;
 
     //接続が切れていないか確認フラグ
     private bool[] animalInformationDisconnectCheck = { false, false, false, false };
 
+    //バトルを終了したフラグ
+    public bool battleFinishFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        //イベントを受け取るように設定
+        PhotonNetwork.IsMessageQueueRunning = true;
+
         //TitleTapのScriptを使う
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
         //EndDialogの関数等を使う
@@ -49,6 +55,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
         //ルームに入室後の設定
         JoinedRoom();
+
+        //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
+        PhotonNetwork.AutomaticallySyncScene = false;
     }
 
     // Update is called once per frame
@@ -364,6 +373,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //動きを止める
         characterMainMove.onlineflag = false;
         characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+        //バトル終了フラグをtrueにする
+        battleFinishFlag = true;
         //順位の確定と取得
         battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
 
@@ -380,6 +391,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //動きを止める
             characterMainMove.onlineflag = false;
             characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+            //バトル終了フラグをtrueにする
+            battleFinishFlag = true;
             //順位の確定と取得
             battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
 
@@ -410,6 +423,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["DISCONNECT"] = true;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+        
 
         //画面遷移
         SceneManager.LoadScene("Menu");
