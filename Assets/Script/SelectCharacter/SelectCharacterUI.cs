@@ -105,6 +105,15 @@ public class SelectCharacterUI : MonoBehaviour
         animalName = "Elephant";
     }
 
+    //Dogボタン押下した際の処理
+    public void OnClick_DogButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Dog";
+    }
+
     //Unityちゃんボタン押下した際の処理
     public void OnClick_UnityChanButton()
     {
