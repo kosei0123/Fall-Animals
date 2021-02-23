@@ -30,6 +30,9 @@ public class TitleAnimalDamaged : MonoBehaviour
             //アニメーションの設定
             //characterMainMove.anim.SetBool("Death", true);
 
+            //パーティクルの発生
+            this.GetComponent<ParticleSystem>().Play();
+
             //レイヤーを変更し、下に落ちていく
             this.gameObject.layer = 9;
             this.gameObject.transform.GetChild(0).gameObject.layer = 9;

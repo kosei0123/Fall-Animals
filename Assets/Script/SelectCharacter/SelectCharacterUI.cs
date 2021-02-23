@@ -13,10 +13,12 @@ public class SelectCharacterUI : MonoBehaviour
     //Buttonのコンポーネントを取得
     [SerializeField]
     private Button SelectCharacterOKButton;
-
     //選択キャラの名前表示
     [SerializeField]
     private Text SelectCharacterText;
+    //象パネルの表示
+    [SerializeField]
+    private GameObject ElephantPanel;
 
     //プレイキャラの名前取得
     public static string animalName;
@@ -51,6 +53,11 @@ public class SelectCharacterUI : MonoBehaviour
             SelectCharacterText.text = animalName;
         }
 
+
+        //アンロックされたキャラクターを表示する
+        CheckUnlock();
+
+
         //一定時間操作がなかった時に退出
         if (disconnectTime > 0)
         {
@@ -69,7 +76,17 @@ public class SelectCharacterUI : MonoBehaviour
         }
 
     }
-    
+
+    //アンロックされたキャラクターを表示する
+    private void CheckUnlock()
+    {
+        //象パネル
+        if (PlayerPrefs.GetInt("Unlock_Elephant") == 1)
+        {
+            ElephantPanel.SetActive(true);
+        }
+    }
+
     //Giraffeボタン押下した際の処理
     public void OnClick_GiraffeButton()
     {

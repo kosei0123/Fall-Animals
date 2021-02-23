@@ -57,6 +57,8 @@ public class Damaged : MonoBehaviour
             //動きを止める
             characterMainMove.onlineflag = false;
             characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+            //パーティクルの発生
+            PhotonNetwork.Instantiate("Particle", new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity, 0);
 
             //バトル終了フラグをtrueにする
             pun2Script.battleFinishFlag = true;

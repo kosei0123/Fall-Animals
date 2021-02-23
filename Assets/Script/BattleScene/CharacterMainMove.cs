@@ -42,6 +42,9 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //アニメーション
     public Animator anim;
 
+    //パーティクル
+    public ParticleSystem particle;
+
     //キャラクターの位置や向きのキャッシュ用
     public Transform transformCache;
 
@@ -75,6 +78,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         rb = this.GetComponent<Rigidbody>();
         // Animatorコンポーネントを取得する
         anim = this.GetComponent<Animator>();
+        //パーティクルを取得する
+        particle = this.GetComponent<ParticleSystem>();
 
         //Transformをキャッシュする
         transformCache = transform;
@@ -150,7 +155,16 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         {
             jumpCount = 0;
             //アニメーションの速度変更
-            anim.SetFloat("RunSpeed", 1.0f);
+            //象の場合
+            if (SelectCharacterUI.animalName == "Elephant")
+            {
+                anim.SetFloat("RunSpeed", 0.5f);
+            }
+            else
+            {
+                anim.SetFloat("RunSpeed", 1.0f);
+            }
+            
         }
         //接地していない
         else
@@ -160,8 +174,15 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
                 jumpCount = 1;
             }
             //アニメーションの速度変更
-            anim.SetFloat("RunSpeed", 0.6f);
-
+            //象の場合
+            if (SelectCharacterUI.animalName == "Elephant")
+            {
+                anim.SetFloat("RunSpeed", 0.3f);
+            }
+            else
+            {
+                anim.SetFloat("RunSpeed", 0.6f);
+            }
         }
 
     }

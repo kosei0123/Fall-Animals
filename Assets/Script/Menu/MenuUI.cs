@@ -23,12 +23,28 @@ public class MenuUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
 
         //デバイスに保持されているコインの枚数を表示
-        MyCoinText.text = "コイン：" + PlayerPrefs.GetInt("myCoin");
+        if (!PlayerPrefs.HasKey("myCoin"))
+        {
+            PlayerPrefs.SetInt("myCoin", 0);
+        }
+        else
+        {
+            MyCoinText.text = "コイン：" + PlayerPrefs.GetInt("myCoin");
+        }
 
-        
+        //デバイスに保持されているUnlockキャラクター情報を取得
+        //0：アンロックされていない
+        //1：アンロックされている
+        if (!PlayerPrefs.HasKey("Unlock_Elephant"))
+        {
+            PlayerPrefs.SetInt("Unlock_Elephant", 0);
+        }
+        //テスト
+        //PlayerPrefs.SetInt("Unlock_Elephant", 0);
+
     }
 
     //オフラインボタンを押した際の挙動
@@ -52,6 +68,8 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+        //画面遷移
+        SceneManager.LoadScene("Unlock");
     }
 
     //タイトルボタンを押した際の挙動
