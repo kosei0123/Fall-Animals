@@ -38,6 +38,11 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //プレイヤー番号の決定
         playerCreatedNumber = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
 
+        //キックされないように設定する
+        var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+        prps["NoKick"] = "true";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
         //プレイヤーが入っていた時にバトルスタート時間を設定する
         waitingBattleStartTime = 5.0f;
 
@@ -61,7 +66,24 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             photonView.RPC("StartTimeValue", RpcTarget.All, waitingBattleStartTime);
         }
 
-        
+        //人数により部屋をクローズする
+        LobbyManager.UpdateRoomOptions(true);
+
+        //時間が2以下になったときシーン外のプレイヤーをキックする
+        if (waitingBattleStartTime <= 2.0f)
+        {
+            //このシーンにいないプレイヤーをキックする
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var p in PhotonNetwork.PlayerList)
+                {
+                    if ((string)p.CustomProperties["NoKick"] != "true")
+                    {
+                        PhotonNetwork.CloseConnection(p);
+                    }
+                }
+            }
+        }
 
         //MaxPlayerに達した段階で画面遷移、または時間が0になったとき
         if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || waitingBattleStartTime <= 0)
@@ -77,17 +99,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             {
                 SceneManager.LoadScene("BattleScene");
             }
-            
         }
-    }
-
-    //メニューボタンを押下した際の挙動
-    public void OnClick_MenuButton()
-    {
-        //SEの使用
-        soundManager.SEManager("Button_sound1");
-        //画面遷移等
-        WaitingPlayerCount_PhotonOff();
     }
 
     [PunRPC]
@@ -98,29 +110,63 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         waitingBattleStartTime = value;
     }
 
+    //メニューボタンを押下した際の挙動
+    public void OnClick_MenuButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
+        //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
+        var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n - 1;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+        //次回もキック確認されるように設定する
+        var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+        prps["NoKick"] = "false";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //画面遷移等(0.5秒後)
+        Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
+    }
+
     //アプリケーション一時停止時
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
-            WaitingPlayerCount_PhotonOff();
+            //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
+            var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
+            PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n - 1;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+            //次回もキック確認されるように設定する
+            var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+            prps["NoKick"] = "false";
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+            //画面遷移等(0.5秒後)
+            Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
         }
     }
 
     //アプリケーション終了時
     private void OnApplicationQuit()
     {
-        WaitingPlayerCount_PhotonOff();
+        //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
+        var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n - 1;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+        //次回もキック確認されるように設定する
+        var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+        prps["NoKick"] = "false";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //画面遷移等(0.5秒後)
+        Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
     }
 
     //Photon接続解除や画面の遷移
     private void WaitingPlayerCount_PhotonOff()
     {
-        //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
-        var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
-        PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n - 1;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
         //画面遷移
         SceneManager.LoadScene("Menu");
 
@@ -129,5 +175,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.Disconnect();
         }
+
     }
 }

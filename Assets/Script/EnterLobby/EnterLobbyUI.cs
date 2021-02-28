@@ -61,7 +61,7 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
             //SEの使用
             soundManager.SEManager("Button_sound1");
             //画面遷移
-            SceneManager.LoadScene("SelectPlayerName");
+            SceneManager.LoadScene("SelectCharacter");
         }
         else
         {

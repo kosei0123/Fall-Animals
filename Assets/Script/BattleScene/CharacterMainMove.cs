@@ -39,6 +39,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     [HideInInspector]
     public int jumpCount = 0;
 
+    //しゃがみフラグ
+    [HideInInspector]
+    public bool sitFlag = false;
+
     //アニメーション
     public Animator anim;
 
@@ -83,6 +87,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
         //Transformをキャッシュする
         transformCache = transform;
+
+        
     }
 
     // Update is called once per frame
@@ -107,6 +113,9 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         NameText.text = PhotonNetwork.LocalPlayer.NickName;
         //NameText.text = pun2Script.GetAnimalInformation().NickName;
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
+
+        //ジャンプ力の設定
+        AnimalAbilitySettings();
 
         //プレイヤーの向きの反転
         if ((transformCache.localScale.z < 0 && moveDirection > 0.1) || (transformCache.localScale.z > 0 && moveDirection < -0.1))
@@ -149,6 +158,16 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             anim.SetBool("Jump", false);
         }
 
+        //しゃがみ
+        if (sitFlag == true)
+        {
+            anim.SetBool("Sit", true);
+        }
+        else
+        {
+            anim.SetBool("Sit", false);
+        }
+
         //接地判定
         //接地している
         if (isGround == true)
@@ -187,10 +206,68 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
     }
 
+
+
+    /// <summary>
+    /// スピード&ジャンプ力の設定
+    /// </summary>
+    private void AnimalAbilitySettings()
+    {
+        //キリン
+        if (SelectCharacterUI.animalName == "Giraffe")
+        {
+            //ジャンプ力
+            jumpPower = 7.0f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 5.0f;
+            }
+            else
+            {
+                runSpeed = 4.5f;
+            }
+            
+        }
+        //象
+        else if (SelectCharacterUI.animalName == "Elephant")
+        {
+            //ジャンプ力
+            jumpPower = 6.5f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 4.5f;
+            }
+            else
+            {
+                runSpeed = 4.0f;
+            }
+        }
+        //犬
+        else if (SelectCharacterUI.animalName == "Dog")
+        {
+            //ジャンプ力
+            jumpPower = 11.0f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 10.0f;
+            }
+            else
+            {
+                runSpeed = 5.0f;
+            }
+        }
+    }
+
     //同期
     [System.Obsolete]
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        //Pun2Scriptのpublic定数を使う
+        pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
+
         if (stream.IsWriting)
         {
             //データの送信
@@ -207,9 +284,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             //位置と加速度
             GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
 
+            //ニックネームの表示
             if (animal1NickNameFlag == false || animal2NickNameFlag == false || animal3NickNameFlag == false || animal4NickNameFlag == false)
             {
-                ShowNickName();
+                ShowNickName();                
             }
         }
     }
@@ -217,22 +295,22 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //他プレイヤー画面にてニックネームの共有
     private void ShowNickName()
     {
-        if (gameObject.name == "animal1")
+        if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
             animal1NickNameFlag = true;
         }
-        if (gameObject.name == "animal2")
+        if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
             animal2NickNameFlag = true;
         }
-        if (gameObject.name == "animal3")
+        if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
             animal3NickNameFlag = true;
         }
-        if (gameObject.name == "animal4")
+        if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
         {
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
             animal4NickNameFlag = true;

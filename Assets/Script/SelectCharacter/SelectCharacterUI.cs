@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class SelectCharacterUI : MonoBehaviour
+public class SelectCharacterUI : MonoBehaviourPunCallbacks
 {
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
@@ -13,6 +13,9 @@ public class SelectCharacterUI : MonoBehaviour
     //Buttonのコンポーネントを取得
     [SerializeField]
     private Button SelectCharacterOKButton;
+    //ルーム名表示用
+    [SerializeField]
+    private Text RoomText;
     //選択キャラの名前表示
     [SerializeField]
     private Text SelectCharacterText;
@@ -31,6 +34,9 @@ public class SelectCharacterUI : MonoBehaviour
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //ルーム名表示
+        RoomText.text = PhotonNetwork.CurrentRoom.Name;
 
         //時間の設定(20秒)
         disconnectTime = 20;
@@ -57,6 +63,8 @@ public class SelectCharacterUI : MonoBehaviour
         //アンロックされたキャラクターを表示する
         CheckUnlock();
 
+        //人数により部屋をクローズする
+        LobbyManager.UpdateRoomOptions(true);
 
         //一定時間操作がなかった時に退出
         if (disconnectTime > 0)
@@ -132,19 +140,19 @@ public class SelectCharacterUI : MonoBehaviour
         SceneManager.LoadScene("WaitingRoom");
     }
 
+
+    //キックされた時用
+    public override void OnLeftRoom()
+    {
+        SelectCharacterUI_PhotonOff();
+    }
+
     //メニューボタン押下した際の挙動
     public void OnClick_MenuButton()
     {
-        //Photonに接続を解除する
-        if (PhotonNetwork.IsConnected == true)
-        {
-            PhotonNetwork.Disconnect();
-        }
-
         //SEの使用
         soundManager.SEManager("Button_sound1");
-        //画面遷移
-        SceneManager.LoadScene("Menu");
+        SelectCharacterUI_PhotonOff();
     }
 
     //アプリケーション一時停止時
@@ -152,18 +160,18 @@ public class SelectCharacterUI : MonoBehaviour
     {
         if (pause)
         {
-            WaitingPlayerCount_PhotonOff();
+            SelectCharacterUI_PhotonOff();
         }
     }
 
     //アプリケーション終了時
     private void OnApplicationQuit()
     {
-        WaitingPlayerCount_PhotonOff();
+        SelectCharacterUI_PhotonOff();
     }
 
     //Photon接続解除や画面の遷移
-    private void WaitingPlayerCount_PhotonOff()
+    private void SelectCharacterUI_PhotonOff()
     {
         //画面遷移
         SceneManager.LoadScene("Menu");
