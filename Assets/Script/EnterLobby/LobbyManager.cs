@@ -98,16 +98,45 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         joinedRoomFlag = true;
+        //ニックネームの登録
+        PhotonNetwork.LocalPlayer.NickName = PlayerPrefs.GetString("NickName");
+        //人数により部屋をクローズする
+        UpdateRoomOptions(true);
     }
 
     //ルームオプションを更新する
     public static void UpdateRoomOptions(bool newIsOpen)
     {
-        //入室の可否変更
-        if (PhotonNetwork.InRoom)
+        //強制的にルームをクローズ
+        if (newIsOpen == false)
         {
-            PhotonNetwork.CurrentRoom.IsOpen = newIsOpen;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
         }
+        //人数によりルームをクローズ
+        else if(newIsOpen == true)
+        {
+            //入室の可否変更
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= 4)
+            {
+                if (PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.CurrentRoom.IsOpen = false;
+                }
+            }
+            else
+            {
+                if (PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.CurrentRoom.IsOpen = true;
+                }
+            }
+        }
+    }
+
+    //キックされた時用
+    public override void OnLeftRoom()
+    {
+        LobbyManager_PhotonOff();
     }
 
     //アプリケーション一時停止時
@@ -115,18 +144,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (pause)
         {
-            WaitingPlayerCount_PhotonOff();
+            LobbyManager_PhotonOff();
         }
     }
 
     //アプリケーション終了時
     private void OnApplicationQuit()
     {
-        WaitingPlayerCount_PhotonOff();
+        LobbyManager_PhotonOff();
     }
 
     //Photon接続解除や画面の遷移
-    private void WaitingPlayerCount_PhotonOff()
+    private void LobbyManager_PhotonOff()
     {
         //画面遷移
         SceneManager.LoadScene("Menu");

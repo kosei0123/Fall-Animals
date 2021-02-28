@@ -5,7 +5,6 @@ using UnityEngine;
 public class GroundCheck : MonoBehaviour
 {
     //CharacterMainMoveのpublic定数を使用
-    public GameObject target;
     CharacterMainMove characterMainMove;
 
     //Groundタグへの参照
@@ -15,7 +14,7 @@ public class GroundCheck : MonoBehaviour
     void Start()
     {
         //CharacterMainMoveのpublic定数を使用
-        characterMainMove = target.GetComponent<CharacterMainMove>();
+        characterMainMove = this.transform.parent.gameObject.GetComponent<CharacterMainMove>();
     }
 
     // Update is called once per frame

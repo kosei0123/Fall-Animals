@@ -68,7 +68,7 @@ public class UnlockUI : MonoBehaviour
         CheckBuyDone();
 
         //デバイスに保持されているコインの枚数を表示
-        MyCoinText.text = "コイン：" + PlayerPrefs.GetInt("myCoin");
+        MyCoinText.text = PlayerPrefs.GetInt("myCoin").ToString("");
     }
 
     //Buyボタンの押下可能条件
@@ -89,7 +89,7 @@ public class UnlockUI : MonoBehaviour
     private void CheckTextPrice()
     {
         //象
-        ElephantBuyText.text = elephantPrice.ToString("") + "コイン";
+        ElephantBuyText.text = elephantPrice.ToString("");
     }
 
     //動物購入済みかを確認

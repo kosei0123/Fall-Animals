@@ -28,8 +28,14 @@ public class AdMobTitleAdvertising : MonoBehaviour
         //iPhoneでの動作
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
+            adUnitId = "ca-app-pub-3940256099942544/2934735716";
+        }
+        //Androidでの動作
+        else if (Application.platform == RuntimePlatform.Android)
+        {
             adUnitId = "ca-app-pub-3940256099942544/6300978111";
         }
+
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
         // Create an empty ad request.
