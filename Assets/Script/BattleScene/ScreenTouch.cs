@@ -65,7 +65,7 @@ public class ScreenTouch : MonoBehaviour
                     //画面に指が触れたときの処理
                     case TouchPhase.Began:
                         //縦3分割の1番上をタップ(ジャンプ)
-                        if (touch.position.y >= screenUp)
+                        if (touch.position.y >= screenUp && characterMainMove.sitFlag == false)
                         {
                             characterMainMove.jumpFlag = true;
                             characterMainMove.jumpCount++;
@@ -73,22 +73,35 @@ public class ScreenTouch : MonoBehaviour
                         //縦3分割の上から2番目をタップ(移動)
                         if (touch.position.y < screenUp && touch.position.y > screenDown)
                         {
-                            //横2分割の右側をタップ(右移動)
-                            if (touch.position.x > screenMiddle)
+                            //しゃがみ時
+                            if (characterMainMove.sitFlag == true)
                             {
-                                characterMainMove.moveDirection = 1.0f;
+                                characterMainMove.moveDirection = 0;
                             }
-                            //横2分割の左側をタップ(左移動)
-                            else if (touch.position.x <= screenMiddle)
+                            //しゃがんでいない時
+                            else
                             {
-                                characterMainMove.moveDirection = -1.0f;
+                                //横2分割の右側をタップ(右移動)
+                                if (touch.position.x > screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = 1.0f;
+                                }
+                                //横2分割の左側をタップ(左移動)
+                                else if (touch.position.x <= screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = -1.0f;
+                                }
                             }
-
                         }
                         //縦3分割の1番下をタップ(しゃがみ)
-                        if (touch.position.y <= screenDown && characterMainMove.isGround == true)
+                        if (touch.position.y <= screenDown)
                         {
-                            Debug.Log("D");
+                            //地面に足がついていれば
+                            if (characterMainMove.isGround == true)
+                            {
+                                characterMainMove.moveDirection = 0;
+                                characterMainMove.sitFlag = true;
+                            }
                         }
                         break;
 
@@ -97,15 +110,34 @@ public class ScreenTouch : MonoBehaviour
                         //縦3分割の上から2番目をタップ(移動)
                         if (touch.position.y < screenUp && touch.position.y > screenDown)
                         {
-                            //横2分割の右側をタップ(右移動)
-                            if (touch.position.x > screenMiddle)
+                            //しゃがみ時
+                            if (characterMainMove.sitFlag == true)
                             {
-                                characterMainMove.moveDirection = 1.0f;
+                                characterMainMove.moveDirection = 0;
                             }
-                            //横2分割の左側をタップ(左移動)
-                            else if (touch.position.x <= screenMiddle)
+                            //しゃがんでいない時
+                            else
                             {
-                                characterMainMove.moveDirection = -1.0f;
+                                //横2分割の右側をタップ(右移動)
+                                if (touch.position.x > screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = 1.0f;
+                                }
+                                //横2分割の左側をタップ(左移動)
+                                else if (touch.position.x <= screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = -1.0f;
+                                }
+                            }
+                        }
+                        //縦3分割の1番下をタップ(しゃがみ)
+                        if (touch.position.y <= screenDown)
+                        {
+                            //地面に足がついていれば
+                            if (characterMainMove.isGround == true)
+                            {
+                                characterMainMove.moveDirection = 0;
+                                characterMainMove.sitFlag = true;
                             }
                         }
                         break;
@@ -115,31 +147,42 @@ public class ScreenTouch : MonoBehaviour
                         //縦3分割の上から2番目をタップ(移動)
                         if (touch.position.y < screenUp && touch.position.y > screenDown)
                         {
-                            //横2分割の右側をタップ(右移動)
-                            if (touch.position.x > screenMiddle)
+                            //しゃがみ時
+                            if (characterMainMove.sitFlag == true)
                             {
-                                characterMainMove.moveDirection = 1.0f;
+                                characterMainMove.moveDirection = 0;
                             }
-                            //横2分割の左側をタップ(左移動)
-                            else if (touch.position.x <= screenMiddle)
+                            //しゃがんでいない時
+                            else
                             {
-                                characterMainMove.moveDirection = -1.0f;
+                                //横2分割の右側をタップ(右移動)
+                                if (touch.position.x > screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = 1.0f;
+                                }
+                                //横2分割の左側をタップ(左移動)
+                                else if (touch.position.x <= screenMiddle)
+                                {
+                                    characterMainMove.moveDirection = -1.0f;
+                                }
+                            }
+                        }
+                        //縦3分割の1番下をタップ(しゃがみ)
+                        if (touch.position.y <= screenDown)
+                        {
+                            //地面に足がついていれば
+                            if (characterMainMove.isGround == true)
+                            {
+                                characterMainMove.moveDirection = 0;
+                                characterMainMove.sitFlag = true;
                             }
                         }
                         break;
 
                     //画面から指が離れたときの処理
                     case TouchPhase.Ended:
-                        //横2分割の右側をタップ解除(右移動)
-                        if (touch.position.x > screenMiddle)
-                        {
-                            characterMainMove.moveDirection = 0.0f;
-                        }
-                        //横2分割の左側をタップ解除(左移動)
-                        else if (touch.position.x <= screenMiddle)
-                        {
-                            characterMainMove.moveDirection = 0.0f;
-                        }
+                        characterMainMove.moveDirection = 0;
+                        characterMainMove.sitFlag = false;
                         break;
 
                     //システムがタッチの追跡をキャンセルしたときの処理
@@ -159,7 +202,7 @@ public class ScreenTouch : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 //縦3分割の1番上をタップ(ジャンプ)
-                if (Input.mousePosition.y >= screenUp && characterMainMove.jumpCount == 0)
+                if (Input.mousePosition.y >= screenUp && characterMainMove.sitFlag == false)
                 {
                     characterMainMove.jumpFlag = true;
                     characterMainMove.jumpCount++;
@@ -167,22 +210,36 @@ public class ScreenTouch : MonoBehaviour
                 //縦3分割の上から2番目をタップ(移動)
                 if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
                 {
-                    //横2分割の右側をタップ(右移動)
-                    if (Input.mousePosition.x > screenMiddle)
+                    //しゃがみ時
+                    if (characterMainMove.sitFlag == true)
                     {
-                        characterMainMove.moveDirection = 1.0f;
+                        characterMainMove.moveDirection = 0;
                     }
-                    //横2分割の左側をタップ(左移動)
-                    else if (Input.mousePosition.x <= screenMiddle)
+                    //しゃがんでいない時
+                    else
                     {
-                        characterMainMove.moveDirection = -1.0f;
+                        //横2分割の右側をタップ(右移動)
+                        if (Input.mousePosition.x > screenMiddle)
+                        {
+                            characterMainMove.moveDirection = 1.0f;
+                        }
+                        //横2分割の左側をタップ(左移動)
+                        else if (Input.mousePosition.x <= screenMiddle)
+                        {
+                            characterMainMove.moveDirection = -1.0f;
+                        }
                     }
 
                 }
                 //縦3分割の1番下をタップ(しゃがみ)
-                if (Input.mousePosition.y <= screenDown && characterMainMove.isGround == true)
+                if (Input.mousePosition.y <= screenDown)
                 {
-                    Debug.Log("D");
+                    //地面に足がついていれば
+                    if (characterMainMove.isGround == true)
+                    {
+                        characterMainMove.moveDirection = 0;
+                        characterMainMove.sitFlag = true;
+                    }
                 }
             }
 
@@ -192,15 +249,34 @@ public class ScreenTouch : MonoBehaviour
                 //縦3分割の上から2番目をタップ(移動)
                 if (Input.mousePosition.y < screenUp && Input.mousePosition.y > screenDown)
                 {
-                    //横2分割の右側をタップ(右移動)
-                    if (Input.mousePosition.x > screenMiddle)
+                    //しゃがみ時
+                    if (characterMainMove.sitFlag == true)
                     {
-                        characterMainMove.moveDirection = 1.0f;
+                        characterMainMove.moveDirection = 0;
                     }
-                    //横2分割の左側をタップ(左移動)
-                    else if (Input.mousePosition.x <= screenMiddle)
+                    //しゃがんでいない時
+                    else
                     {
-                        characterMainMove.moveDirection = -1.0f;
+                        //横2分割の右側をタップ(右移動)
+                        if (Input.mousePosition.x > screenMiddle)
+                        {
+                            characterMainMove.moveDirection = 1.0f;
+                        }
+                        //横2分割の左側をタップ(左移動)
+                        else if (Input.mousePosition.x <= screenMiddle)
+                        {
+                            characterMainMove.moveDirection = -1.0f;
+                        }
+                    }
+                }
+                //縦3分割の1番下をタップ(しゃがみ)
+                if (Input.mousePosition.y <= screenDown)
+                {
+                    //地面に足がついていれば
+                    if (characterMainMove.isGround == true)
+                    {
+                        characterMainMove.moveDirection = 0;
+                        characterMainMove.sitFlag = true;
                     }
                 }
             }
@@ -208,16 +284,8 @@ public class ScreenTouch : MonoBehaviour
             //タップ解除
             if (Input.GetMouseButtonUp(0))
             {
-                //横2分割の右側をタップ解除(右移動)
-                if (Input.mousePosition.x > screenMiddle)
-                {
-                    characterMainMove.moveDirection = 0.0f;
-                }
-                //横2分割の左側をタップ解除(左移動)
-                else if (Input.mousePosition.x <= screenMiddle)
-                {
-                    characterMainMove.moveDirection = 0.0f;
-                }
+                characterMainMove.moveDirection = 0.0f;
+                characterMainMove.sitFlag = false;
             }
         }
     }

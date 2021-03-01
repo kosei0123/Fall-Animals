@@ -13,6 +13,8 @@ public class TitleTap : MonoBehaviour
     AdMobTitleAdvertising adMobTitleAdvertinsing;
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
+    //UserAuthのスクリプトの関数使用
+    UserAuth userAuth;
 
     //TapTextオブジェクトを指定する
     [SerializeField]
@@ -27,6 +29,11 @@ public class TitleTap : MonoBehaviour
         adMobTitleAdvertinsing = GameObject.Find("TitleAdvertising").GetComponent<AdMobTitleAdvertising>();
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //UserAuthのスクリプトの関数使用
+        userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
+
+        //mobile backendに接続し、ログアウトする
+        userAuth.logOut();
 
     }
 
@@ -46,8 +53,23 @@ public class TitleTap : MonoBehaviour
             adMobTitleAdvertinsing.bannerView.Destroy();
             //SEの使用
             soundManager.SEManager("Title_sound1");
-            //画面遷移
-            SceneManager.LoadScene("Menu");
+
+            //PlayerPrefs.DeleteKey("NickName");
+            //デバイスにニックネームが保持されているか確認
+            if (!PlayerPrefs.HasKey("NickName"))
+            {
+                //ニックネームが登録されていない場合
+                //画面遷移
+                SceneManager.LoadScene("SelectPlayerName");
+            }
+            else
+            {
+                //ニックネームが登録されている場合
+                //ログイン
+                FindObjectOfType<UserAuth>().login(PlayerPrefs.GetString("NickName"));
+                //画面遷移
+                SceneManager.LoadScene("Menu");
+            }
         }
     }
 

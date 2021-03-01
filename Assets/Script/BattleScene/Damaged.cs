@@ -6,7 +6,6 @@ using Photon.Pun;
 public class Damaged : MonoBehaviour
 {
     //CharacterMainMoveのpublic定数を使う
-    public GameObject target;
     CharacterMainMove characterMainMove;
     //Pun2Scriptのpublic定数を使う
     Pun2Script pun2Script;
@@ -17,7 +16,7 @@ public class Damaged : MonoBehaviour
     void Start()
     {
         //CharacterMainMoveのpublic定数を使う
-        characterMainMove = target.GetComponent<CharacterMainMove>();
+        characterMainMove = this.gameObject.GetComponent<CharacterMainMove>();
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
         //EndDialogの関数等を使う
@@ -40,11 +39,15 @@ public class Damaged : MonoBehaviour
         {
             return;
         }
+
     }
 
     //オブジェクトと接触した瞬間に呼び出される
     void OnCollisionEnter(Collision other)
     {
+        //CharacterMainMoveのpublic定数を使う
+        characterMainMove = this.gameObject.GetComponent<CharacterMainMove>();
+
         //自分の操作キャラでなければ抜ける
         if (characterMainMove.onlineflag == false)
         {

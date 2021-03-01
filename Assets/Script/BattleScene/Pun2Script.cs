@@ -15,6 +15,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     EndDialog endDialog;
     //Timerのpublic定数を使う
     Timer timer;
+    //UserAuthのスクリプトの関数使用
+    UserAuth userAuth;
 
     //プレイヤーのオブジェクト
     public GameObject animal;
@@ -52,12 +54,19 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         endDialog = GameObject.Find("DialogCanvas").GetComponent<EndDialog>();
         //Timerのpublic定数を使う
         timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
+        //UserAuthのスクリプトの関数使用
+        userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
 
         //ルームに入室後の設定
         JoinedRoom();
 
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
         PhotonNetwork.AutomaticallySyncScene = false;
+
+        //次回もキック確認されるように設定する
+        var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+        prps["NoKick"] = "false";
+        PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
     }
 
     // Update is called once per frame
@@ -83,6 +92,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             return;
         }
 
+        //プレイヤーリストの情報を取得
+        GetPlayerInformation();
+
         //マスタークライアントのみで処理
         if (PhotonNetwork.IsMasterClient)
         {
@@ -96,17 +108,14 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             }
         }
 
-        //プレイヤーリストの情報を取得
-        GetPlayerInformation();
 
         //バトル終了
-        if (timer.battleTime <= 0 && timer.mugenFlag == false)
+        //mugenFlag==false：時間がくるか1人になった段階で終了
+        //mugenFlag==true：1人になった段階で終了
+        if ((timer.battleTime <= 0 && timer.mugenFlag == false) ||
+            (timer.elapsedTime >= 3.0f && (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1))
         {
             Check();
-        }
-        else if (timer.elapsedTime >= 3.0f && timer.mugenFlag == true)
-        {
-            CheckMugen();
         }
 
     }
@@ -159,10 +168,10 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             screenTouch.GetComponent<ScreenTouch>().target = animal;
             //Damaged
             //Scriptを設定し、オブジェクトを取得する。
-            animal.GetComponent<Damaged>().target = animal;
+            //animal.GetComponent<Damaged>().target = animal;
             //GroundCheck
             //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
-            animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
+            //animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
 
 
         }
@@ -186,12 +195,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //ScreenTouch
             //Scriptを設定し、オブジェクトを取得する。
             screenTouch.GetComponent<ScreenTouch>().target = animal;
-            //Damaged
-            //Scriptを設定し、オブジェクトを取得する。
-            animal.GetComponent<Damaged>().target = animal;
-            //GroundCheck
-            //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
-            animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
 
         }
         if (WaitingPlayerCount.playerCreatedNumber == 3)
@@ -214,12 +217,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //ScreenTouch
             //Scriptを設定し、オブジェクトを取得する。
             screenTouch.GetComponent<ScreenTouch>().target = animal;
-            //Damaged
-            //Scriptを設定し、オブジェクトを取得する。
-            animal.GetComponent<Damaged>().target = animal;
-            //GroundCheck
-            //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
-            animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
 
         }
         if (WaitingPlayerCount.playerCreatedNumber == 4)
@@ -242,12 +239,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //ScreenTouch
             //Scriptを設定し、オブジェクトを取得する。
             screenTouch.GetComponent<ScreenTouch>().target = animal;
-            //Damaged
-            //Scriptを設定し、オブジェクトを取得する。
-            animal.GetComponent<Damaged>().target = animal;
-            //GroundCheck
-            //animalの子オブジェクトのGroundCheckのtargetにオブジェクトを設定する
-            animal.transform.GetChild(2).gameObject.GetComponent<GroundCheck>().target = animal;
 
         }
     }
@@ -367,7 +358,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     }
 
     //勝敗のチェック
-    //残り2以上残っていても時間がくれば決着がつく
     private void Check()
     {
         //動きを止める
@@ -378,28 +368,18 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //順位の確定と取得
         battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
 
+        //1位だった場合
+        if (battleRanking == 1)
+        {
+            PlayerPrefs.SetInt("WinCount", PlayerPrefs.GetInt("WinCount") + 1);
+            //mobile backendに接続してデータの保存
+            userAuth.save();
+        }
+
         //終了時のダイアログ表示
         endDialog.DialogPanelActive(battleRanking);
     }
 
-    //勝敗のチェック(時間無制限)
-    //1位が決まるまで終わらない
-    private void CheckMugen()
-    {
-        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1)
-        {
-            //動きを止める
-            characterMainMove.onlineflag = false;
-            characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
-            //バトル終了フラグをtrueにする
-            battleFinishFlag = true;
-            //順位の確定と取得
-            battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
-
-            //終了時のダイアログ表示
-            endDialog.DialogPanelActive(battleRanking);
-        }
-    }
 
     //アプリケーション一時停止時
     private void OnApplicationPause(bool pause)

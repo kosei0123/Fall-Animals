@@ -49,7 +49,7 @@ public class EndDialog : MonoBehaviourPunCallbacks
 
         //ゲットコインの表示
         getTotalCoin += GetCoin(ranking);
-        GetCoinText.text = getTotalCoin.ToString() + "コインGET";
+        GetCoinText.text = getTotalCoin.ToString() + "コインGET!!";
         //デバイスの保持する
         PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + GetCoin(ranking));
     }
