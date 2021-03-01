@@ -35,6 +35,7 @@ public class TitleTap : MonoBehaviour
         //mobile backendに接続し、ログアウトする
         userAuth.logOut();
 
+
     }
 
     // Update is called once per frame

@@ -248,11 +248,26 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         else if (SelectCharacterUI.animalName == "Dog")
         {
             //ジャンプ力
-            jumpPower = 11.0f;
+            jumpPower = 8.5f;
             //スピード
             if (isGround)
             {
                 runSpeed = 10.0f;
+            }
+            else
+            {
+                runSpeed = 5.0f;
+            }
+        }
+        //虎
+        else if (SelectCharacterUI.animalName == "Tiger")
+        {
+            //ジャンプ力
+            jumpPower = 7.5f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 11.0f;
             }
             else
             {

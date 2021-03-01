@@ -19,6 +19,16 @@ public class UnlockUI : MonoBehaviour
     [SerializeField]
     private GameObject StageScrollView;
 
+    //キリン
+    //購入ボタン
+    [SerializeField]
+    private Button GiraffeBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text GiraffeBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject GiraffeBuyDonePanel;
     //象
     //購入ボタン
     [SerializeField]
@@ -29,6 +39,16 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject ElephantBuyDonePanel;
+    //虎
+    //購入ボタン
+    [SerializeField]
+    private Button TigerBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text TigerBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject TigerBuyDonePanel;
 
     //BuyPanel
     [SerializeField]
@@ -41,8 +61,12 @@ public class UnlockUI : MonoBehaviour
     private string unlockAnimal;
 
     //値段
+    //キリン
+    private int giraffePrice = 10;
     //象
     private int elephantPrice = 1000;
+    //虎
+    private int tigerPrice = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +98,15 @@ public class UnlockUI : MonoBehaviour
     //Buyボタンの押下可能条件
     private void CheckBuy()
     {
+        //キリン
+        if (PlayerPrefs.GetInt("myCoin") > giraffePrice && PlayerPrefs.GetInt("Unlock_Giraffe") == 0)
+        {
+            GiraffeBuyButton.interactable = true;
+        }
+        else
+        {
+            GiraffeBuyButton.interactable = false;
+        }
         //象
         if (PlayerPrefs.GetInt("myCoin") > elephantPrice && PlayerPrefs.GetInt("Unlock_Elephant") == 0)
         {
@@ -83,18 +116,40 @@ public class UnlockUI : MonoBehaviour
         {
             ElephantBuyButton.interactable = false;
         }
+        //虎
+        if (PlayerPrefs.GetInt("myCoin") > tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0)
+        {
+            TigerBuyButton.interactable = true;
+        }
+        else
+        {
+            TigerBuyButton.interactable = false;
+        }
     }
 
     //表示値段の取得
     private void CheckTextPrice()
     {
+        //キリン
+        GiraffeBuyText.text = giraffePrice.ToString("");
         //象
         ElephantBuyText.text = elephantPrice.ToString("");
+        //虎
+        TigerBuyText.text = tigerPrice.ToString("");
     }
 
     //動物購入済みかを確認
     private void CheckBuyDone()
     {
+        //キリン
+        if (PlayerPrefs.GetInt("Unlock_Giraffe") == 1)
+        {
+            GiraffeBuyDonePanel.SetActive(true);
+        }
+        else
+        {
+            GiraffeBuyDonePanel.SetActive(false);
+        }
         //象
         if (PlayerPrefs.GetInt("Unlock_Elephant") == 1)
         {
@@ -103,6 +158,15 @@ public class UnlockUI : MonoBehaviour
         else
         {
             ElephantBuyDonePanel.SetActive(false);
+        }
+        //虎
+        if (PlayerPrefs.GetInt("Unlock_Tiger") == 1)
+        {
+            TigerBuyDonePanel.SetActive(true);
+        }
+        else
+        {
+            TigerBuyDonePanel.SetActive(false);
         }
     }
 
@@ -125,6 +189,17 @@ public class UnlockUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
     }
 
+    //GirrafeBuyButtonボタンを押した際の挙動
+    public void OnClick_GirrafeBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //象を指定する
+        unlockAnimal = "Girrafe";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
     //ElephantBuyButtonボタンを押した際の挙動
     public void OnClick_ElephantBuyButton()
     {
@@ -132,6 +207,17 @@ public class UnlockUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //象を指定する
         unlockAnimal = "Elephant";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
+    //TigerBuyButtonボタンを押した際の挙動
+    public void OnClick_TigerBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //象を指定する
+        unlockAnimal = "Tiger";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
@@ -145,12 +231,26 @@ public class UnlockUI : MonoBehaviour
         //アンロックする
         switch (unlockAnimal)
         {
+            //キリン
+            case "Girrafe":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_Giraffe", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - giraffePrice);
+                break;
             //象
             case "Elephant":
                 //アンロック解除
                 PlayerPrefs.SetInt("Unlock_Elephant", 1);
                 //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - elephantPrice);
+                break;
+            //虎
+            case "Tiger":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_Tiger", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - tigerPrice);
                 break;
             default:
                 break;
