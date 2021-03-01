@@ -19,9 +19,15 @@ public class SelectCharacterUI : MonoBehaviourPunCallbacks
     //選択キャラの名前表示
     [SerializeField]
     private Text SelectCharacterText;
+    //キリンパネルの表示
+    [SerializeField]
+    private GameObject GiraffePanel;
     //象パネルの表示
     [SerializeField]
     private GameObject ElephantPanel;
+    //虎パネルの表示
+    [SerializeField]
+    private GameObject TigerPanel;
 
     //プレイキャラの名前取得
     public static string animalName;
@@ -88,10 +94,20 @@ public class SelectCharacterUI : MonoBehaviourPunCallbacks
     //アンロックされたキャラクターを表示する
     private void CheckUnlock()
     {
+        //キリンパネル
+        if (PlayerPrefs.GetInt("Unlock_Giraffe") == 1)
+        {
+            GiraffePanel.SetActive(true);
+        }
         //象パネル
         if (PlayerPrefs.GetInt("Unlock_Elephant") == 1)
         {
             ElephantPanel.SetActive(true);
+        }
+        //虎パネル
+        if (PlayerPrefs.GetInt("Unlock_Tiger") == 1)
+        {
+            TigerPanel.SetActive(true);
         }
     }
 
@@ -120,6 +136,15 @@ public class SelectCharacterUI : MonoBehaviourPunCallbacks
         soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
         animalName = "Dog";
+    }
+
+    //Tigerボタン押下した際の処理
+    public void OnClick_TigerButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Tiger";
     }
 
     //Unityちゃんボタン押下した際の処理

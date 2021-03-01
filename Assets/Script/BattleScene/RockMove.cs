@@ -11,11 +11,19 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     private float rockTime;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
+
+        //オーナーの所有権を別オーナーに移譲するようにする
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonView rockPhotonView = PhotonView.Get(this);
+            rockPhotonView.RequestOwnership();
+        }
 
         //岩の移動方向に力をかける
         switch (this.name)
@@ -49,6 +57,9 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     // Update is called once per frame
     void Update()
     {
+        
+        
+
         //一定距離画面から離れたら消去する
         if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || rockTime >= 15.0f)
         {

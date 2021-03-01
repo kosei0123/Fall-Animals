@@ -17,6 +17,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     Timer timer;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
+    //RockMoveのスクリプトの関数使用
+    RockMove rockMove;
 
     //プレイヤーのオブジェクト
     public GameObject animal;
@@ -27,7 +29,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     private Player[] animalInformation = { null, null, null, null };
 
     //岩の生成時間(初期値設定)
-    private float rockCreateTime = 2;
+    private float rockCreateTime = 3;
 
     //rankingを表示する
     public int battleRanking = 0;
@@ -75,6 +77,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //マスタークライアントのみで処理(マスタークライアントのonlineflagがfalseでも岩を作る)
         if (PhotonNetwork.IsMasterClient)
         {
+
             //岩を作る
             if (rockCreateTime <= 0)
             {
@@ -101,7 +104,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             //切断確認
             GetDisconnect();
 
-            if (timer.elapsedTime >= 1.0f)
+            if (timer.elapsedTime >= 3.0f)
             {
                 //生成プレイヤーの数を取得
                 GetCreatedPlayerCount();

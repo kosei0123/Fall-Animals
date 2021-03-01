@@ -81,12 +81,22 @@ public class MenuUI : MonoBehaviour
         //デバイスに保持されているUnlockキャラクター情報を取得
         //0：アンロックされていない
         //1：アンロックされている
+        //キリン
+        if (!PlayerPrefs.HasKey("Unlock_Giraffe"))
+        {
+            PlayerPrefs.SetInt("Unlock_Giraffe", 0);
+        }
+        //象
         if (!PlayerPrefs.HasKey("Unlock_Elephant"))
         {
             PlayerPrefs.SetInt("Unlock_Elephant", 0);
         }
+        //虎
+        if (!PlayerPrefs.HasKey("Unlock_Tiger"))
+        {
+            PlayerPrefs.SetInt("Unlock_Tiger", 0);
+        }
 
-        
 
     }
 

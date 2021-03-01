@@ -38,11 +38,11 @@ public class SelectPlayerNameUI : MonoBehaviour
         //ニックネームが空の場合は適当なものを代入する
         if (string.IsNullOrEmpty(nickname))
         {
-            nickname = "Player(" + Random.Range(1, 999) + ")";
+            nickname = "Player(" + Random.Range(1, 9999) + ")";
         }
 
         //ニックネームを一度だけ登録
-        PlayerPrefs.SetString("NickName", nickname);
+        PlayerPrefs.SetString("NickName", nickname + "(" + Random.Range(1, 9999) + ")");
 
         //mobile backendに接続しサインインする
         userAuth.signUp(PlayerPrefs.GetString("NickName"));
