@@ -6,7 +6,9 @@ using Photon.Pun;
 
 public class Timer : MonoBehaviourPunCallbacks
 {
-
+    //確定した残り時刻設定用テキストオブジェクト
+    [SerializeField]
+    private Text ConfirmTimerText;
     //残り時刻設定用テキストオブジェクト
     [SerializeField]
     private Text TimerText;
@@ -14,6 +16,9 @@ public class Timer : MonoBehaviourPunCallbacks
     //Battleの時間を取得する
     [HideInInspector]
     public float battleTime;
+    //確定したBattleの時間を取得する
+    [HideInInspector]
+    public float battleConfirmTime;
 
     //経過時間を取得する
     [HideInInspector]
@@ -22,6 +27,9 @@ public class Timer : MonoBehaviourPunCallbacks
     //時間無制限フラグ
     [HideInInspector]
     public bool mugenFlag;
+    //確定した時間無制限フラグ
+    [HideInInspector]
+    public bool mugenConfirmFlag;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +50,8 @@ public class Timer : MonoBehaviourPunCallbacks
         if (elapsedTime >= 2.0f && elapsedTime < 3.0f && PhotonNetwork.IsMasterClient)
         {
             //ランダム値取得(1 ~ 4)
-            int randomBattleTime = Random.Range(1, 5);
+            //現在：60秒 or 無限
+            int randomBattleTime = Random.Range(3, 5);
 
             switch (randomBattleTime)
             {
@@ -70,8 +79,29 @@ public class Timer : MonoBehaviourPunCallbacks
             photonView.RPC("BattleTimeValue", RpcTarget.All, battleTime, mugenFlag);
         }
 
+        //確定した時間の取得
+        if (elapsedTime < 4.0f)
+        {
+            battleConfirmTime = battleTime;
+            mugenConfirmFlag = mugenFlag;
+        }
+
+        //確定した時間の表示
+        if (elapsedTime >= 3.0f && elapsedTime < 5.0f && mugenConfirmFlag == true)
+        {
+            ConfirmTimerText.text = "∞";
+        }
+        else if(elapsedTime >= 3.0f && elapsedTime < 5.0f && mugenConfirmFlag == false)
+        {
+            ConfirmTimerText.text = ((int)battleConfirmTime).ToString("D2");
+        }
+        else
+        {
+            ConfirmTimerText.text = "";
+        }
+
         //一定秒経過後に時間を減らしていく(無制限を除く)
-        if (elapsedTime >= 3.0f && battleTime >= 0 && mugenFlag == false)
+        if (elapsedTime >= 4.0f && battleTime >= 0 && mugenFlag == false)
         {
             battleTime -= Time.deltaTime;
 
@@ -84,11 +114,11 @@ public class Timer : MonoBehaviourPunCallbacks
         }
 
         //残り時間の表示
-        if (elapsedTime >= 2.0f && mugenFlag == false)
+        if (elapsedTime >= 4.0f && mugenFlag == false)
         {
             TimerText.text = ((int)battleTime).ToString("D2");
         }
-        else if(elapsedTime >= 2.0f && mugenFlag == true)
+        else if(elapsedTime >= 4.0f && mugenFlag == true)
         {
             TimerText.text = "∞";
         }

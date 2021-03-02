@@ -252,7 +252,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             //スピード
             if (isGround)
             {
-                runSpeed = 10.0f;
+                runSpeed = 8.0f;
             }
             else
             {
@@ -271,7 +271,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             }
             else
             {
-                runSpeed = 5.0f;
+                runSpeed = 6.0f;
             }
         }
     }
