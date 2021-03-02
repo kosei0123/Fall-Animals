@@ -24,9 +24,14 @@ public class BattleSceneUI : MonoBehaviour
     void Update()
     {
         //一定時間後に表示する
-        if (timer.elapsedTime >= 2.0f)
+        if (timer.elapsedTime >= 2.0f && timer.elapsedTime < 3.0f)
+        {
+            RemainingPlayerCountText.text = "のこり　確認中...";
+        }
+        else if (timer.elapsedTime >= 3.0f)
         {
             RemainingPlayerCountText.text = "のこり　" + PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
         }
+        
     }
 }
