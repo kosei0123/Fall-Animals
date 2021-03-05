@@ -10,7 +10,8 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     //時間計測
     private float rockTime;
 
-
+    //メッセージの送信に使用される
+    PhotonView rockPhotonView;
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +19,11 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
 
+        //メッセージの送信に使用される
+        rockPhotonView = PhotonView.Get(this);
+
         //オーナーの所有権を別オーナーに移譲するようにする
-        if (PhotonNetwork.IsMasterClient)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
         {
             PhotonView rockPhotonView = PhotonView.Get(this);
             rockPhotonView.RequestOwnership();
@@ -57,8 +61,13 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     // Update is called once per frame
     void Update()
     {
-        
-        
+
+        //オーナーの所有権を別オーナーに移譲するようにする
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        {
+            //メッセージの送信に使用される
+            rockPhotonView.RequestOwnership();
+        }
 
         //一定距離画面から離れたら消去する
         if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || rockTime >= 15.0f)

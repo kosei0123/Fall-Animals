@@ -3889,6 +3889,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044085596}
   - component: {fileID: 2044085595}
+  - component: {fileID: 2044085597}
   m_Layer: 0
   m_Name: Pun2
   m_TagString: Untagged
@@ -3910,6 +3911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animal: {fileID: 0}
   battleRanking: 0
+  NoMasterCliantTime: 0
   battleFinishFlag: 0
 --- !u!4 &2044085596
 Transform:
@@ -3925,6 +3927,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2044085597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044085594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  observableSearch: 2
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents: []
+  viewIdField: 15
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &29413956673034259
 PrefabInstance:
   m_ObjectHideFlags: 0

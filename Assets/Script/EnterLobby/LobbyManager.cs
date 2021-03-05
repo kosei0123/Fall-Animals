@@ -81,13 +81,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             //待機所内の人数カウント
             {"WaitingRoomPlayerCount", 0},
             //残り人数カウント
-            {"RemainingPlayerCount", 0}
+            {"RemainingPlayerCount", 0},
+            //マスタークライアントの切断検出用
+            {"NoMasterCliant", false}
         };
         //ロビーにカスタムプロパティの情報を表示させる
         roomOptions.CustomRoomPropertiesForLobby = new string[]
         {
             "WaitingRoomPlayerCount",
             "RemainingPlayerCount",
+            "NoMasterCliant",
         };
 
         //ルームの作成

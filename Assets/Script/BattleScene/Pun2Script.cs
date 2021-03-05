@@ -17,8 +17,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     Timer timer;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
-    //RockMoveのスクリプトの関数使用
-    RockMove rockMove;
 
     //プレイヤーのオブジェクト
     public GameObject animal;
@@ -38,6 +36,12 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //rankingを表示する
     public int battleRanking = 0;
 
+    //マスタークライアントの委譲時間
+    public float NoMasterCliantTime = 0;
+    //マスタークライアントの委譲フラグ
+    private bool NoMasterCliantTimeStartFlag = false;
+    private bool NoMasterCliantTimeFinishFlag = false;
+
     //生成されたプレイヤーの数を取得し終えたかを確認
     private bool createdPlayerStartFlag = false;
     private int createdPlayerStartCount = 0;
@@ -48,11 +52,16 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //バトルを終了したフラグ
     public bool battleFinishFlag = false;
 
+    //メッセージの送信に使用される
+    new PhotonView photonView;
+
     // Start is called before the first frame update
     void Start()
     {
         //イベントを受け取るように設定
         PhotonNetwork.IsMessageQueueRunning = true;
+        //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
+        PhotonNetwork.AutomaticallySyncScene = false;
 
         //TitleTapのScriptを使う
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
@@ -63,11 +72,13 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
 
+        //メッセージの送信に使用される
+        photonView = PhotonView.Get(this);
+
         //ルームに入室後の設定
         JoinedRoom();
 
-        //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
-        PhotonNetwork.AutomaticallySyncScene = false;
+        
 
         //次回もキック確認されるように設定する
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -78,9 +89,31 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        //マスタークライアントの委譲時間を取得する
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantTimeStartFlag == false)
+        {
+            NoMasterCliantTime = 0.1f;
+            NoMasterCliantTimeStartFlag = true;
+            NoMasterCliantTimeFinishFlag = false;
+        }
+
         //マスタークライアントのみで処理(マスタークライアントのonlineflagがfalseでも岩を作る)
         if (PhotonNetwork.IsMasterClient)
         {
+            //マスタークライアントの委譲が完了して、フラグを元に戻す
+            if (NoMasterCliantTime >= 0)
+            {
+                NoMasterCliantTime -= Time.deltaTime;
+            }
+            else if (NoMasterCliantTime < 0 && NoMasterCliantTimeFinishFlag == false)
+            {
+                PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = false;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+                //フラグの共有
+                photonView.RPC("NoMasterCliantTimeFlagValue", RpcTarget.All, false, true);
+                
+            }
+
             //紙飛行機を作る
             if (airplaneCreateTime <= 0)
             {
@@ -93,7 +126,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
                 RockCreated();
                 rockCreateTime = Random.Range(1, 5);
             }
-
 
             //生成時間を減らす
             //紙飛行機
@@ -162,14 +194,15 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     {
         Debug.Log("Room");
 
-        if (WaitingPlayerCount.playerCreatedNumber == 1)
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 1)
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             animal.name = "animal1";
-            //自分の名前を設定する
+            //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani1";
+            prps["DISCONNECT"] = false;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -191,14 +224,15 @@ public class Pun2Script : MonoBehaviourPunCallbacks
 
 
         }
-        if (WaitingPlayerCount.playerCreatedNumber == 2)
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 2)
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             animal.name = "animal2";
-            //自分の名前を設定する
+            //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani2";
+            prps["DISCONNECT"] = false;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -213,14 +247,15 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             screenTouch.GetComponent<ScreenTouch>().target = animal;
 
         }
-        if (WaitingPlayerCount.playerCreatedNumber == 3)
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 3)
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             animal.name = "animal3";
-            //自分の名前を設定する
+            //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani3";
+            prps["DISCONNECT"] = false;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -235,14 +270,15 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             screenTouch.GetComponent<ScreenTouch>().target = animal;
 
         }
-        if (WaitingPlayerCount.playerCreatedNumber == 4)
+        if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 4)
         {
             //プレイキャラのオブジェクトを生成
             animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             animal.name = "animal4";
-            //自分の名前を設定する
+            //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NAME"] = "Ani4";
+            prps["DISCONNECT"] = false;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //Pun2Script
@@ -304,7 +340,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         }
 
         //1度のみ実行するようにする
-        createdPlayerStartFlag = true;
+        photonView.RPC("createdPlayerStartFlagValue", RpcTarget.All, true);
     }
 
     //切断を確認する
@@ -314,14 +350,14 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         {
             if (animalInformation[i] != null && animalInformationDisconnectCheck[i] == false)
             {
-                if (animalInformation[i].CustomProperties["DISCONNECT"] != null)
+                if ((bool)animalInformation[i].CustomProperties["DISCONNECT"] == true)
                 {
                     //同じルーム内のWaitingRoomにいるプレイヤーの数を減らす
                     var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
                     PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n - 1;
                     PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
                     //1度のみ実行
-                    animalInformationDisconnectCheck[i] = true;
+                    photonView.RPC("animalInformationDisconnectCheckValue", RpcTarget.All, true, i);
                 }
             }
         }
@@ -442,31 +478,72 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         endDialog.DialogPanelActive(battleRanking);
     }
 
+    [PunRPC]
+    //マスタークライアントの委譲が完了して、フラグを元に戻す
+    private void NoMasterCliantTimeFlagValue(bool value, bool value2)
+    {
+        NoMasterCliantTimeStartFlag = value;
+        NoMasterCliantTimeFinishFlag = value2;
+    }
+
+    [PunRPC]
+    //生成されたプレイヤーの数を取得する
+    private void createdPlayerStartFlagValue(bool value)
+    {
+        //生成されたプレイヤーの数を1度のみ取得する
+        createdPlayerStartFlag = value;
+    }
+
+    [PunRPC]
+    //切断を確認する
+    private void animalInformationDisconnectCheckValue(bool value, int i)
+    {
+        //1度のみ実行される
+        animalInformationDisconnectCheck[i] = value;
+    }
 
     //アプリケーション一時停止時
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
-            WaitingPlayerCount_PhotonOff();
+            //切断フラグを設定する
+            var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+            prps["DISCONNECT"] = true;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+            //マスタークライアントの切断をルーム全体で検知する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+            }
+
+            //画面遷移等(0.5秒後)
+            Invoke("Pun2Script_PhotonOff", 0.5f);
         }
     }
 
     //アプリケーション終了時
     private void OnApplicationQuit()
     {
-        WaitingPlayerCount_PhotonOff();
-    }
-
-    //Photon接続解除や画面の遷移
-    private void WaitingPlayerCount_PhotonOff()
-    {
         //切断フラグを設定する
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["DISCONNECT"] = true;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
-        
+        //マスタークライアントの切断をルーム全体で検知する
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+        }
 
+        //画面遷移等(0.5秒後)
+        Invoke("Pun2Script_PhotonOff", 0.5f);
+    }
+
+    //Photon接続解除や画面の遷移
+    private void Pun2Script_PhotonOff()
+    {
         //画面遷移
         SceneManager.LoadScene("Menu");
 

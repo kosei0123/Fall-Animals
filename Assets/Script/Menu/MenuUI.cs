@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class MenuUI : MonoBehaviour
 {
@@ -47,7 +48,14 @@ public class MenuUI : MonoBehaviour
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
 
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
+        }
 
+        //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
+        PhotonNetwork.AutomaticallySyncScene = false;
     }
 
     // Update is called once per frame
@@ -153,6 +161,13 @@ public class MenuUI : MonoBehaviour
     {
         //ランキングパネルを非表示にする
         WinCountRankingPanel.SetActive(false);
+    }
+
+    //UnityIAPMoveボタンを押した時の挙動
+    public void OnClick_UnityIAPMoveButton()
+    {
+        //画面遷移
+        SceneManager.LoadScene("UnityIAP");
     }
 
     //オフラインボタンを押した際の挙動
