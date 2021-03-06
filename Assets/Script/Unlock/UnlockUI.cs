@@ -62,11 +62,11 @@ public class UnlockUI : MonoBehaviour
 
     //値段
     //キリン
-    private int giraffePrice = 10;
+    private int giraffePrice = 1000;
     //象
     private int elephantPrice = 1000;
     //虎
-    private int tigerPrice = 10;
+    private int tigerPrice = 1000;
 
     // Start is called before the first frame update
     void Start()

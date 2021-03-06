@@ -22,6 +22,9 @@ public class Timer : MonoBehaviourPunCallbacks
     [HideInInspector]
     public bool mugenFlag;
 
+    //メッセージの送信に使用される
+    new PhotonView photonView;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,9 @@ public class Timer : MonoBehaviourPunCallbacks
         battleTime = 60.0f;
         //無制限フラグをfalseにしておく
         mugenFlag = false;
+
+        //メッセージの送信に使用される
+        photonView = PhotonView.Get(this);
     }
 
     // Update is called once per frame
@@ -74,10 +80,9 @@ public class Timer : MonoBehaviourPunCallbacks
         //一定秒経過後に時間を減らしていく(無制限を除く)
         if (elapsedTime >= 4.0f && battleTime >= 0 && mugenFlag == false)
         {
-            //10秒ごとに時間の同期を行う
-            if(battleTime % 10 == 0 && PhotonNetwork.IsMasterClient)
+            //残り50秒以上または10秒ごとに時間の同期を行う
+            if((battleTime % 10 == 0 || battleTime >= 50) && PhotonNetwork.IsMasterClient)
             {
-                PhotonView photonView = PhotonView.Get(this);
                 photonView.RPC("BattleTimeValue", RpcTarget.All, battleTime);
                 //photonView.RPC("BattleTimeValue", RpcTarget.All, battleTime, mugenFlag);
             }

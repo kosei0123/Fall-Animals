@@ -15,12 +15,23 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     private Text WaitingPlayerCountText;
 
     //プレイヤー番号
-    public static int playerCreatedNumber;
+    //public static int playerCreatedNumber;
+    //毎Updateによる取得人数
+    private int updateWaitingPlayerCount = 0;
+
+    //ニックネームを所持する
+    private string WaitingPlayerNickName = "0";
+    private string WaitingPlayer2NickName = "0";
+    private string WaitingPlayer3NickName = "0";
+    private string WaitingPlayer4NickName = "0";
 
     //スタート時間を設定する
     [SerializeField]
     private Text StartTimeText;
     private float waitingBattleStartTime;
+
+    //メッセージの送信に使用される
+    new PhotonView photonView;
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +39,16 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
 
-        //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
-        PhotonNetwork.AutomaticallySyncScene = true;
+        //メッセージの送信に使用される
+        photonView = PhotonView.Get(this);
 
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
         //プレイヤー番号の決定
-        playerCreatedNumber = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
+        PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
+        PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
 
         //キックされないように設定する
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -44,7 +56,10 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //プレイヤーが入っていた時にバトルスタート時間を設定する
-        waitingBattleStartTime = 5.0f;
+        waitingBattleStartTime = 15.0f;
+
+        //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
+        PhotonNetwork.AutomaticallySyncScene = true;
 
     }
 
@@ -62,8 +77,91 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             waitingBattleStartTime -= Time.deltaTime;
 
             //バトル時間を同期する
-            PhotonView photonView = PhotonView.Get(this);
             photonView.RPC("StartTimeValue", RpcTarget.All, waitingBattleStartTime);
+        }
+
+        
+        //部屋内の人数と毎Updateで取得している人数で差異があれば呼び出す(int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] != updateWaitingPlayerCount && 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //人数を毎Updateで取得しておく
+            updateWaitingPlayerCount = 0;
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                if ((string)p.CustomProperties["NoKick"] == "true")
+                {
+                    //人数を取得
+                    updateWaitingPlayerCount++;
+
+                    //ニックネームを取得
+                    if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || waitingBattleStartTime <= 2 || waitingBattleStartTime % 5.0f <= 1.0f)
+                    {
+                        if (updateWaitingPlayerCount == 1)
+                        {
+                            ////ニックネーム消去を共有する
+                            //PhotonView photonView = PhotonView.Get(this);
+                            //photonView.RPC("WaitingPlayerDeleteNickNameValue", RpcTarget.All);
+                            //ニックネームを取得
+                            photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
+                        }
+                        else if (updateWaitingPlayerCount == 2)
+                        {
+                            photonView.RPC("WaitingPlayer2NickNameValue", RpcTarget.All, p.NickName);
+                        }
+                        else if (updateWaitingPlayerCount == 3)
+                        {
+                            photonView.RPC("WaitingPlayer3NickNameValue", RpcTarget.All, p.NickName);
+                        }
+                        else if (updateWaitingPlayerCount == 4)
+                        {
+                            photonView.RPC("WaitingPlayer4NickNameValue", RpcTarget.All, p.NickName);
+                        }
+                    }
+
+
+                }
+            }
+
+            //部屋内の人数表示変更
+            PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = updateWaitingPlayerCount;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+            //プレイヤー番号の再取得
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                if ((string)p.CustomProperties["NoKick"] == "true")
+                {
+                    //それぞれに番号をいれる
+                    if (p.NickName == WaitingPlayerNickName)
+                    {
+                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                        p.SetCustomProperties(p.CustomProperties);
+                        //次のプレイヤーはプレイヤー番号を1つ減らす
+                        updateWaitingPlayerCount--;
+                    }
+                    else if (p.NickName == WaitingPlayer2NickName)
+                    {
+                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                        p.SetCustomProperties(p.CustomProperties);
+                        //次のプレイヤーはプレイヤー番号を1つ減らす
+                        updateWaitingPlayerCount--;
+                    }
+                    else if (p.NickName == WaitingPlayer3NickName)
+                    {
+                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                        p.SetCustomProperties(p.CustomProperties);
+                        //次のプレイヤーはプレイヤー番号を1つ減らす
+                        updateWaitingPlayerCount--;
+                    }
+                    else if (p.NickName == WaitingPlayer4NickName)
+                    {
+                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                        p.SetCustomProperties(p.CustomProperties);
+                        //次のプレイヤーはプレイヤー番号を1つ減らす
+                        updateWaitingPlayerCount--;
+                    }
+
+                }
+            }
         }
 
         //人数により部屋をクローズする
@@ -83,6 +181,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                     }
                 }
             }
+
+            
         }
 
         //MaxPlayerに達した段階で画面遷移、または時間が0になったとき
@@ -93,6 +193,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
             //イベントを受け取らないように設定
             PhotonNetwork.IsMessageQueueRunning = false;
+
+            
 
             //画面遷移
             if (PhotonNetwork.IsMasterClient)
@@ -110,6 +212,46 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         waitingBattleStartTime = value;
     }
 
+    [PunRPC]
+    //ニックネームを共有する
+    private void WaitingPlayerNickNameValue(string value)
+    {
+        //ニックネームを設定する
+        WaitingPlayerNickName = value;
+    }
+    [PunRPC]
+    //ニックネームを共有する
+    private void WaitingPlayer2NickNameValue(string value)
+    {
+        //ニックネームを設定する
+        WaitingPlayer2NickName = value;
+    }
+    [PunRPC]
+    //ニックネームを共有する
+    private void WaitingPlayer3NickNameValue(string value)
+    {
+        //ニックネームを設定する
+        WaitingPlayer3NickName = value;
+    }
+    [PunRPC]
+    //ニックネームを共有する
+    private void WaitingPlayer4NickNameValue(string value)
+    {
+        //ニックネームを設定する
+        WaitingPlayer4NickName = value;
+    }
+
+    [PunRPC]
+    //ニックネーム消去を共有する
+    private void WaitingPlayerDeleteNickNameValue()
+    {
+        //ニックネーム設定を消去する
+        WaitingPlayerNickName = "0";
+        WaitingPlayer2NickName = "0";
+        WaitingPlayer3NickName = "0";
+        WaitingPlayer4NickName = "0";
+    }
+
     //メニューボタンを押下した際の挙動
     public void OnClick_MenuButton()
     {
@@ -123,6 +265,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //次回もキック確認されるように設定する
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["NoKick"] = "false";
+        prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //画面遷移等(0.5秒後)
@@ -141,6 +284,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             //次回もキック確認されるように設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
             prps["NoKick"] = "false";
+            prps["playerCreatedNumber"] = null;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
             //画面遷移等(0.5秒後)
@@ -158,6 +302,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //次回もキック確認されるように設定する
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["NoKick"] = "false";
+        prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //画面遷移等(0.5秒後)
@@ -170,11 +315,16 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //画面遷移
         SceneManager.LoadScene("Menu");
 
-        //Photonに接続を解除する
-        if (PhotonNetwork.IsConnected == true)
-        {
-            PhotonNetwork.Disconnect();
-        }
+    }
 
+    //順位表示処理
+    private void OnGUI()
+    {
+        GUI.TextField(new Rect(150, 30, 150, 70), "番号1 : " + WaitingPlayerNickName);
+        GUI.TextField(new Rect(350, 30, 150, 70), "番号2 : " + WaitingPlayer2NickName);
+        GUI.TextField(new Rect(550, 30, 150, 70), "番号3 : " + WaitingPlayer3NickName);
+        GUI.TextField(new Rect(750, 30, 150, 70), "番号4 : " + WaitingPlayer4NickName);
+
+        GUI.TextField(new Rect(150, 150, 150, 70), "番号1 : " + PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"]);
     }
 }

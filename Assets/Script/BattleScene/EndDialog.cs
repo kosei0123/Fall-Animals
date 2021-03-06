@@ -133,15 +133,17 @@ public class EndDialog : MonoBehaviourPunCallbacks
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
-
-        //Photonに接続を解除する
-        if (PhotonNetwork.IsConnected == true)
+        //マスタークライアントの切断をルーム全体で検知する
+        if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Disconnect();
+            PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
         }
+        
 
-        //画面遷移
-        SceneManager.LoadScene("Menu");
+        //画面遷移等(0.5秒後)
+        Invoke("AgainEndDialog_SceneMove", 0.5f);
+
     }
 
     //ダイアログの「終了」選択
@@ -149,7 +151,28 @@ public class EndDialog : MonoBehaviourPunCallbacks
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+        //マスタークライアントの切断をルーム全体で検知する
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+        }
 
+        //終了等(0.5秒後)
+        Invoke("EndEndDialog_SceneMove", 0.5f);
+    }
+
+    //再接続時
+    private void AgainEndDialog_SceneMove()
+    {
+        //画面遷移
+        SceneManager.LoadScene("Menu");
+    }
+
+    //終了時のPhotonの切断
+    private void EndEndDialog_SceneMove()
+    {
+        //アプリケーションの終了
         Application.Quit();
     }
 }

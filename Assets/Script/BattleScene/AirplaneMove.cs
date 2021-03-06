@@ -10,7 +10,8 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     //時間計測
     private float airplaneTime;
 
-    
+    //メッセージの送信に使用される
+    PhotonView airplanePhotonView;
 
     // Start is called before the first frame update
     void Start()
@@ -18,11 +19,14 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         //重力や摩擦
         rbAirplane = this.GetComponent<Rigidbody>();
 
+        //メッセージの送信に使用される
+        airplanePhotonView = PhotonView.Get(this);
+
         //オーナーの所有権を別オーナーに移譲するようにする
-        if (PhotonNetwork.IsMasterClient)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
         {
-            PhotonView rockPhotonView = PhotonView.Get(this);
-            rockPhotonView.RequestOwnership();
+            PhotonView airplanePhotonView = PhotonView.Get(this);
+            airplanePhotonView.RequestOwnership();
         }
 
         //紙飛行機の移動方向に力をかける
@@ -57,6 +61,13 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        //オーナーの所有権を別オーナーに移譲するようにする
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        {
+            //メッセージの送信に使用される
+            airplanePhotonView.RequestOwnership();
+        }
+
         //移動方向により向きを変える
         if ((this.transform.localScale.z < 0 && rbAirplane.velocity.x > 0.1) || (this.transform.localScale.z > 0 && rbAirplane.velocity.x < -0.1))
         {
