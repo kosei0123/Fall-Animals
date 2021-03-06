@@ -97,11 +97,11 @@ public class IAPExample : MonoBehaviour, IStoreListener
         foreach (var item in Catalog.FindAll(x => x.ItemClass == "Consumable"))
             builder.AddProduct(item.ItemId, ProductType.Consumable);
 
-        foreach (var item in Catalog.FindAll(x => x.ItemClass == "NonConsumable"))
-            builder.AddProduct(item.ItemId, ProductType.NonConsumable);
+        //foreach (var item in Catalog.FindAll(x => x.ItemClass == "NonConsumable"))
+        //    builder.AddProduct(item.ItemId, ProductType.NonConsumable);
 
-        foreach (var item in Catalog.FindAll(x => x.ItemClass == "Subscription"))
-            builder.AddProduct(item.ItemId, ProductType.Subscription);
+        //foreach (var item in Catalog.FindAll(x => x.ItemClass == "Subscription"))
+        //    builder.AddProduct(item.ItemId, ProductType.Subscription);
 
         // Trigger IAP service initialization
         UnityPurchasing.Initialize(this, builder);
@@ -175,6 +175,13 @@ public class IAPExample : MonoBehaviour, IStoreListener
         }, result => {
             Debug.Log("Validation successful!");
             text.text = "Validation successful! ";
+
+            //購入時に何をするか
+            if (e.purchasedProduct.definition.id == "coin_bundle_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 2000);
+            }
+
         },
            error => {
                Debug.Log("Validation failed: " + error.GenerateErrorReport());
