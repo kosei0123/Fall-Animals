@@ -80,8 +80,8 @@ public class Timer : MonoBehaviourPunCallbacks
         //一定秒経過後に時間を減らしていく(無制限を除く)
         if (elapsedTime >= 4.0f && battleTime >= 0 && mugenFlag == false)
         {
-            //残り50秒以上または10秒ごとに時間の同期を行う
-            if((battleTime % 10 == 0 || battleTime >= 50) && PhotonNetwork.IsMasterClient)
+            //5秒ごとに時間の同期を行う
+            if(battleTime % 5 <= 1 && PhotonNetwork.IsMasterClient)
             {
                 photonView.RPC("BattleTimeValue", RpcTarget.All, battleTime);
                 //photonView.RPC("BattleTimeValue", RpcTarget.All, battleTime, mugenFlag);

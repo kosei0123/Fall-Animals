@@ -83,7 +83,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             //残り人数カウント
             {"RemainingPlayerCount", 0},
             //マスタークライアントの切断検出用
-            {"NoMasterCliant", false}
+            {"NoMasterCliant", false},
+            //ステージの確定
+            {"DefinedStage", 1}
         };
         //ロビーにカスタムプロパティの情報を表示させる
         roomOptions.CustomRoomPropertiesForLobby = new string[]
@@ -91,6 +93,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             "WaitingRoomPlayerCount",
             "RemainingPlayerCount",
             "NoMasterCliant",
+            "DefinedStage",
         };
 
         //ルームの作成

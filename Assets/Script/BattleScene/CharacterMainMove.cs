@@ -23,6 +23,11 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //ラグ時の位置予想
     private Vector3 networkPosition;
 
+    //メッシュコライダ
+    private Collider meshCol;
+    //ボックスコライダ
+    private Collider boxCol;
+
     //キャラクターの移動方向
     [HideInInspector]
     public float moveDirection;
@@ -84,6 +89,12 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         anim = this.GetComponent<Animator>();
         //パーティクルを取得する
         particle = this.GetComponent<ParticleSystem>();
+
+        //コライダの設定
+        //メッシュコライダーの設定
+        meshCol = this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>();
+        //ボックスコライダーの設定
+        boxCol = this.GetComponent<BoxCollider>();
 
         //Transformをキャッシュする
         transformCache = transform;
@@ -162,10 +173,17 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         if (sitFlag == true)
         {
             anim.SetBool("Sit", true);
+            //コライダーの設定
+            meshCol.enabled = false;
+            boxCol.enabled = true;
+            
         }
         else
         {
             anim.SetBool("Sit", false);
+            //コライダーの設定
+            meshCol.enabled = true;
+            boxCol.enabled = false;
         }
 
         //接地判定
@@ -183,7 +201,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             {
                 anim.SetFloat("RunSpeed", 1.0f);
             }
-            
         }
         //接地していない
         else
@@ -201,6 +218,29 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             else
             {
                 anim.SetFloat("RunSpeed", 0.6f);
+            }
+        }
+
+        //ジャンプ中のレイヤー変更
+        if (this.rb.velocity.y > 0)
+        {
+            //SlidingPlayer
+            this.gameObject.layer = 13;
+            //子オブジェクトもレイヤー変更
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                childTransform.gameObject.layer = 13;
+            }
+
+        }
+        else
+        {
+            //Player
+            this.gameObject.layer = 10;
+            //子オブジェクトもレイヤー変更
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                childTransform.gameObject.layer = 10;
             }
         }
 

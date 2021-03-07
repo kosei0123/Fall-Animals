@@ -19,6 +19,9 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //毎Updateによる取得人数
     private int updateWaitingPlayerCount = 0;
 
+    //ランダム値の取得(ステージ)
+    private int randomStage;
+
     //ニックネームを所持する
     private string WaitingPlayerNickName = "0";
     private string WaitingPlayer2NickName = "0";
@@ -45,7 +48,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
+        //ステージを確定する
+        randomStage = Random.Range(1, 4);
+        PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = randomStage;
+        //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"]);
+
         //プレイヤー番号の決定
         PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
         PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
@@ -167,12 +177,13 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //人数により部屋をクローズする
         LobbyManager.UpdateRoomOptions(true);
 
-        //時間が2以下になったときシーン外のプレイヤーをキックする
+        //時間が2以下になったとき
         if (waitingBattleStartTime <= 2.0f)
         {
-            //このシーンにいないプレイヤーをキックする
+            
             if (PhotonNetwork.IsMasterClient)
             {
+                //このシーンにいないプレイヤーをキックする
                 foreach (var p in PhotonNetwork.PlayerList)
                 {
                     if ((string)p.CustomProperties["NoKick"] != "true")
@@ -180,6 +191,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                         PhotonNetwork.CloseConnection(p);
                     }
                 }
+
+                
             }
 
             

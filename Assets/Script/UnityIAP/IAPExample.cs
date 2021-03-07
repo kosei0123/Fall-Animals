@@ -11,6 +11,11 @@ using System.Linq;
 
 public class IAPExample : MonoBehaviour, IStoreListener
 {
+    //コイン2000枚購入ボタン
+    public Button BuyCoin2000Button;
+    //メニューに戻るボタン
+    public Button MenuButton;
+
     public Text text;
     public Text receiptText;
     public Text restoreText;
@@ -33,16 +38,23 @@ public class IAPExample : MonoBehaviour, IStoreListener
         if (!IsInitialized)
         {
             GUILayout.Label("Initializing IAP and logging in...");
+
+            //ボタン押下不可
+            BuyCoin2000Button.interactable = false;
+
             return;
         }
 
-        foreach (var item in Catalog)
-        {
-            if (GUILayout.Button("Buy " + item.DisplayName))
-            {
-                BuyProductID(item.ItemId);
-            }
-        }
+        //ボタン押下可にする
+        BuyCoin2000Button.interactable = true;
+
+        //foreach (var item in Catalog)
+        //{
+        //    if (GUILayout.Button("Buy " + item.DisplayName))
+        //    {
+        //        BuyProductID(item.ItemId);
+        //    }
+        //}
     }
 
     private void Login()
@@ -122,12 +134,16 @@ public class IAPExample : MonoBehaviour, IStoreListener
     {
         Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
         text.text = "OnInitializeFailed InitializationFailureReason:" + error;
+        //メニュー遷移ボタンを押下可にする
+        MenuButton.interactable = true;
     }
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
         text.text = string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason);
+        //メニュー遷移ボタンを押下可にする
+        MenuButton.interactable = true;
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs e)
@@ -139,6 +155,9 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         if (!IsInitialized)
         {
+            //メニュー遷移ボタンを押下可にする
+            MenuButton.interactable = true;
+
             return PurchaseProcessingResult.Complete;
         }
 
@@ -147,6 +166,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             Debug.LogWarning("Attempted to process purchase with unknown product. Ignoring");
             text.text = "Attempted to process purchase with unknown product. Ignoring";
+
+            //メニュー遷移ボタンを押下可にする
+            MenuButton.interactable = true;
+
             return PurchaseProcessingResult.Complete;
         }
 
@@ -155,6 +178,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             Debug.LogWarning("Attempted to process purchase with no receipt: ignoring");
             text.text = "Attempted to process purchase with no receipt: ignoring";
+
+            //メニュー遷移ボタンを押下可にする
+            MenuButton.interactable = true;
+
             return PurchaseProcessingResult.Complete;
         }
 
@@ -182,10 +209,15 @@ public class IAPExample : MonoBehaviour, IStoreListener
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 2000);
             }
 
+            //メニュー遷移ボタンを押下可にする
+            MenuButton.interactable = true;
+
         },
            error => {
                Debug.Log("Validation failed: " + error.GenerateErrorReport());
                text.text = "Validation failed: " + error.GenerateErrorReport();
+               //メニュー遷移ボタンを押下可にする
+               MenuButton.interactable = true;
            }
         );
 
@@ -203,11 +235,16 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             Debug.Log("Validation successful!");
             text.text = "Validation successful! ";
+
+            //メニュー遷移ボタンを押下可にする
+            MenuButton.interactable = true;
         },
            error =>
            {
                Debug.Log("Validation failed: " + error.GenerateErrorReport());
                text.text = "Validation failed: " + error.GenerateErrorReport();
+               //メニュー遷移ボタンを押下可にする
+               MenuButton.interactable = true;
            }
         );
 #endif
@@ -220,6 +257,8 @@ public class IAPExample : MonoBehaviour, IStoreListener
             throw new Exception("IAP Service is not initialized!");
 
         storeController.InitiatePurchase(productId);
+        //メニュー遷移ボタンを押下できなくする
+        MenuButton.interactable = false;
     }
     public void RestorePurchases()
     {
@@ -251,6 +290,19 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             // We are not running on an Apple device. No work is necessary to restore purchases.
             Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
+        }
+    }
+
+
+    //コイン2000枚購入ボタン押下
+    public void OnClick_BuyCoin2000Button()
+    {
+        foreach (var item in Catalog)
+        {
+            if (item.ItemId == "coin_bundle_ID")
+            {
+                BuyProductID(item.ItemId);
+            }
         }
     }
 }
@@ -300,3 +352,4 @@ public class GooglePurchase
         return purchase;
     }
 }
+

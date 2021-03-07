@@ -9,6 +9,8 @@ public class EndDialog : MonoBehaviourPunCallbacks
 {
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
+    //Pun2Scriptのpublic定数を使う
+    Pun2Script pun2Script;
 
     //バトル終了時のダイアログ
     [SerializeField]
@@ -25,11 +27,14 @@ public class EndDialog : MonoBehaviourPunCallbacks
     //取得したコインの値
     private int getCoin;
 
+
     // Start is called before the first frame update
     void Start()
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //Pun2Scriptのpublic定数を使う
+        pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
     }
 
     // Update is called once per frame
@@ -48,10 +53,10 @@ public class EndDialog : MonoBehaviourPunCallbacks
         RankingText.text = ranking.ToString() + " 位 ";
 
         //ゲットコインの表示
-        getTotalCoin += GetCoin(ranking);
+        getTotalCoin += GetCoin(ranking) + pun2Script.getBattleCoin;
         GetCoinText.text = getTotalCoin.ToString() + "コインGET!!";
         //デバイスの保持する
-        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + GetCoin(ranking));
+        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + GetCoin(ranking) + pun2Script.getBattleCoin);
     }
 
     //ゲットするコインの計算

@@ -54,8 +54,8 @@ public class Damaged : MonoBehaviour
             return;
         }
 
-        //岩にあたり落下する
-        if (this.gameObject.layer == 10 && other.gameObject.tag == "Obstacle")
+        //岩や紙飛行機にあたり落下する
+        if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Obstacle")
         {
             //動きを止める
             characterMainMove.onlineflag = false;
@@ -85,6 +85,12 @@ public class Damaged : MonoBehaviour
 
             //終了時のダイアログ表示
             endDialog.DialogPanelActive(pun2Script.battleRanking);
+        }
+
+        //コインに当たる
+        if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Coin")
+        {
+            pun2Script.getBattleCoin += 5;
         }
     }
 
