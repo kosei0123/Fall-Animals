@@ -50,7 +50,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
         //ステージを確定する
         randomStage = Random.Range(1, 4);
-        PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = 3;
+        PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = randomStage;
         //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
 
