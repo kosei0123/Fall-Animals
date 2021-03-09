@@ -91,6 +91,8 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         var prps = PhotonNetwork.LocalPlayer.CustomProperties;
         prps["NoKick"] = "false";
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        
     }
 
     // Update is called once per frame

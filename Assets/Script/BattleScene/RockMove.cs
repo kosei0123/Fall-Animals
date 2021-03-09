@@ -72,7 +72,11 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         //一定距離画面から離れたら消去する
         if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || rockTime >= 15.0f)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            //マスタークライアントが削除する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
 
         //岩が作られてからの時間計測
@@ -90,8 +94,11 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         //ぶつかって止まってしまった際は消去する
         if (rbRock.velocity.x >= -0.3f && rbRock.velocity.x <= 0.3f)
         {
-            PhotonNetwork.Destroy(this.gameObject);
-        }
+            //マスタークライアントが削除する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }        }
     }
 
     //同期

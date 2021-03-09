@@ -280,6 +280,15 @@ public class UnlockUI : MonoBehaviour
         BuyDonePanel.SetActive(false);
     }
 
+    //UnityIAPMoveボタンを押した時の挙動
+    public void OnClick_UnityIAPMoveButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //画面遷移
+        SceneManager.LoadScene("UnityIAP");
+    }
+
     //メニューに戻るボタン押下
     public void OnClick_MenuButton()
     {

@@ -77,7 +77,11 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         //一定距離画面から離れたら消去する
         if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || airplaneTime >= 15.0f)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            //マスタークライアントが削除する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
 
         //紙飛行機が作られてからの時間計測
@@ -95,7 +99,11 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         //ぶつかって止まってしまった際は消去する
         if (rbAirplane.velocity.x >= -0.3f && rbAirplane.velocity.x <= 0.3f)
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            //マスタークライアントが削除する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
     }
 

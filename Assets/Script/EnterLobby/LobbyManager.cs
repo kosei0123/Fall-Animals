@@ -20,28 +20,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         joinedRoomFlag = false;
 
         //時間の設定(20秒)
-        disconnectTime = 20;
+        //disconnectTime = 20;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //一定時間操作がなかった時に退出
-        if (disconnectTime > 0)
-        {
-            disconnectTime -= Time.deltaTime;
-        }
-        else
-        {
-            //画面遷移
-            SceneManager.LoadScene("Menu");
+        ////一定時間操作がなかった時に退出
+        //if (disconnectTime > 0)
+        //{
+        //    disconnectTime -= Time.deltaTime;
+        //}
+        //else
+        //{
+        //    //画面遷移
+        //    SceneManager.LoadScene("Menu");
 
-            //Photonに接続を解除する
-            if (PhotonNetwork.IsConnected == true)
-            {
-                PhotonNetwork.Disconnect();
-            }
-        }
+        //    //Photonに接続を解除する
+        //    if (PhotonNetwork.IsConnected == true)
+        //    {
+        //        PhotonNetwork.Disconnect();
+        //    }
+        //}
     }
 
     // Update is called once per frame

@@ -50,7 +50,7 @@ public class EndDialog : MonoBehaviourPunCallbacks
         DialogPanel.SetActive(true);
 
         //順位を表示する
-        RankingText.text = ranking.ToString() + " 位 ";
+        RankingText.text = ranking.ToString() + "位 / " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] + "人中";
 
         //ゲットコインの表示
         getTotalCoin += GetCoin(ranking) + pun2Script.getBattleCoin;
