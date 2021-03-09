@@ -11,6 +11,9 @@ using System.Linq;
 
 public class IAPExample : MonoBehaviour, IStoreListener
 {
+    //SoundManagerのスクリプトの関数使用
+    SoundManager soundManager;
+
     //コイン2000枚購入ボタン
     public Button BuyCoin2000Button;
     //メニューに戻るボタン
@@ -28,6 +31,9 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
     public void Start()
     {
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
         Login();
     }
 
@@ -297,6 +303,9 @@ public class IAPExample : MonoBehaviour, IStoreListener
     //コイン2000枚購入ボタン押下
     public void OnClick_BuyCoin2000Button()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         foreach (var item in Catalog)
         {
             if (item.ItemId == "coin_bundle_ID")

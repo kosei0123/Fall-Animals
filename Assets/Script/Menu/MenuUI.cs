@@ -40,6 +40,13 @@ public class MenuUI : MonoBehaviour
     //取得ログインボーナスコイン
     private int getLoginBounusCoin = 50;
 
+    //ロビーマネジャーのゲームオブジェクト
+    [SerializeField]
+    private GameObject LobbyManager;
+    //MaxPlayerPanelの表示
+    [SerializeField]
+    private GameObject MaxPlayerPanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -166,6 +173,8 @@ public class MenuUI : MonoBehaviour
     //UnityIAPMoveボタンを押した時の挙動
     public void OnClick_UnityIAPMoveButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("UnityIAP");
     }
@@ -182,8 +191,8 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
-        //画面遷移
-        SceneManager.LoadScene("EnterLobby");
+        //ロビーマネジャーのゲームオブジェクトをオンにする
+        LobbyManager.SetActive(true);
     }
 
     //アンロックボタンを押した際の挙動
@@ -193,6 +202,12 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("Unlock");
+    }
+
+    //MaxPlayerYesButtonボタンを押した時の挙動
+    public void OnClick_MaxPlayerYesButton()
+    {
+        MaxPlayerPanel.SetActive(false);
     }
 
     //タイトルボタンを押した際の挙動

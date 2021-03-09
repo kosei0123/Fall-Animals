@@ -32,9 +32,11 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     [SerializeField]
     private Text StartTimeText;
     private float waitingBattleStartTime;
+    private float waitingBattleStartStackTime;
 
     //メッセージの送信に使用される
     new PhotonView photonView;
+    PhotonView startTimePhotonView;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
         //メッセージの送信に使用される
         photonView = PhotonView.Get(this);
+        startTimePhotonView = PhotonView.Get(this);
 
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
@@ -66,7 +69,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //プレイヤーが入っていた時にバトルスタート時間を設定する
-        waitingBattleStartTime = 15.0f;
+        waitingBattleStartTime = 12.0f;
+        waitingBattleStartStackTime = 12.0f;
 
         //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -77,17 +81,17 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     void Update()
     {
         //待機人数の表示
-        WaitingPlayerCountText.text = "ルーム内待機中プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+        WaitingPlayerCountText.text = "待機プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
         //バトルスタート時間を表示する
         StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
 
         //バトルスタート時間を減らしていく
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0)
         {
-            waitingBattleStartTime -= Time.deltaTime;
+            waitingBattleStartStackTime -= Time.deltaTime;
 
             //バトル時間を同期する
-            photonView.RPC("StartTimeValue", RpcTarget.All, waitingBattleStartTime);
+            startTimePhotonView.RPC("StartTimeValue", RpcTarget.AllViaServer, waitingBattleStartStackTime);
         }
 
         
@@ -104,7 +108,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                     updateWaitingPlayerCount++;
 
                     //ニックネームを取得
-                    if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || waitingBattleStartTime <= 2 || waitingBattleStartTime % 5.0f <= 1.0f)
+                    if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || ((waitingBattleStartTime <= 2 || waitingBattleStartTime % 5.0f <= 1.0f) && waitingBattleStartTime > 0))
                     {
                         if (updateWaitingPlayerCount == 1)
                         {
@@ -211,6 +215,10 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
             //画面遷移
             if (PhotonNetwork.IsMasterClient)
+            {
+                SceneManager.LoadScene("BattleScene");
+            }
+            else
             {
                 SceneManager.LoadScene("BattleScene");
             }

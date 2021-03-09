@@ -323,11 +323,30 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
 
+        //コライダの設定
+        //メッシュコライダーの設定
+        meshCol = this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>();
+        //ボックスコライダーの設定
+        boxCol = this.GetComponent<BoxCollider>();
+
         if (stream.IsWriting)
         {
             //データの送信
             //名前
             stream.SendNext(this.name);
+            //レイヤー
+            stream.SendNext(this.gameObject.layer);
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                stream.SendNext(childTransform.gameObject.layer);
+            }
+            //stream.SendNext(this.transform.GetChild(0).gameObject.layer);
+            //stream.SendNext(this.transform.GetChild(1).gameObject.layer);
+            //stream.SendNext(this.transform.GetChild(2).gameObject.layer);
+            //stream.SendNext(this.transform.GetChild(3).gameObject.layer);
+            //コライダー
+            stream.SendNext(meshCol.enabled);
+            stream.SendNext(boxCol.enabled);
             //位置と加速度
             stream.SendNext(rb.velocity);
         }
@@ -336,6 +355,19 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             //データの受信
             //名前
             gameObject.name = (string)stream.ReceiveNext();
+            //レイヤー
+            gameObject.layer = (int)stream.ReceiveNext();
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                childTransform.gameObject.layer = (int)stream.ReceiveNext();
+            }
+            //transform.GetChild(0).gameObject.layer = (int)stream.ReceiveNext();
+            //transform.GetChild(1).gameObject.layer = (int)stream.ReceiveNext();
+            //transform.GetChild(2).gameObject.layer = (int)stream.ReceiveNext();
+            //transform.GetChild(3).gameObject.layer = (int)stream.ReceiveNext();
+            //コライダー
+            this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>().enabled = (bool)stream.ReceiveNext();
+            this.gameObject.GetComponent <BoxCollider>().enabled = (bool)stream.ReceiveNext();
             //位置と加速度
             GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();
 
