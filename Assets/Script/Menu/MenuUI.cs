@@ -184,6 +184,8 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+        //画面遷移
+        SceneManager.LoadScene("SelectCharacter(offline)");
     }
 
     //オンラインボタンを押した際の挙動

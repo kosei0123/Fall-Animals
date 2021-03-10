@@ -22,6 +22,9 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         //メッセージの送信に使用される
         airplanePhotonView = PhotonView.Get(this);
 
+        //Y軸方向の力をランダムに加える
+        float randomAirplaneVelocity_Y = Random.Range(-2, 2);
+
         //オーナーの所有権を別オーナーに移譲するようにする
         if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
         {
@@ -33,22 +36,22 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         switch (this.name)
         {
             case "Airplane0":
-                rbAirplane.velocity = new Vector3(-3.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(-3.0f, randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane1":
-                rbAirplane.velocity = new Vector3(-6.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(-6.0f, randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane2":
-                rbAirplane.velocity = new Vector3(-9.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(-9.0f, randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane3":
-                rbAirplane.velocity = new Vector3(3.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(3.0f, randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane4":
-                rbAirplane.velocity = new Vector3(6.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(6.0f, randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane5":
-                rbAirplane.velocity = new Vector3(9.0f, 0, 0);
+                rbAirplane.velocity = new Vector3(9.0f, randomAirplaneVelocity_Y, 0);
                 break;
             default:
                 break;

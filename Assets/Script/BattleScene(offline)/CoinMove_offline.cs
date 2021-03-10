@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 
-public class CoinMove : MonoBehaviour
+public class CoinMove_offline : MonoBehaviour
 {
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
@@ -43,10 +42,7 @@ public class CoinMove : MonoBehaviour
         //時間経過後マスタークライアントが削除する
         if (coinDestroyTime >= 1.0f)
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
+            Destroy(this.gameObject);
         }
     }
 
@@ -65,6 +61,6 @@ public class CoinMove : MonoBehaviour
             soundManager.SEManager("CoinGet_sound1");
         }
 
-        
+
     }
 }

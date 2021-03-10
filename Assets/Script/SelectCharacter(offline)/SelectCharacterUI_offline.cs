@@ -1,0 +1,195 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class SelectCharacterUI_offline : MonoBehaviour
+{
+    //SoundManagerスクリプトの関数使用
+    SoundManager soundManager;
+
+    //Buttonのコンポーネントを取得
+    [SerializeField]
+    private Button SelectCharacterOKButton;
+    //選択キャラの名前表示
+    [SerializeField]
+    private Text SelectCharacterText;
+    //ベストタイムスコア表示
+    [SerializeField]
+    private Text SelectCharacterBestTimeText;
+
+    //キリンパネルの表示
+    [SerializeField]
+    private GameObject GiraffePanel;
+    //象パネルの表示
+    [SerializeField]
+    private GameObject ElephantPanel;
+    //虎パネルの表示
+    [SerializeField]
+    private GameObject TigerPanel;
+
+    //プレイキャラの名前取得
+    public static string animalName;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //ベストタイムスコアを取得
+        SelectCharacterBestTimeGet();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //キャラ選択できていない場合はOKボタンを押せないようにする
+        if (animalName == null)
+        {
+            //ボタン選択不可
+            SelectCharacterOKButton.interactable = false;
+        }
+        else
+        {
+            //ボタン選択可
+            SelectCharacterOKButton.interactable = true;
+            //選択キャラの名前表示
+            SelectCharacterText.text = animalName;
+            //ベストタイムスコアを表示
+            SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_" + animalName).ToString("") + " 秒";
+        }
+
+
+        //アンロックされたキャラクターを表示する
+        CheckUnlock();
+
+    }
+
+    //ベストタイムスコアを取得
+    private void SelectCharacterBestTimeGet()
+    {
+        //キリン
+        if (!PlayerPrefs.HasKey("BestTime_Giraffe"))
+        {
+            PlayerPrefs.SetInt("BestTime_Giraffe", 0);
+        }
+        //象
+        if (!PlayerPrefs.HasKey("BestTime_Elephant"))
+        {
+            PlayerPrefs.SetInt("BestTime_Elephant", 0);
+        }
+        //犬
+        if (!PlayerPrefs.HasKey("BestTime_Dog"))
+        {
+            PlayerPrefs.SetInt("BestTime_Dog", 0);
+        }
+        //虎
+        if (!PlayerPrefs.HasKey("BestTime_Tiger"))
+        {
+            PlayerPrefs.SetInt("BestTime_Tiger", 0);
+        }
+    }
+
+    //アンロックされたキャラクターを表示する
+    private void CheckUnlock()
+    {
+        //キリンパネル
+        if (PlayerPrefs.GetInt("Unlock_Giraffe") == 1)
+        {
+            GiraffePanel.SetActive(true);
+        }
+        //象パネル
+        if (PlayerPrefs.GetInt("Unlock_Elephant") == 1)
+        {
+            ElephantPanel.SetActive(true);
+        }
+        //虎パネル
+        if (PlayerPrefs.GetInt("Unlock_Tiger") == 1)
+        {
+            TigerPanel.SetActive(true);
+        }
+    }
+
+    //Giraffeボタン押下した際の処理
+    public void OnClick_GiraffeButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Giraffe";
+        //ベストタイムスコアを表示
+        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Giraffe").ToString("") + " 秒";
+    }
+
+    //Elephantボタン押下した際の処理
+    public void OnClick_ElephantButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Elephant";
+        //ベストタイムスコアを表示
+        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Elephant").ToString("") + " 秒";
+    }
+
+    //Dogボタン押下した際の処理
+    public void OnClick_DogButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Dog";
+        //ベストタイムスコアを表示
+        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Dog").ToString("") + " 秒";
+    }
+
+    //Tigerボタン押下した際の処理
+    public void OnClick_TigerButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName = "Tiger";
+        //ベストタイムスコアを表示
+        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Tiger").ToString("") + " 秒";
+    }
+
+    //Unityちゃんボタン押下した際の処理
+    //public void OnClick_UnityChanButton()
+    //{
+    //    //SEの使用
+    //    soundManager.SEManager("CharacterSelect_sound1");
+    //    //プレイキャラの名前取得
+    //    animalName = "animal1";
+    //}
+
+    //キャラ選択後に画面遷移を行う
+    public void OnClick_SelectCharacterOKButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //画面遷移
+        SceneManager.LoadScene("BattleScene(offline)");
+    }
+
+    //メニューボタン押下した際の挙動
+    public void OnClick_MenuButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        SceneManager.LoadScene("Menu");
+    }
+
+    //アプリケーション一時停止時
+    private void OnApplicationPause(bool pause)
+    {
+    }
+
+    //アプリケーション終了時
+    private void OnApplicationQuit()
+    {
+    }
+
+}

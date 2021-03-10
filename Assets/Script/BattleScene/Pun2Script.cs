@@ -139,7 +139,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             if (coinCreateTime <= 0)
             {
                 CoinCreated();
-                coinCreateTime = Random.Range(1, 13);
+                coinCreateTime = Random.Range(5, 10);
             }
 
             //生成時間を減らす
@@ -436,13 +436,13 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //ゆっくり
         if (randomrock >= 0 && randomrock < 100)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 2.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 1.5f, 0), Quaternion.identity, 0);
             rock.name = "Rock0";
         }
         ////普通
         //else if (randomrock >= 100 && randomrock < 200)
         //{
-        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 1.1f, 0), Quaternion.identity, 0);
+        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 1.5f, 0), Quaternion.identity, 0);
         //    rock.name = "Rock1";
         //}
         //高速
@@ -455,13 +455,13 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //ゆっくり
         else if (randomrock >= 300 && randomrock < 400)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 2.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.5f, 0), Quaternion.identity, 0);
             rock.name = "Rock3";
         }
         ////普通
         //else if (randomrock >= 400 && randomrock < 500)
         //{
-        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.1f, 0), Quaternion.identity, 0);
+        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.5f, 0), Quaternion.identity, 0);
         //    rock.name = "Rock4";
         //}
         //高速

@@ -15,7 +15,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
     SoundManager soundManager;
 
     //コイン2000枚購入ボタン
-    public Button BuyCoin2000Button;
+    public Button BuyCoin5000Button;
     //メニューに戻るボタン
     public Button MenuButton;
 
@@ -46,13 +46,13 @@ public class IAPExample : MonoBehaviour, IStoreListener
             GUILayout.Label("Initializing IAP and logging in...");
 
             //ボタン押下不可
-            BuyCoin2000Button.interactable = false;
+            BuyCoin5000Button.interactable = false;
 
             return;
         }
 
         //ボタン押下可にする
-        BuyCoin2000Button.interactable = true;
+        BuyCoin5000Button.interactable = true;
 
         //foreach (var item in Catalog)
         //{
@@ -212,7 +212,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
             //購入時に何をするか
             if (e.purchasedProduct.definition.id == "coin_bundle_ID")
             {
-                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 2000);
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
             }
 
             //メニュー遷移ボタンを押下可にする
@@ -241,6 +241,12 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             Debug.Log("Validation successful!");
             text.text = "Validation successful! ";
+
+            //購入時に何をするか
+            if (e.purchasedProduct.definition.id == "coin_bundle_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
+            }
 
             //メニュー遷移ボタンを押下可にする
             MenuButton.interactable = true;
@@ -301,7 +307,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
 
     //コイン2000枚購入ボタン押下
-    public void OnClick_BuyCoin2000Button()
+    public void OnClick_BuyCoin5000Button()
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
