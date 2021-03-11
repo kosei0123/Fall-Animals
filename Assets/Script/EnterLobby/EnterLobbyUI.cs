@@ -58,7 +58,7 @@ public class EnterLobbyUI : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CountOfPlayers <= 20 && lobbyManager.joinedRoomFlag == true)
         {
             //画面遷移
-            SceneManager.LoadScene("SelectCharacter");
+            SceneManager.LoadScene("WaitingRoom");
         }
         else if(PhotonNetwork.CountOfPlayers > 20)
         {

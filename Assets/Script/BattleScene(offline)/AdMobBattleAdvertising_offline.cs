@@ -12,6 +12,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
     EndDialog_offline endDialog_offline;
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
+    //MoveScreenTimer_offlineの定数を使う
+    MoveScreenTimer_offline moveScreenTimer_offline;
 
     //1度広告を見たらボタンを押下できないようにする
     [SerializeField]
@@ -31,6 +33,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         endDialog_offline = GameObject.Find("DialogCanvas").GetComponent<EndDialog_offline>();
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //MoveScreenTimer_offlineの定数を使う
+        moveScreenTimer_offline = GameObject.Find("TimerCanvas").GetComponent<MoveScreenTimer_offline>();
 
         //RequestReward()関数を呼ぶ
         RequestReward();
@@ -73,6 +77,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+        //シーン移動不可
+        moveScreenTimer_offline.moveScreenFlag = false;
 
         //広告を流す
         ShowReward();
@@ -85,6 +91,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
     {
         //再度コインを獲得する
         endDialog_offline.DialogPanelActive(battleScene_offlineManager.timeRanking);
+        //シーン移動可能
+        moveScreenTimer_offline.moveScreenFlag = true;
     }
 
     // Update is called once per frame

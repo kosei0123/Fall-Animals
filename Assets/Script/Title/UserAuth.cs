@@ -76,6 +76,25 @@ public class UserAuth : MonoBehaviour
     }
 
     /// <summary>
+    /// mobile backendに接続してベストタイムを初期登録する
+    /// </summary>
+    public void firstSetBestTime(string animal)
+    {
+        //データスコアの「HighScore」クラスから、Nameをキーにして検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.WhereEqualTo("Name", PlayerPrefs.GetString("NickName"));
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                objList[0]["Offline" + animal + "Time"] = 0;
+                objList[0].SaveAsync();
+            }
+        });
+    }
+
+    /// <summary>
     /// サーバにハイスコアを保存
     /// </summary>
     public void save()
@@ -95,7 +114,26 @@ public class UserAuth : MonoBehaviour
     }
 
     /// <summary>
-    /// mobile backendに接続してtop5取得
+    /// サーバにオフラインハイスコアを保存
+    /// </summary>
+    public void save_Offline()
+    {
+        //データスコアの「HighScore」クラスから、Nameをキーにして検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.WhereEqualTo("Name", PlayerPrefs.GetString("NickName"));
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                objList[0]["Offline" + SelectCharacterUI.animalName + "Time"] = PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName);
+                objList[0].SaveAsync();
+            }
+        });
+    }
+
+    /// <summary>
+    /// mobile backendに接続してtop30取得
     /// </summary>
     public void TopRankers()
     {
@@ -118,11 +156,10 @@ public class UserAuth : MonoBehaviour
                 for (int i = 0; i < objList.Count; i++)
                 {
                     //ランキング名前の表示
-                    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"] + "\n";
-                    menuUI.WinCountRankingNameText.text += topRankingName[i];
+                    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
                     //ランキング番号の表示
-                    topRankingNumber[i] += objList[i]["Score"] + "\n";
-                    menuUI.WinCountRankingNumberText.text += topRankingNumber[i];
+                    topRankingNumber[i] += objList[i]["Score"] + "ポイント\n";
+                    menuUI.WinCountRankingNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
 
                 }
             }
@@ -130,7 +167,60 @@ public class UserAuth : MonoBehaviour
         });
     }
 
-    
+    /// <summary>
+    /// mobile backendに接続してオフラインtop15取得
+    /// </summary>
+    public void TopOfflineRankers(string animal)
+    {
+        //MenuUIスクリプトの関数使用
+        menuUI = GameObject.Find("Canvas").GetComponent<MenuUI>();
+
+        //ランキングの配列
+        string[] topRankingName = new string[50];
+        string[] topRankingNumber = new string[50];
+
+        //データスコアの「HighScore」クラスから検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.OrderByDescending("Offline" + animal + "Time");
+        query.Limit = 15;
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                for (int i = 0; i < objList.Count; i++)
+                {
+                    //ランキング名前の表示
+                    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
+                    
+                    //ランキング番号の表示
+                    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒\n";
+                    
+
+                    //ランキング名前とベストタイムの表示
+                    switch (animal)
+                    {
+                        case "Giraffe":
+                            menuUI.OfflineRankingGiraffeNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                            break;
+                        case "Elephant":
+                            menuUI.OfflineRankingElephantNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                            break;
+                        case "Dog":
+                            menuUI.OfflineRankingDogNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                            break;
+                        case "Tiger":
+                            menuUI.OfflineRankingTigerNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                            break;
+                    }
+
+                }
+            }
+
+        });
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {

@@ -103,7 +103,7 @@ public class BattleScene_offlineManager : MonoBehaviour
     private void CreateCharacter()
     {
         //プレイキャラのオブジェクトを生成
-        animal = (GameObject)Instantiate(Resources.Load("Offline/" + SelectCharacterUI_offline.animalName), new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+        animal = (GameObject)Instantiate(Resources.Load("Offline/" + SelectCharacterUI.animalName), new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
         animal.name = "animal1";
 
         //Scriptを設定し、フラグを指定する。

@@ -16,14 +16,47 @@ public class MenuUI : MonoBehaviour
     //自己Win数のテキスト表示
     [SerializeField]
     private Text WinCountText;
+
     //WinCountRankingPanelの表示
     [SerializeField]
     private GameObject WinCountRankingPanel;
+    //OfflineRankingChildPanelの表示
+    [SerializeField]
+    private GameObject OfflineRankingChildPanel;
+    //WinCountRankingChildPanelの表示
+    [SerializeField]
+    private GameObject WinCountRankingChildPanel;
+
     //Win数のランキングテキスト表示
     [SerializeField]
     public Text WinCountRankingNameText;
+    //アニマル名の表示
     [SerializeField]
-    public Text WinCountRankingNumberText;
+    private Text OfflineRankingAnimalNameText;
+    //Giraffe
+    //ベストタイムランキングテキスト表示
+    [SerializeField]
+    public GameObject OfflineRankingGiraffeNameTextGameObject;
+    [SerializeField]
+    public Text OfflineRankingGiraffeNameText;
+    //Elephant
+    //ベストタイムランキングテキスト表示
+    [SerializeField]
+    public GameObject OfflineRankingElephantNameTextGameObject;
+    [SerializeField]
+    public Text OfflineRankingElephantNameText;
+    //Dog
+    //ベストタイムランキングテキスト表示
+    [SerializeField]
+    public GameObject OfflineRankingDogNameTextGameObject;
+    [SerializeField]
+    public Text OfflineRankingDogNameText;
+    //Tiger
+    //ベストタイムランキングテキスト表示
+    [SerializeField]
+    public GameObject OfflineRankingTigerNameTextGameObject;
+    [SerializeField]
+    public Text OfflineRankingTigerNameText;
 
     //コインの枚数を表示
     [SerializeField]
@@ -63,6 +96,16 @@ public class MenuUI : MonoBehaviour
 
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
         PhotonNetwork.AutomaticallySyncScene = false;
+
+        //ベストタイムスコアを取得
+        SelectCharacterBestTimeGet();
+
+        //アニマルの初期設定を入れる
+        if (SelectCharacterUI.animalName == null)
+        {
+            SelectCharacterUI.animalName = "Dog";
+        }
+        
     }
 
     // Update is called once per frame
@@ -150,22 +193,166 @@ public class MenuUI : MonoBehaviour
         }
     }
 
+    //ベストタイムスコアを取得
+    private void SelectCharacterBestTimeGet()
+    {
+        //キリン
+        if (!PlayerPrefs.HasKey("BestTime_Giraffe"))
+        {
+            PlayerPrefs.SetInt("BestTime_Giraffe", 0);
+            //mobile backendに接続しベストタイムを初期登録する
+            userAuth.firstSetBestTime("Giraffe");
+        }
+        //象
+        if (!PlayerPrefs.HasKey("BestTime_Elephant"))
+        {
+            PlayerPrefs.SetInt("BestTime_Elephant", 0);
+            //mobile backendに接続しベストタイムを初期登録する
+            userAuth.firstSetBestTime("Elephant");
+        }
+        //犬
+        if (!PlayerPrefs.HasKey("BestTime_Dog"))
+        {
+            PlayerPrefs.SetInt("BestTime_Dog", 0);
+            //mobile backendに接続しベストタイムを初期登録する
+            userAuth.firstSetBestTime("Dog");
+        }
+        //虎
+        if (!PlayerPrefs.HasKey("BestTime_Tiger"))
+        {
+            PlayerPrefs.SetInt("BestTime_Tiger", 0);
+            //mobile backendに接続しベストタイムを初期登録する
+            userAuth.firstSetBestTime("Tiger");
+        }
+    }
+
     //LoginBounusYesButtonボタンを押した時の挙動
     public void OnClick_LoginBounusYesButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         //50コイン獲得する
         PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + getLoginBounusCoin);
         //ログインボーナスパネルを非表示にする
         LoginBounusPanel.SetActive(false);
 
-        //ランキングパネルを表示する
+        
+        //オンラインtop30
         userAuth.TopRankers();
+        //オフラインtop30
+        OfflineRankingAnimalNameText.text = "Giraffe";
+        userAuth.TopOfflineRankers("Giraffe");
+        
+        //ランキングパネルを表示する
         WinCountRankingPanel.SetActive(true);
     }
+
+    //オフラインランキングのアニマル切り替えボタン(右)
+    public void OnClick_OfflineRankingAnimalNameRightButton()
+    {
+        //キリン→象→犬→虎
+        if (OfflineRankingAnimalNameText.text == "Giraffe")
+        {
+            //アニマル名を表示
+            OfflineRankingAnimalNameText.text = "Elephant";
+
+            //初回のみランキング取得
+            if (OfflineRankingElephantNameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Elephant");
+            }
+            //ランキングテキストを表示/非表示にする
+            OfflineRankingElephantNameTextGameObject.SetActive(true);
+            OfflineRankingGiraffeNameTextGameObject.SetActive(false);
+        }
+        else if (OfflineRankingAnimalNameText.text == "Elephant")
+        {
+            OfflineRankingAnimalNameText.text = "Dog";
+
+            //初回のみランキング取得
+            if (OfflineRankingDogNameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Dog");
+            }            //ランキングテキストを表示/非表示にする
+            OfflineRankingDogNameTextGameObject.SetActive(true);
+            OfflineRankingElephantNameTextGameObject.SetActive(false);
+        }
+        else if (OfflineRankingAnimalNameText.text == "Dog")
+        {
+            OfflineRankingAnimalNameText.text = "Tiger";
+
+            //初回のみランキング取得
+            if (OfflineRankingTigerNameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Tiger");
+            }
+            //ランキングテキストを表示/非表示にする
+            OfflineRankingTigerNameTextGameObject.SetActive(true);
+            OfflineRankingDogNameTextGameObject.SetActive(false);
+        }
+        else if (OfflineRankingAnimalNameText.text == "Tiger")
+        {
+
+        }
+    }
+
+    //オフラインランキングのアニマル切り替えボタン(左)
+    public void OnClick_OfflineRankingAnimalNameLeftButton()
+    {
+        //キリン←象←犬←虎
+        if (OfflineRankingAnimalNameText.text == "Giraffe")
+        {
+        }
+        else if (OfflineRankingAnimalNameText.text == "Elephant")
+        {
+            OfflineRankingAnimalNameText.text = "Giraffe";
+            //ランキングテキストを表示/非表示にする
+            OfflineRankingGiraffeNameTextGameObject.SetActive(true);
+            OfflineRankingElephantNameTextGameObject.SetActive(false);
+        }
+        else if (OfflineRankingAnimalNameText.text == "Dog")
+        {
+            OfflineRankingAnimalNameText.text = "Elephant";
+            //ランキングテキストを表示/非表示にする
+            OfflineRankingElephantNameTextGameObject.SetActive(true);
+            OfflineRankingDogNameTextGameObject.SetActive(false);
+        }
+        else if (OfflineRankingAnimalNameText.text == "Tiger")
+        {
+            OfflineRankingAnimalNameText.text = "Dog";
+            //ランキングテキストを表示/非表示にする
+            OfflineRankingDogNameTextGameObject.SetActive(true);
+            OfflineRankingTigerNameTextGameObject.SetActive(false);
+        }
+    }
+
+    //ランキングのRankingOfflineButton押下時
+    public void OnClick_RankingOfflineButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //パネルの表示非表示
+        OfflineRankingChildPanel.SetActive(true);
+        WinCountRankingChildPanel.SetActive(false);
+    }
+
+    //ランキングのRankingOnlineButton押下時
+    public void OnClick_RankingOnlineButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //パネルの表示非表示
+        OfflineRankingChildPanel.SetActive(false);
+        WinCountRankingChildPanel.SetActive(true);
+    }
+
 
     //WinCountRankingYesButtonボタンを押した時の挙動
     public void OnClick_WinCountRankingYesButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //ランキングパネルを非表示にする
         WinCountRankingPanel.SetActive(false);
     }
@@ -185,7 +372,7 @@ public class MenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //画面遷移
-        SceneManager.LoadScene("SelectCharacter(offline)");
+        SceneManager.LoadScene("BattleScene(offline)");
     }
 
     //オンラインボタンを押した際の挙動
@@ -204,6 +391,15 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("Unlock");
+    }
+
+    //アニマルボタンを押した際
+    public void OnClick_SelectAnimalButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //画面遷移
+        SceneManager.LoadScene("SelectCharacter");
     }
 
     //MaxPlayerYesButtonボタンを押した時の挙動

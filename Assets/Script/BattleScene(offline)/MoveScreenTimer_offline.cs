@@ -23,6 +23,7 @@ public class MoveScreenTimer_offline : MonoBehaviour
 
     //一定時間操作がなかった時に接続を切る用
     private float moveScreenTime;
+    public bool moveScreenFlag;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,8 @@ public class MoveScreenTimer_offline : MonoBehaviour
 
         //時間の設定(20秒)
         moveScreenTime = 20;
+        //シーン移動可能
+        moveScreenFlag = true;
     }
 
     // Update is called once per frame
@@ -49,11 +52,11 @@ public class MoveScreenTimer_offline : MonoBehaviour
         MoveScreenTimerTextGameObject.SetActive(true);
 
         //一定時間操作がなかった時に退出
-        if (moveScreenTime > 0)
+        if (moveScreenTime > 0 && moveScreenFlag == true)
         {
             moveScreenTime -= Time.deltaTime;
         }
-        else
+        else if(moveScreenTime <= 0)
         {
             //画面遷移
             SceneManager.LoadScene("Menu");

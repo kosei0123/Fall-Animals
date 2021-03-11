@@ -187,7 +187,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             jumpCount = 0;
             //アニメーションの速度変更
             //象の場合
-            if (SelectCharacterUI_offline.animalName == "Elephant")
+            if (SelectCharacterUI.animalName == "Elephant")
             {
                 anim.SetFloat("RunSpeed", 0.5f);
             }
@@ -205,7 +205,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             //アニメーションの速度変更
             //象の場合
-            if (SelectCharacterUI_offline.animalName == "Elephant")
+            if (SelectCharacterUI.animalName == "Elephant")
             {
                 anim.SetFloat("RunSpeed", 0.3f);
             }
@@ -248,7 +248,7 @@ public class CharacterMainMove_offline : MonoBehaviour
     private void AnimalAbilitySettings()
     {
         //キリン
-        if (SelectCharacterUI_offline.animalName == "Giraffe")
+        if (SelectCharacterUI.animalName == "Giraffe")
         {
             //ジャンプ力
             jumpPower = 7.0f;
@@ -264,7 +264,7 @@ public class CharacterMainMove_offline : MonoBehaviour
 
         }
         //象
-        else if (SelectCharacterUI_offline.animalName == "Elephant")
+        else if (SelectCharacterUI.animalName == "Elephant")
         {
             //ジャンプ力
             jumpPower = 6.5f;
@@ -279,7 +279,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
         }
         //犬
-        else if (SelectCharacterUI_offline.animalName == "Dog")
+        else if (SelectCharacterUI.animalName == "Dog")
         {
             //ジャンプ力
             jumpPower = 8.5f;
@@ -294,7 +294,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
         }
         //虎
-        else if (SelectCharacterUI_offline.animalName == "Tiger")
+        else if (SelectCharacterUI.animalName == "Tiger")
         {
             //ジャンプ力
             jumpPower = 7.5f;

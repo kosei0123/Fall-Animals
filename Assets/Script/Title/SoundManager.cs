@@ -29,6 +29,11 @@ public class SoundManager : MonoBehaviour
     private AudioClip CharacterSelect_sound1;
     [SerializeField]
     private AudioClip CoinGet_sound1;
+    [SerializeField]
+    private AudioClip Rock_sound1;
+    [SerializeField]
+    private AudioClip Airplane_sound1;
+
 
     //1つ前のシーン
     private string beforeScene = "Title";
@@ -75,7 +80,7 @@ public class SoundManager : MonoBehaviour
 
         //バトルシーンへの遷移
         if ((beforeScene == "WaitingRoom" && currentScene.name == "BattleScene")
-            || (beforeScene == "SelectCharacter(offline)" && currentScene.name == "BattleScene(offline)"))
+            || (beforeScene == "Menu" && currentScene.name == "BattleScene(offline)"))
         {
             BGM_Menu.Stop();
             BGM_Battle.Play();
@@ -115,6 +120,12 @@ public class SoundManager : MonoBehaviour
                 break;
             case "CoinGet_sound1":
                 audioSource.PlayOneShot(CoinGet_sound1);
+                break;
+            case "Rock_sound1":
+                audioSource.PlayOneShot(Rock_sound1);
+                break;
+            case "Airplane_sound1":
+                audioSource.PlayOneShot(Airplane_sound1);
                 break;
             default:
                 break;

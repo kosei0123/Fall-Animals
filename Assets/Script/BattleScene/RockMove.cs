@@ -5,6 +5,9 @@ using Photon.Pun;
 
 public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
 {
+    //SoundManagerのスクリプトの関数使用
+    SoundManager soundManager;
+
     //岩にかかる重力や摩擦
     private Rigidbody rbRock;
     //時間計測
@@ -16,6 +19,9 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     // Start is called before the first frame update
     void Start()
     {
+        //SoundManagerのスクリプトの関数使用
+        soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
 
@@ -86,6 +92,12 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     //オブジェクトと接触した瞬間に呼び出される
     void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "SlidingPlayer")
+        {
+            //SEの使用
+            soundManager.SEManager("Rock_sound1");
+        }
+
         if (other.gameObject.tag != "Obstacle")
         {
             return;

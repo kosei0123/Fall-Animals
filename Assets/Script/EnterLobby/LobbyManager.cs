@@ -116,7 +116,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         //強制的にルームをクローズ
         if (newIsOpen == false)
         {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            if (PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+            }
         }
         //人数によりルームをクローズ
         else if(newIsOpen == true)

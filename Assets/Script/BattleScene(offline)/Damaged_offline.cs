@@ -12,6 +12,8 @@ public class Damaged_offline : MonoBehaviour
     EndDialog_offline endDialog_offline;
     //Timer_offlineの関数等を使う
     Timer_offline timer_offline;
+    //UserAuthのスクリプトの関数使用
+    UserAuth userAuth;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class Damaged_offline : MonoBehaviour
         endDialog_offline = GameObject.Find("DialogCanvas").GetComponent<EndDialog_offline>();
         //Timer_offlineの関数等を使う
         timer_offline = GameObject.Find("TimerCanvas").GetComponent<Timer_offline>();
+        //UserAuthのスクリプトの関数使用
+        userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
 
     }
 
@@ -69,9 +73,11 @@ public class Damaged_offline : MonoBehaviour
             //時間の確定と取得
             battleScene_offlineManager.timeRanking = (int)timer_offline.elapsedTime;
             //ベストスコアに反映
-            if (PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI_offline.animalName) < battleScene_offlineManager.timeRanking)
+            if (PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName) < battleScene_offlineManager.timeRanking)
             {
-                PlayerPrefs.SetInt("BestTime_" + SelectCharacterUI_offline.animalName, battleScene_offlineManager.timeRanking);
+                PlayerPrefs.SetInt("BestTime_" + SelectCharacterUI.animalName, battleScene_offlineManager.timeRanking);
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline();
             }
 
             //レイヤーを変更し、下に落ちていく

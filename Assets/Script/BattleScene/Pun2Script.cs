@@ -88,9 +88,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         
 
         //次回もキック確認されるように設定する
-        var prps = PhotonNetwork.LocalPlayer.CustomProperties;
-        prps["NoKick"] = "false";
-        PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+        //var prps = PhotonNetwork.LocalPlayer.CustomProperties;
+        //prps["NoKick"] = "false";
+        //PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         
     }
