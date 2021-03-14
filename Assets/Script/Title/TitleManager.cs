@@ -16,7 +16,7 @@ public class TitleManager : MonoBehaviour
         
 
         //キリンオブジェクトの生成
-        titleAnimal = (GameObject)Instantiate(Resources.Load("Title/TitleGiraffe"), new Vector3(-4.5f, 1.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+        //titleAnimal = (GameObject)Instantiate(Resources.Load("Title/TitleGiraffe"), new Vector3(-4.5f, 1.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class TitleManager : MonoBehaviour
         //スプラッシュ画面が閉じた後での動作(岩オブジェクトの生成)
         if (UnityEngine.Rendering.SplashScreen.isFinished && titleRock == null)
         {
-            titleRock = (GameObject)Instantiate(Resources.Load("Title/TitleRock"), new Vector3(2.0f, 1.5f, 0), Quaternion.identity);
+            //titleRock = (GameObject)Instantiate(Resources.Load("Title/TitleRock"), new Vector3(2.0f, 1.5f, 0), Quaternion.identity);
 
             //画面の回転可能にする
             Screen.orientation = ScreenOrientation.AutoRotation;

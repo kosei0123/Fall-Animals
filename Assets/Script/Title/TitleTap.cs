@@ -48,8 +48,8 @@ public class TitleTap : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             //オブジェクトの消去
-            Destroy(titleManager.titleAnimal);
-            Destroy(titleManager.titleRock);
+            //Destroy(titleManager.titleAnimal);
+            //Destroy(titleManager.titleRock);
             adMobTitleAdvertinsing.bannerView.Hide();
             adMobTitleAdvertinsing.bannerView.Destroy();
             //SEの使用
