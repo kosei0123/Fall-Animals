@@ -8,6 +8,7 @@ using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Security;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class IAPExample : MonoBehaviour, IStoreListener
 {
@@ -220,6 +221,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         },
            error => {
+
                Debug.Log("Validation failed: " + error.GenerateErrorReport());
                text.text = "Validation failed: " + error.GenerateErrorReport();
                //メニュー遷移ボタンを押下可にする

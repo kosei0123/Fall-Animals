@@ -13,6 +13,9 @@ public class MenuUI : MonoBehaviour
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
 
+    //動物の表示用
+    private GameObject menuAnimal;
+
     //自己Win数のテキスト表示
     [SerializeField]
     private Text WinCountText;
@@ -80,9 +83,14 @@ public class MenuUI : MonoBehaviour
     [SerializeField]
     private GameObject MaxPlayerPanel;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        //回転可能にする
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //UserAuthのスクリプトの関数使用
@@ -104,8 +112,28 @@ public class MenuUI : MonoBehaviour
         if (SelectCharacterUI.animalName == null)
         {
             SelectCharacterUI.animalName = "Dog";
+            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Dog"), new Vector3(1.0f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+            menuAnimal.name = "Dog";
         }
-        
+
+        //選択された動物の表示
+        if (SelectCharacterUI.animalName == "Dog")
+        {
+            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Dog"), new Vector3(1.0f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+        }
+        else if (SelectCharacterUI.animalName == "Giraffe")
+        {
+            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Giraffe"), new Vector3(2.0f, -1.0f, -5.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+        }
+        else if (SelectCharacterUI.animalName == "Elephant")
+        {
+            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Elephant"), new Vector3(1.5f, -0.1f, -6.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+        }
+        else if (SelectCharacterUI.animalName == "Tiger")
+        {
+            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Tiger"), new Vector3(1.1f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+        }
+
     }
 
     // Update is called once per frame
@@ -155,7 +183,7 @@ public class MenuUI : MonoBehaviour
             PlayerPrefs.SetInt("Unlock_Tiger", 0);
         }
 
-
+        
     }
 
     //日付の確認
@@ -371,6 +399,17 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+
+        //回転しないようにする
+        if (Screen.width > Screen.height)
+        {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        }
+        else
+        {
+            Screen.orientation = ScreenOrientation.Portrait;
+        }
+
         //画面遷移
         SceneManager.LoadScene("BattleScene(offline)");
     }
@@ -380,6 +419,17 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+
+        //回転しないようにする
+        if (Screen.width > Screen.height)
+        {
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        }
+        else
+        {
+            Screen.orientation = ScreenOrientation.Portrait;
+        }
+
         //ロビーマネジャーのゲームオブジェクトをオンにする
         LobbyManager.SetActive(true);
     }

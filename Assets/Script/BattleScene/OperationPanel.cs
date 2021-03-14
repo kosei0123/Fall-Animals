@@ -9,22 +9,26 @@ public class OperationPanel : MonoBehaviour
     ScreenTouch screenTouch;
     //Timerのpublic定数を使う
     Timer timer;
+    //Pun2Scriptのpublic定数を使う
+    Pun2Script pun2Script;
 
-    //パネルを取得
+    //ボタンを取得
     [SerializeField]
-    private GameObject UpPanel;
+    private GameObject UpButtonGameObject;
     [SerializeField]
-    private GameObject DownPanel;
+    private GameObject UpButtonTextGameObject;
     [SerializeField]
-    private GameObject RightPanel;
+    private GameObject DownButtonGameObject;
     [SerializeField]
-    private GameObject LeftPanel;
-
-    //パネルを表示する座標を入れ込む
-    private RectTransform rectTransform_UpPanel;
-    private RectTransform rectTransform_DownPanel;
-    private RectTransform rectTransform_RightPanel;
-    private RectTransform rectTransform_LeftPanel;
+    private GameObject DownButtonTextGameObject;
+    [SerializeField]
+    private GameObject RightButtonGameObject;
+    [SerializeField]
+    private GameObject RightButtonTextGameObject;
+    [SerializeField]
+    private GameObject LeftButtonGameObject;
+    [SerializeField]
+    private GameObject LeftButtonTextGameObject;
 
     // Start is called before the first frame update
     void Start()
@@ -33,54 +37,55 @@ public class OperationPanel : MonoBehaviour
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();
         //Timerのpublic定数を使う
         timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
+        //Pun2Scriptのpublic定数を使う
+        pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
 
-        //パネルを表示する
-        UpPanel.SetActive(true);
-        DownPanel.SetActive(true);
-        RightPanel.SetActive(true);
-        LeftPanel.SetActive(true);
-
-        //パネルを表示する座標を入れ込む
-        rectTransform_UpPanel = UpPanel.GetComponent<RectTransform>();
-        rectTransform_DownPanel = DownPanel.GetComponent<RectTransform>();
-        rectTransform_RightPanel = RightPanel.GetComponent<RectTransform>();
-        rectTransform_LeftPanel = LeftPanel.GetComponent<RectTransform>();
+        //テキストを表示する
+        UpButtonTextGameObject.SetActive(true);
+        DownButtonTextGameObject.SetActive(true);
+        RightButtonTextGameObject.SetActive(true);
+        LeftButtonTextGameObject.SetActive(true);
+        //ボタンを表示する
+        UpButtonGameObject.SetActive(true);
+        DownButtonGameObject.SetActive(true);
+        RightButtonGameObject.SetActive(true);
+        LeftButtonGameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //UpPanel
-        //(left,bottom)
-        rectTransform_UpPanel.offsetMin = new Vector2(0, screenTouch.screenUp);
-        //(-right,-top)
-        rectTransform_UpPanel.offsetMax = new Vector2(0, 0);
-
-        //DownPanel
-        //(left,bottom)
-        rectTransform_DownPanel.offsetMin = new Vector2(0, 0);
-        //(-right,-top)
-        rectTransform_DownPanel.offsetMax = new Vector2(0, (-1) * screenTouch.screenUp);
-
-        //RightPanel
-        //(left,bottom)
-        rectTransform_RightPanel.offsetMin = new Vector2(screenTouch.screenMiddle, screenTouch.screenDown);
-        //(-right,-top)
-        rectTransform_RightPanel.offsetMax = new Vector2(0, (-1) * screenTouch.screenDown);
-
-        //LeftPanel
-        //(left,bottom)
-        rectTransform_LeftPanel.offsetMin = new Vector2(0, screenTouch.screenDown);
-        //(-right,-top)
-        rectTransform_LeftPanel.offsetMax = new Vector2((-1) * screenTouch.screenMiddle, (-1) * screenTouch.screenDown);
-
         //一定時間後に非表示にする
         if (timer.elapsedTime >= 2.0f)
         {
-            UpPanel.SetActive(false);
-            DownPanel.SetActive(false);
-            RightPanel.SetActive(false);
-            LeftPanel.SetActive(false);
+            //テキストを非表示にする
+            UpButtonTextGameObject.SetActive(false);
+            DownButtonTextGameObject.SetActive(false);
+            RightButtonTextGameObject.SetActive(false);
+            LeftButtonTextGameObject.SetActive(false);
+            //ボタンを透明にする
+            UpButtonGameObject.GetComponent<Image>().color = GetAlphaColor(UpButtonGameObject.GetComponent<Image>().color);
+            DownButtonGameObject.GetComponent<Image>().color = GetAlphaColor(DownButtonGameObject.GetComponent<Image>().color);
+            RightButtonGameObject.GetComponent<Image>().color = GetAlphaColor(RightButtonGameObject.GetComponent<Image>().color);
+            LeftButtonGameObject.GetComponent<Image>().color = GetAlphaColor(LeftButtonGameObject.GetComponent<Image>().color);
         }
+
+        //バトル終了時にボタンを非表示にする
+        if (pun2Script.battleFinishFlag == true)
+        {
+            UpButtonGameObject.SetActive(false);
+            DownButtonGameObject.SetActive(false);
+            RightButtonGameObject.SetActive(false);
+            LeftButtonGameObject.SetActive(false);
+        }
+    }
+
+    //透明にする
+    private Color GetAlphaColor(Color color)
+    {
+        //α値を0で取得する
+        color.a = 0;
+
+        return color;
     }
 }

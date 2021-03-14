@@ -59,14 +59,16 @@ public class MoveScreenTimer : MonoBehaviour
         }
         else if(disconnectTime <= 0)
         {
-            //画面遷移
-            SceneManager.LoadScene("Menu");
-
-            //Photonに接続を解除する
-            if (PhotonNetwork.IsConnected == true)
+            //マスタークライアントの切断をルーム全体で検知する
+            if (PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.Disconnect();
+                PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
             }
+
+            //画面遷移等(0.5秒後)
+            Invoke("MoveScreen_SceneMove", 0.5f);
+
         }
 
         //時間の表示
@@ -74,5 +76,12 @@ public class MoveScreenTimer : MonoBehaviour
         {
             MoveScreenTimerText.text = ((int)disconnectTime).ToString("D2");
         }
+    }
+
+    //再接続時
+    private void MoveScreen_SceneMove()
+    {
+        //画面遷移
+        SceneManager.LoadScene("Menu");
     }
 }

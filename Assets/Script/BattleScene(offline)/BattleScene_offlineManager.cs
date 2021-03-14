@@ -42,9 +42,11 @@ public class BattleScene_offlineManager : MonoBehaviour
     //バトルを終了したフラグ
     public bool battleFinishFlag = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        
 
         //TitleTapのScriptを使う
         screenTouch_offline = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch_offline>();

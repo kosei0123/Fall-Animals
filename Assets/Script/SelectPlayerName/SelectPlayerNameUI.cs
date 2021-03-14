@@ -11,6 +11,12 @@ public class SelectPlayerNameUI : MonoBehaviour
     SoundManager soundManager;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
+    //TabooWordListのスクリプト関数使用
+    TabooWordList tabooWordList;
+
+    //禁止文字を入力した際に表示
+    [SerializeField]
+    private GameObject TabooText;
 
     //ニックネーム取得用
     private string nickname;
@@ -22,6 +28,8 @@ public class SelectPlayerNameUI : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
+        //TabooWordListのスクリプト関数使用
+        tabooWordList = GameObject.Find("Canvas").GetComponent<TabooWordList>();
 
     }
 
@@ -41,18 +49,28 @@ public class SelectPlayerNameUI : MonoBehaviour
             nickname = "Player(" + Random.Range(1, 9999) + ")";
         }
 
-        //ニックネームを一度だけ登録
-        PlayerPrefs.SetString("NickName", nickname + "(" + Random.Range(1, 9999) + ")");
+        //禁止用語が含まれている
+        if (tabooWordList.TabooWord(nickname))
+        {
+            TabooText.SetActive(true);
+        }
+        //禁止用語が含まれていない
+        else
+        {
+            //ニックネームを一度だけ登録
+            PlayerPrefs.SetString("NickName", nickname + "(" + Random.Range(1, 9999) + ")");
 
-        //mobile backendに接続しサインインする
-        userAuth.signUp(PlayerPrefs.GetString("NickName"));
-        //mobile backendに接続し名前とスコアを初期登録する
-        userAuth.firstSetNameScore();
+            //mobile backendに接続しサインインする
+            userAuth.signUp(PlayerPrefs.GetString("NickName"));
+            //mobile backendに接続し名前とスコアを初期登録する
+            userAuth.firstSetNameScore();
 
-        //SEの使用
-        soundManager.SEManager("Button_sound1");
-        //画面遷移
-        SceneManager.LoadScene("Menu");
+            //SEの使用
+            soundManager.SEManager("Button_sound1");
+            //画面遷移
+            SceneManager.LoadScene("Menu");
+        }
+        
     }
 
     //メニューボタン押下した際の挙動

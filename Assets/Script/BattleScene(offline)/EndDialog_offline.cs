@@ -15,6 +15,10 @@ public class EndDialog_offline : MonoBehaviour
     [SerializeField]
     private GameObject DialogPanel;
 
+    //広告表示ボタン
+    [SerializeField]
+    private Button RewardAdvertisingButton;
+
     //順位テキスト表示
     [SerializeField]
     private Text TimeText;
@@ -36,7 +40,15 @@ public class EndDialog_offline : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //横画面時のみボタンを押下できる
+        if (Screen.width > Screen.height)
+        {
+            RewardAdvertisingButton.interactable = true;
+        }
+        else
+        {
+            RewardAdvertisingButton.interactable = false;
+        }
     }
 
     //バトル終了時のダイアログ表示

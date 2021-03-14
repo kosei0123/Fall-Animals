@@ -9,9 +9,12 @@ public class TitleManager : MonoBehaviour
     //岩オブジェクト
     public GameObject titleRock;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        
+
         //キリンオブジェクトの生成
         titleAnimal = (GameObject)Instantiate(Resources.Load("Title/TitleGiraffe"), new Vector3(-4.5f, 1.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
     }
@@ -23,6 +26,13 @@ public class TitleManager : MonoBehaviour
         if (UnityEngine.Rendering.SplashScreen.isFinished && titleRock == null)
         {
             titleRock = (GameObject)Instantiate(Resources.Load("Title/TitleRock"), new Vector3(2.0f, 1.5f, 0), Quaternion.identity);
+
+            //画面の回転可能にする
+            Screen.orientation = ScreenOrientation.AutoRotation;
+            Screen.autorotateToPortrait = true;
+            Screen.autorotateToPortraitUpsideDown = false;
+            Screen.autorotateToLandscapeRight = false;
+            Screen.autorotateToLandscapeLeft = true;
         }
     }
 }

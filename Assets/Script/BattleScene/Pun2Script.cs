@@ -62,9 +62,11 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     //メッセージの送信に使用される
     new PhotonView photonView;
 
+
     // Start is called before the first frame update
     void Start()
     {
+
         //イベントを受け取るように設定
         PhotonNetwork.IsMessageQueueRunning = true;
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
