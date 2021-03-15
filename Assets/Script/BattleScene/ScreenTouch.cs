@@ -378,17 +378,19 @@ public class ScreenTouch : MonoBehaviour
     //下(押下しっぱなし)
     public void PointerDown_DownButton()
     {
-        characterMainMove.moveDirection = 0;
-        characterMainMove.sitFlag = true;
+        if (characterMainMove.isGround == true)
+        {
+            characterMainMove.moveDirection = 0;
+            characterMainMove.sitFlag = true;
+        }
+        
     }
 
     //下(離す)
     public void PointerUp_DownButton()
     {
-        if (characterMainMove.isGround == true)
-        {
-            characterMainMove.sitFlag = false;
-        }
+        characterMainMove.sitFlag = false;
+        
         
     }
 
