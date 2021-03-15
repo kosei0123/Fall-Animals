@@ -191,16 +191,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         if (isGround == true)
         {
             jumpCount = 0;
-            //アニメーションの速度変更
-            //象の場合
-            if (SelectCharacterUI.animalName == "Elephant")
-            {
-                anim.SetFloat("RunSpeed", 0.5f);
-            }
-            else
-            {
-                anim.SetFloat("RunSpeed", 1.0f);
-            }
         }
         //接地していない
         else
@@ -208,16 +198,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             if (jumpCount == 0)
             {
                 jumpCount = 1;
-            }
-            //アニメーションの速度変更
-            //象の場合
-            if (SelectCharacterUI.animalName == "Elephant")
-            {
-                anim.SetFloat("RunSpeed", 0.3f);
-            }
-            else
-            {
-                anim.SetFloat("RunSpeed", 0.6f);
             }
         }
 
