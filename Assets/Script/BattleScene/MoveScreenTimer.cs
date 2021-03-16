@@ -32,8 +32,8 @@ public class MoveScreenTimer : MonoBehaviour
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
 
-        //時間の設定(20秒)
-        disconnectTime = 20;
+        //時間の設定(60秒)
+        disconnectTime = 60;
         //シーン移動可能
         moveScreenFlag = true;
     }
@@ -72,7 +72,7 @@ public class MoveScreenTimer : MonoBehaviour
         }
 
         //時間の表示
-        if(disconnectTime <= 5.0f)
+        if(disconnectTime <= 10.0f)
         {
             MoveScreenTimerText.text = ((int)disconnectTime).ToString("D2");
         }

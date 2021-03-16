@@ -9,6 +9,8 @@ public class GroundCheck : MonoBehaviour
 
     //Groundタグへの参照
     private string groundTag = "Ground";
+    //Playerタグへの参照
+    private string playerTag = "Player";
 
     // Start is called before the first frame update
     void Start()
@@ -27,16 +29,17 @@ public class GroundCheck : MonoBehaviour
     //入る
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == groundTag)
+        if(other.tag == groundTag || other.tag == playerTag)
         {
             //地面にいる判定
             characterMainMove.isGround = true;
+            Debug.Log(other.tag);
         }
     }
     //入り続けている
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == groundTag)
+        if (other.tag == groundTag || other.tag == playerTag)
         {
             //地面にいる判定
             characterMainMove.isGround = true;

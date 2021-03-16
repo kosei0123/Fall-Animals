@@ -112,8 +112,6 @@ public class MenuUI : MonoBehaviour
         if (SelectCharacterUI.animalName == null)
         {
             SelectCharacterUI.animalName = "Dog";
-            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Dog"), new Vector3(1.0f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
-            menuAnimal.name = "Dog";
         }
 
         //選択された動物の表示

@@ -56,7 +56,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             randomStage = Random.Range(1, 4);
-            PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = 1;
+            PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = randomStage;
         }
         //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);

@@ -7,6 +7,10 @@ public class StableAspect : MonoBehaviour
 
     private Camera refCamera;
 
+    //前の向きと現在の向き
+    private string beforeScreenDirection = "";
+    private string currentScreenDirection = "";
+
     // 固定したい表示サイズ
     private int width = 1334;
     private int height = 750;
@@ -19,6 +23,7 @@ public class StableAspect : MonoBehaviour
 
     void Awake()
     {
+
         if (refCamera == null)
         {
             // カメラコンポーネントを取得します
@@ -29,7 +34,22 @@ public class StableAspect : MonoBehaviour
 
     private void Update()
     {
-        UpdateCameraWithCheck();
+        //現在の画面の向き取得
+        if (Screen.width > Screen.height)
+        {
+            currentScreenDirection = "Horizon";
+        }
+        else
+        {
+            currentScreenDirection = "Vertical";
+        }
+
+        //向きが異なっていた場合のみの変更
+        if (beforeScreenDirection != currentScreenDirection)
+        {
+            UpdateCameraWithCheck();
+        }
+        
     }
 
     void UpdateCameraWithCheck()

@@ -191,6 +191,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         if (isGround == true)
         {
             jumpCount = 0;
+            //アニメーションの速度変更
+            anim.SetFloat("RunSpeed", 1.0f);
         }
         //接地していない
         else
@@ -199,6 +201,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             {
                 jumpCount = 1;
             }
+            //アニメーションの速度変更
+            anim.SetFloat("RunSpeed", 0.6f);
         }
 
         //ジャンプ中のレイヤー変更
