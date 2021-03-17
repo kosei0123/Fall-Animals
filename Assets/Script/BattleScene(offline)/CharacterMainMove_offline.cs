@@ -149,7 +149,7 @@ public class CharacterMainMove_offline : MonoBehaviour
 
 
         //ジャンプ
-        if (jumpFlag == true && jumpCount == 1)
+        if (jumpFlag == true)
         {
             //上方向に力を加える
             rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);

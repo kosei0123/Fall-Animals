@@ -51,7 +51,7 @@ public class EndDialog : MonoBehaviourPunCallbacks
         }
         else
         {
-            RewardAdvertisingButton.interactable = false;
+            //RewardAdvertisingButton.interactable = false;
         }
     }
 

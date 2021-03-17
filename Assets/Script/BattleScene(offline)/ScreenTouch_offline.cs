@@ -301,7 +301,7 @@ public class ScreenTouch_offline : MonoBehaviour
     //ジャンプ
     public void OnClick_UpButton()
     {
-        if (characterMainMove_offline.sitFlag == false)
+        if (characterMainMove_offline.sitFlag == false && characterMainMove_offline.jumpCount == 0)
         {
             characterMainMove_offline.jumpFlag = true;
             characterMainMove_offline.jumpCount++;

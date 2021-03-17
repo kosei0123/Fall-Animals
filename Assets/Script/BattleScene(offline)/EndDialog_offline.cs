@@ -47,7 +47,7 @@ public class EndDialog_offline : MonoBehaviour
         }
         else
         {
-            RewardAdvertisingButton.interactable = false;
+            //RewardAdvertisingButton.interactable = false;
         }
     }
 

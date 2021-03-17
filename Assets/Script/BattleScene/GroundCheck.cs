@@ -33,7 +33,6 @@ public class GroundCheck : MonoBehaviour
         {
             //地面にいる判定
             characterMainMove.isGround = true;
-            Debug.Log(other.tag);
         }
     }
     //入り続けている
