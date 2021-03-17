@@ -318,7 +318,7 @@ public class ScreenTouch : MonoBehaviour
     //ジャンプ
     public void OnClick_UpButton()
     {
-        if (characterMainMove.sitFlag == false)
+        if (characterMainMove.sitFlag == false && characterMainMove.jumpCount == 0)
         {
             characterMainMove.jumpFlag = true;
             characterMainMove.jumpCount++;

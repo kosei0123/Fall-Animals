@@ -93,6 +93,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         endDialog_offline.DialogPanelActive(battleScene_offlineManager.timeRanking);
         //シーン移動可能
         moveScreenTimer_offline.moveScreenFlag = true;
+        //横向き固定にする
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame

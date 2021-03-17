@@ -93,6 +93,8 @@ public class AdMobBattleAdvertising : MonoBehaviour
         endDialog.DialogPanelActive(pun2Script.battleRanking);
         //シーン移動可能
         moveScreenTimer.moveScreenFlag = true;
+        //横向き固定にする
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame

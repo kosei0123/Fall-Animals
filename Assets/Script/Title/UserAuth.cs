@@ -78,7 +78,7 @@ public class UserAuth : MonoBehaviour
     /// <summary>
     /// mobile backendに接続してベストタイムを初期登録する
     /// </summary>
-    public void firstSetBestTime(string animal)
+    public void firstSetBestTime()
     {
         //データスコアの「HighScore」クラスから、Nameをキーにして検索
         NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
@@ -88,7 +88,39 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
-                objList[0]["Offline" + animal + "Time"] = 0;
+                //キリン
+                if (!PlayerPrefs.HasKey("BestTime_Giraffe"))
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Giraffe", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Giraffe" + "Time"] = 0;
+                    
+                }
+                //象
+                if (!PlayerPrefs.HasKey("BestTime_Elephant"))
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Elephant", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Elephant" + "Time"] = 0;
+                }
+                //犬
+                if (!PlayerPrefs.HasKey("BestTime_Dog"))
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Dog", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Dog" + "Time"] = 1;
+                }
+                //虎
+                if (!PlayerPrefs.HasKey("BestTime_Tiger"))
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Tiger", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Tiger" + "Time"] = 0;
+                }
                 objList[0].SaveAsync();
             }
         });

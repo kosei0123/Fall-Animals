@@ -51,7 +51,7 @@ public class EndDialog : MonoBehaviourPunCallbacks
         }
         else
         {
-            RewardAdvertisingButton.interactable = false;
+            //RewardAdvertisingButton.interactable = false;
         }
     }
 
@@ -164,20 +164,20 @@ public class EndDialog : MonoBehaviourPunCallbacks
     }
 
     //ダイアログの「終了」選択
-    public void OnClick_EndButton()
-    {
-        //SEの使用
-        soundManager.SEManager("Button_sound1");
-        //マスタークライアントの切断をルーム全体で検知する
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-        }
+    //public void OnClick_EndButton()
+    //{
+    //    //SEの使用
+    //    soundManager.SEManager("Button_sound1");
+    //    //マスタークライアントの切断をルーム全体で検知する
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] = true;
+    //        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+    //    }
 
-        //終了等(0.5秒後)
-        Invoke("EndEndDialog_SceneMove", 0.5f);
-    }
+    //    //終了等(0.5秒後)
+    //    Invoke("EndEndDialog_SceneMove", 0.5f);
+    //}
 
     //再接続時
     private void AgainEndDialog_SceneMove()
@@ -187,9 +187,9 @@ public class EndDialog : MonoBehaviourPunCallbacks
     }
 
     //終了時のPhotonの切断
-    private void EndEndDialog_SceneMove()
-    {
-        //アプリケーションの終了
-        Application.Quit();
-    }
+    //private void EndEndDialog_SceneMove()
+    //{
+    //    //アプリケーションの終了
+    //    Application.Quit();
+    //}
 }

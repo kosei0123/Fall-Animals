@@ -80,7 +80,7 @@ public class SoundManager : MonoBehaviour
 
         //バトルシーンへの遷移
         if ((beforeScene == "WaitingRoom" && currentScene.name == "BattleScene")
-            || (beforeScene == "Menu" && currentScene.name == "BattleScene(offline)"))
+            || (beforeScene == "WaitingRoom(offline)" && currentScene.name == "BattleScene(offline)"))
         {
             BGM_Menu.Stop();
             BGM_Battle.Play();

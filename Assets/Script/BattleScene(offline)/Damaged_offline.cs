@@ -41,6 +41,12 @@ public class Damaged_offline : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        //衝突後回転する
+        if (battleScene_offlineManager.battleFinishFlag == true)
+        {
+            this.transform.Rotate(new Vector3(0, 10.0f, 0));
+        }
+
     }
 
     //オブジェクトと接触した瞬間に呼び出される

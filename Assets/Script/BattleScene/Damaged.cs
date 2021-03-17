@@ -33,6 +33,11 @@ public class Damaged : MonoBehaviour
             PhotonNetwork.Destroy(this.gameObject);
         }
 
+        //衝突後回転する
+        if (pun2Script.battleFinishFlag == true)
+        {
+            this.transform.Rotate(new Vector3(0, 10.0f, 0));
+        }
 
         //自分の操作キャラでなければ抜ける
         if (characterMainMove.onlineflag == false)

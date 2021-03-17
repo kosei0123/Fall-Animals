@@ -47,7 +47,7 @@ public class EndDialog_offline : MonoBehaviour
         }
         else
         {
-            RewardAdvertisingButton.interactable = false;
+            //RewardAdvertisingButton.interactable = false;
         }
     }
 
@@ -79,12 +79,12 @@ public class EndDialog_offline : MonoBehaviour
     }
 
     //ダイアログの「終了」選択
-    public void OnClick_EndButton()
-    {
-        //SEの使用
-        soundManager.SEManager("Button_sound1");
+    //public void OnClick_EndButton()
+    //{
+    //    //SEの使用
+    //    soundManager.SEManager("Button_sound1");
 
-        //アプリケーションの終了
-        Application.Quit();
-    }
+    //    //アプリケーションの終了
+    //    Application.Quit();
+    //}
 }

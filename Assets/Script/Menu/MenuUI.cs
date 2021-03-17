@@ -87,6 +87,7 @@ public class MenuUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         //回転可能にする
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         Screen.orientation = ScreenOrientation.AutoRotation;
@@ -112,8 +113,6 @@ public class MenuUI : MonoBehaviour
         if (SelectCharacterUI.animalName == null)
         {
             SelectCharacterUI.animalName = "Dog";
-            menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Dog"), new Vector3(1.0f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
-            menuAnimal.name = "Dog";
         }
 
         //選択された動物の表示
@@ -224,34 +223,12 @@ public class MenuUI : MonoBehaviour
     //ベストタイムスコアを取得
     private void SelectCharacterBestTimeGet()
     {
-        //キリン
-        if (!PlayerPrefs.HasKey("BestTime_Giraffe"))
+        if (!PlayerPrefs.HasKey("BestTime_Giraffe") || !PlayerPrefs.HasKey("BestTime_Elephant") || !PlayerPrefs.HasKey("BestTime_Dog") || !PlayerPrefs.HasKey("BestTime_Tiger"))
         {
-            PlayerPrefs.SetInt("BestTime_Giraffe", 0);
             //mobile backendに接続しベストタイムを初期登録する
-            userAuth.firstSetBestTime("Giraffe");
+            userAuth.firstSetBestTime();
         }
-        //象
-        if (!PlayerPrefs.HasKey("BestTime_Elephant"))
-        {
-            PlayerPrefs.SetInt("BestTime_Elephant", 0);
-            //mobile backendに接続しベストタイムを初期登録する
-            userAuth.firstSetBestTime("Elephant");
-        }
-        //犬
-        if (!PlayerPrefs.HasKey("BestTime_Dog"))
-        {
-            PlayerPrefs.SetInt("BestTime_Dog", 0);
-            //mobile backendに接続しベストタイムを初期登録する
-            userAuth.firstSetBestTime("Dog");
-        }
-        //虎
-        if (!PlayerPrefs.HasKey("BestTime_Tiger"))
-        {
-            PlayerPrefs.SetInt("BestTime_Tiger", 0);
-            //mobile backendに接続しベストタイムを初期登録する
-            userAuth.firstSetBestTime("Tiger");
-        }
+        
     }
 
     //LoginBounusYesButtonボタンを押した時の挙動
@@ -268,7 +245,7 @@ public class MenuUI : MonoBehaviour
         
         //オンラインtop30
         userAuth.TopRankers();
-        //オフラインtop30
+        //オフラインtop15
         OfflineRankingAnimalNameText.text = "Giraffe";
         userAuth.TopOfflineRankers("Giraffe");
         
@@ -302,7 +279,8 @@ public class MenuUI : MonoBehaviour
             if (OfflineRankingDogNameText.text == "")
             {
                 userAuth.TopOfflineRankers("Dog");
-            }            //ランキングテキストを表示/非表示にする
+            }
+            //ランキングテキストを表示/非表示にする
             OfflineRankingDogNameTextGameObject.SetActive(true);
             OfflineRankingElephantNameTextGameObject.SetActive(false);
         }
@@ -411,7 +389,7 @@ public class MenuUI : MonoBehaviour
         }
 
         //画面遷移
-        SceneManager.LoadScene("BattleScene(offline)");
+        SceneManager.LoadScene("WaitingRoom(offline)");
     }
 
     //オンラインボタンを押した際の挙動
