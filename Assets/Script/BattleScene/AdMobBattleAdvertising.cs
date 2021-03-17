@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using UnityEngine.UI;
+using System;
 
 public class AdMobBattleAdvertising : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class AdMobBattleAdvertising : MonoBehaviour
     SoundManager soundManager;
     //MoveScreenTimerの定数を使う
     MoveScreenTimer moveScreenTimer;
+
 
     //1度広告を見たらボタンを押下できないようにする
     [SerializeField]
@@ -52,6 +54,9 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //広告ユニットIDを指定してrewardedAdをインスタンス化する
         this.rewardedAd = new RewardedAd(adUnitId);
 
+        //Close時の処理
+        this.rewardedAd.OnAdClosed += HandleRewardBasedVideoClosed;
+
         //動画の視聴が完了したら「HandleUserEarnedReward」を呼ぶ
         this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
 
@@ -84,17 +89,24 @@ public class AdMobBattleAdvertising : MonoBehaviour
         ShowReward();
     }
 
-    //動画の視聴が完了したら実行される
-    public void HandleUserEarnedReward(object sender, Reward args)
+    //Close時の処理
+    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
-        //再度コインを獲得する
-        endDialog.DialogPanelActive(pun2Script.battleRanking);
         //シーン移動可能
         moveScreenTimer.moveScreenFlag = true;
         //横向き固定にする
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
+    }
+
+    //動画の視聴が完了したら実行される
+    public void HandleUserEarnedReward(object sender, Reward args)
+    {
+        //再度コインを獲得する
+        endDialog.DialogPanelActive(pun2Script.battleRanking);
+        //横向き固定にする
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame
