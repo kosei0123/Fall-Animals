@@ -82,8 +82,6 @@ public class AdMobBattleAdvertising : MonoBehaviour
 
         //広告を流す
         ShowReward();
-        //ボタン押下不可にする
-        RewardAdvertisingButton.interactable = false;
     }
 
     //動画の視聴が完了したら実行される
@@ -95,6 +93,8 @@ public class AdMobBattleAdvertising : MonoBehaviour
         moveScreenTimer.moveScreenFlag = true;
         //横向き固定にする
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        //ボタン押下不可にする
+        RewardAdvertisingButton.interactable = false;
     }
 
     // Update is called once per frame

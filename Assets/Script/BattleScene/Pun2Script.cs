@@ -182,7 +182,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if ((timer.battleTime <= 0 && timer.mugenFlag == false) ||
             (timer.elapsedTime >= 4.0f && (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1))
         {
-            //Check();
+            Check();
         }
 
     }
