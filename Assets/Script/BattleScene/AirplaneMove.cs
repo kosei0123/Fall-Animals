@@ -16,6 +16,9 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     //メッセージの送信に使用される
     PhotonView airplanePhotonView;
 
+    //移譲を1度のみにする
+    private bool NoMasterCliantFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,10 +35,15 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         float randomAirplaneVelocity_Y = Random.Range(-2, 2);
 
         //オーナーの所有権を別オーナーに移譲するようにする
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
         {
-            PhotonView airplanePhotonView = PhotonView.Get(this);
             airplanePhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
         }
 
         //紙飛行機の移動方向に力をかける
@@ -71,10 +79,16 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     void Update()
     {
         //オーナーの所有権を別オーナーに移譲するようにする
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
         {
             //メッセージの送信に使用される
             airplanePhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
         }
 
         //移動方向により向きを変える

@@ -33,6 +33,8 @@ public class SelectCharacterUI : MonoBehaviour
 
     //プレイキャラの名前取得
     public static string animalName;
+    //プレイキャラの名前取得(仮)
+    private static string animalName_Temporary = "Dog";
 
     // Start is called before the first frame update
     void Start()
@@ -59,9 +61,9 @@ public class SelectCharacterUI : MonoBehaviour
             //ボタン選択可
             SelectCharacterOKButton.interactable = true;
             //選択キャラの名前表示
-            SelectCharacterText.text = animalName;
+            SelectCharacterText.text = animalName_Temporary;
             //ベストタイムスコアを表示
-            SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_" + animalName).ToString("") + " 秒";
+            SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_" + animalName_Temporary).ToString("") + " 秒";
         }
 
 
@@ -98,9 +100,7 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
-        animalName = "Giraffe";
-        //ベストタイムスコアを表示
-        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Giraffe").ToString("") + " 秒";
+        animalName_Temporary = "Giraffe";
     }
 
     //Elephantボタン押下した際の処理
@@ -109,9 +109,7 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
-        animalName = "Elephant";
-        //ベストタイムスコアを表示
-        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Elephant").ToString("") + " 秒";
+        animalName_Temporary = "Elephant";
     }
 
     //Dogボタン押下した際の処理
@@ -120,9 +118,7 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
-        animalName = "Dog";
-        //ベストタイムスコアを表示
-        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Dog").ToString("") + " 秒";
+        animalName_Temporary = "Dog";
     }
 
     //Tigerボタン押下した際の処理
@@ -131,9 +127,7 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //プレイキャラの名前取得
-        animalName = "Tiger";
-        //ベストタイムスコアを表示
-        SelectCharacterBestTimeText.text = "ベストタイム : " + PlayerPrefs.GetInt("BestTime_Tiger").ToString("") + " 秒";
+        animalName_Temporary = "Tiger";
     }
 
     //Unityちゃんボタン押下した際の処理
@@ -150,6 +144,8 @@ public class SelectCharacterUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+        //仮で入れていた動物の名前を正式に入力する
+        animalName = animalName_Temporary;
         //画面遷移
         SceneManager.LoadScene("Menu");
     }

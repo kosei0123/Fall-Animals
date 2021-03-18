@@ -16,6 +16,9 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     //メッセージの送信に使用される
     PhotonView rockPhotonView;
 
+    //移譲を1度のみにする
+    private bool NoMasterCliantFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,10 +32,15 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         rockPhotonView = PhotonView.Get(this);
 
         //オーナーの所有権を別オーナーに移譲するようにする
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
         {
-            PhotonView rockPhotonView = PhotonView.Get(this);
             rockPhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
         }
 
         //岩の移動方向に力をかける
@@ -69,10 +77,16 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     {
 
         //オーナーの所有権を別オーナーに移譲するようにする
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true)
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
         {
             //メッセージの送信に使用される
             rockPhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
         }
 
         //一定距離画面から離れたら消去する

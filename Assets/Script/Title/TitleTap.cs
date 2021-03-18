@@ -23,6 +23,12 @@ public class TitleTap : MonoBehaviour
     //NewsPanelを表示する
     [SerializeField]
     private GameObject NewsPanel;
+    //TermsOfServicePanelを表示する
+    [SerializeField]
+    private GameObject TermsOfServicePanel;
+    //CreditPanelを表示する
+    [SerializeField]
+    private GameObject CreditPanel;
 
     //ボタンを押した後のインターバル
     private float TitleNextInterval = 0;
@@ -41,8 +47,6 @@ public class TitleTap : MonoBehaviour
 
         //mobile backendに接続し、ログアウトする
         userAuth.logOut();
-
-
     }
 
     // Update is called once per frame
@@ -83,8 +87,15 @@ public class TitleTap : MonoBehaviour
         //オブジェクトの消去
         //Destroy(titleManager.titleAnimal);
         //Destroy(titleManager.titleRock);
-        adMobTitleAdvertinsing.bannerView.Hide();
-        adMobTitleAdvertinsing.bannerView.Destroy();
+
+        //広告解除していない場合
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        {
+            adMobTitleAdvertinsing.bannerView.Hide();
+            adMobTitleAdvertinsing.bannerView.Destroy();
+        }
+        
+
         //SEの使用
         soundManager.SEManager("Title_sound1");
 
@@ -118,6 +129,38 @@ public class TitleTap : MonoBehaviour
     {
         //NewsPanelを非表示にする
         NewsPanel.SetActive(false);
+        //すぐに次のシーンに行かないようにする
+        TitleNextInterval = 0.3f;
+    }
+
+    //TermsOfServiceButton押下時
+    public void OnClick_TermsOfServiceButton()
+    {
+        //TermsOfServicePanelを表示する
+        TermsOfServicePanel.SetActive(true);
+    }
+
+    //TermsOfServiceCloseButton押下時
+    public void OnClick_TermsOfServiceCloseButton()
+    {
+        //TermsOfServicePanelを非表示にする
+        TermsOfServicePanel.SetActive(false);
+        //すぐに次のシーンに行かないようにする
+        TitleNextInterval = 0.3f;
+    }
+
+    //CreditButton押下時
+    public void OnClick_CreditButton()
+    {
+        //CreditPanelを表示する
+        CreditPanel.SetActive(true);
+    }
+
+    //CreditCloseButton押下時
+    public void OnClick_CreditCloseButton()
+    {
+        //CreditPanelを非表示にする
+        CreditPanel.SetActive(false);
         //すぐに次のシーンに行かないようにする
         TitleNextInterval = 0.3f;
     }
