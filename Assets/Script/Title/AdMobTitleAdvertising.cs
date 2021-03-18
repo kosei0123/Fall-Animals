@@ -13,14 +13,26 @@ public class AdMobTitleAdvertising : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //PlayerPrefs.DeleteKey("Unlock_TitleAdvertising");
+
+        //タイトル広告解除初期値
+        if (!PlayerPrefs.HasKey("Unlock_TitleAdvertising"))
+        {
+            PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
+        }
+
         // アプリID(不要)
         // Initialize the Google Mobile Ads SDK.
         //string appId = "あなたのアプリID";
 
         //アプリ起動時に必ず一回実行(ここでやるため他のスクリプトでやる必要なし)
         MobileAds.Initialize(initStatas => { });
-        //RequestBanner()関数を呼ぶ
-        RequestBanner();
+
+        //広告解除していない場合、RequestBanner()関数を呼ぶ
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        {
+            RequestBanner();
+        }
     }
     private void RequestBanner()
     {

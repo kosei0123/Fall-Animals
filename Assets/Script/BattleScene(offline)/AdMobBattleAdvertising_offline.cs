@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using UnityEngine.UI;
+using System;
 
 public class AdMobBattleAdvertising_offline : MonoBehaviour
 {
@@ -52,6 +53,15 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         //広告ユニットIDを指定してrewardedAdをインスタンス化する
         this.rewardedAd = new RewardedAd(adUnitId);
 
+        //広告が読み込まれた時
+        //this.rewardedAd.OnAdLoaded += HandleOnAdLoaded;
+
+        //広告が画面いっぱいに表示された時
+        //this.rewardedAd.OnAdOpening += HandleOnAdOpened;
+
+        //Close時の処理
+        this.rewardedAd.OnAdClosed += HandleRewardBasedVideoClosed;
+
         //動画の視聴が完了したら「HandleUserEarnedReward」を呼ぶ
         this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
 
@@ -84,11 +94,24 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         ShowReward();
     }
 
-    //動画の視聴が完了したら実行される
-    public void HandleUserEarnedReward(object sender, Reward args)
+    //広告が読み込まれた時
+    //public void HandleOnAdLoaded(object sender, EventArgs args)
+    //{
+    //    //横向き固定にする
+    //    Screen.orientation = ScreenOrientation.LandscapeLeft;
+    //}
+
+    //広告が画面いっぱいに表示された時
+    //public void HandleOnAdOpened(object sender, EventArgs args)
+    //{
+    //    //横向き固定にする
+    //    Screen.orientation = ScreenOrientation.LandscapeLeft;
+    //}
+
+
+    //Close時の処理
+    public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
-        //再度コインを獲得する
-        endDialog_offline.DialogPanelActive(battleScene_offlineManager.timeRanking);
         //シーン移動可能
         moveScreenTimer_offline.moveScreenFlag = true;
         //横向き固定にする
@@ -97,9 +120,18 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         RewardAdvertisingButton.interactable = false;
     }
 
+    //動画の視聴が完了したら実行される
+    public void HandleUserEarnedReward(object sender, Reward args)
+    {
+        //再度コインを獲得する
+        endDialog_offline.DialogPanelActive(battleScene_offlineManager.timeRanking);
+        //横向き固定にする
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
+
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 }

@@ -22,16 +22,49 @@ public class CoinMove : MonoBehaviour
     [SerializeField]
     private Text CoinText;
 
+    //メッセージの送信に使用される
+    PhotonView coinPhotonView;
+
+    //移譲を1度のみにする
+    private bool NoMasterCliantFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //メッセージの送信に使用される
+        coinPhotonView = PhotonView.Get(this);
+
+        //オーナーの所有権を別オーナーに移譲するようにする
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
+        {
+            coinPhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //オーナーの所有権を別オーナーに移譲するようにする
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == true && NoMasterCliantFlag == true)
+        {
+            coinPhotonView.RequestOwnership();
+            //1度のみ実行
+            NoMasterCliantFlag = false;
+        }
+        else if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["NoMasterCliant"] == false)
+        {
+            NoMasterCliantFlag = true;
+        }
+
         //テキストの位置
         CoinText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
 

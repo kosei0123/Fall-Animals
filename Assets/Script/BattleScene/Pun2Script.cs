@@ -573,12 +573,6 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     {
         //画面遷移
         SceneManager.LoadScene("Menu");
-
-        //Photonに接続を解除する
-        if (PhotonNetwork.IsConnected == true)
-        {
-            PhotonNetwork.Disconnect();
-        }
     }
 
 

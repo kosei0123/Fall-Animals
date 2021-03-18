@@ -18,6 +18,9 @@ public class UnlockUI : MonoBehaviour
     //ステージスクロールビュー
     [SerializeField]
     private GameObject StageScrollView;
+    //その他スクロールビュー
+    [SerializeField]
+    private GameObject OtherScrollView;
 
     //キリン
     //購入ボタン
@@ -49,6 +52,16 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject TigerBuyDonePanel;
+    //タイトル広告解除
+    //購入ボタン
+    [SerializeField]
+    private Button TitleAdvertisingBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text TitleAdvertisingBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject TitleAdvertisingBuyDonePanel;
 
     //BuyPanel
     [SerializeField]
@@ -58,7 +71,7 @@ public class UnlockUI : MonoBehaviour
     private GameObject BuyDonePanel;
 
     //どの動物をアンロックさせるか
-    private string unlockAnimal;
+    private string unlockName;
 
     //値段
     //キリン
@@ -67,6 +80,8 @@ public class UnlockUI : MonoBehaviour
     private int elephantPrice = 4000;
     //虎
     private int tigerPrice = 5000;
+    //タイトル広告解除
+    private int titleAdvertisingPrice = 50000;
 
     // Start is called before the first frame update
     void Start()
@@ -77,13 +92,12 @@ public class UnlockUI : MonoBehaviour
         //初期表示はキャラクタースクロールビューを表示させておく
         CharacterScrollView.SetActive(true);
         StageScrollView.SetActive(false);
-
+        OtherScrollView.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         //Buyボタンの押下可能条件
         CheckBuy();
         //表示値段の取得
@@ -125,6 +139,16 @@ public class UnlockUI : MonoBehaviour
         {
             TigerBuyButton.interactable = false;
         }
+
+        //タイトル広告解除
+        if (PlayerPrefs.GetInt("myCoin") > titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        {
+            TitleAdvertisingBuyButton.interactable = true;
+        }
+        else
+        {
+            TitleAdvertisingBuyButton.interactable = false;
+        }
     }
 
     //表示値段の取得
@@ -136,6 +160,9 @@ public class UnlockUI : MonoBehaviour
         ElephantBuyText.text = elephantPrice.ToString("");
         //虎
         TigerBuyText.text = tigerPrice.ToString("");
+
+        //タイトル広告解除
+        TitleAdvertisingBuyText.text = titleAdvertisingPrice.ToString("");
     }
 
     //動物購入済みかを確認
@@ -168,6 +195,16 @@ public class UnlockUI : MonoBehaviour
         {
             TigerBuyDonePanel.SetActive(false);
         }
+
+        //タイトル広告解除
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 1)
+        {
+            TitleAdvertisingBuyDonePanel.SetActive(true);
+        }
+        else
+        {
+            TitleAdvertisingBuyDonePanel.SetActive(false);
+        }
     }
 
 
@@ -176,6 +213,7 @@ public class UnlockUI : MonoBehaviour
     {
         CharacterScrollView.SetActive(true);
         StageScrollView.SetActive(false);
+        OtherScrollView.SetActive(false);
         //SEの使用
         soundManager.SEManager("Button_sound1");
     }
@@ -185,6 +223,17 @@ public class UnlockUI : MonoBehaviour
     {
         CharacterScrollView.SetActive(false);
         StageScrollView.SetActive(true);
+        OtherScrollView.SetActive(false);
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+    }
+
+    //OtherButtonボタンを押した際の挙動
+    public void OnClick_OtherButton()
+    {
+        CharacterScrollView.SetActive(false);
+        StageScrollView.SetActive(false);
+        OtherScrollView.SetActive(true);
         //SEの使用
         soundManager.SEManager("Button_sound1");
     }
@@ -195,7 +244,7 @@ public class UnlockUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //象を指定する
-        unlockAnimal = "Girrafe";
+        unlockName = "Girrafe";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
@@ -206,7 +255,7 @@ public class UnlockUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //象を指定する
-        unlockAnimal = "Elephant";
+        unlockName = "Elephant";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
@@ -217,7 +266,18 @@ public class UnlockUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //象を指定する
-        unlockAnimal = "Tiger";
+        unlockName = "Tiger";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
+    //
+    public void OnClick_TitleAdvertisingBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //象を指定する
+        unlockName = "TitleAdvertising";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
@@ -229,7 +289,7 @@ public class UnlockUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
 
         //アンロックする
-        switch (unlockAnimal)
+        switch (unlockName)
         {
             //キリン
             case "Girrafe":
@@ -251,6 +311,13 @@ public class UnlockUI : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_Tiger", 1);
                 //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - tigerPrice);
+                break;
+            //タイトル広告解除
+            case "TitleAdvertising":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_TitleAdvertising", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - titleAdvertisingPrice);
                 break;
             default:
                 break;

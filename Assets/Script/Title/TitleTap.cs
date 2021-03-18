@@ -20,6 +20,19 @@ public class TitleTap : MonoBehaviour
     [SerializeField]
     private Text TapText;
 
+    //NewsPanelを表示する
+    [SerializeField]
+    private GameObject NewsPanel;
+    //TermsOfServicePanelを表示する
+    [SerializeField]
+    private GameObject TermsOfServicePanel;
+    //CreditPanelを表示する
+    [SerializeField]
+    private GameObject CreditPanel;
+
+    //ボタンを押した後のインターバル
+    private float TitleNextInterval = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +47,6 @@ public class TitleTap : MonoBehaviour
 
         //mobile backendに接続し、ログアウトする
         userAuth.logOut();
-
-
     }
 
     // Update is called once per frame
@@ -43,35 +54,22 @@ public class TitleTap : MonoBehaviour
     {
         //テキストの点滅表示を行う
         TapText.color = GetAlphaColor(TapText.color);
+        //ボタン押下後設定したインターバルを減らしていく
+        TitleNextInterval -= Time.deltaTime;
 
         //画面のどこかをタップした際の動作
-        if (Input.GetMouseButtonUp(0))
-        {
-            //オブジェクトの消去
-            //Destroy(titleManager.titleAnimal);
-            //Destroy(titleManager.titleRock);
-            adMobTitleAdvertinsing.bannerView.Hide();
-            adMobTitleAdvertinsing.bannerView.Destroy();
-            //SEの使用
-            soundManager.SEManager("Title_sound1");
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    //Rayを発射
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit2D hit2D = Physics2D.Raycast((Vector2)Input.mousePosition, (Vector2)ray.direction);
 
-            //PlayerPrefs.DeleteKey("NickName");
-            //デバイスにニックネームが保持されているか確認
-            if (!PlayerPrefs.HasKey("NickName"))
-            {
-                //ニックネームが登録されていない場合
-                //画面遷移
-                SceneManager.LoadScene("SelectPlayerName");
-            }
-            else
-            {
-                //ニックネームが登録されている場合
-                //ログイン
-                FindObjectOfType<UserAuth>().login(PlayerPrefs.GetString("NickName"));
-                //画面遷移
-                SceneManager.LoadScene("Menu");
-            }
-        }
+        //    //ボタン押下でなければ、スクリーンタッチ時のイベント
+        //    if (!hit2D && TitleNextInterval <= 0)
+        //    {
+        //        ScreenEvent();
+        //    }
+        //}
     }
 
     //テキストの点滅表示を行う関数
@@ -81,5 +79,89 @@ public class TitleTap : MonoBehaviour
         color.a = (Mathf.Sin(Time.time * 2) / 2) + 0.5f;
 
         return color;
+    }
+
+    //スクリーンボタン時の挙動
+    public void OnClick_ScreenEventButton()
+    {
+        //オブジェクトの消去
+        //Destroy(titleManager.titleAnimal);
+        //Destroy(titleManager.titleRock);
+
+        //広告解除していない場合
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        {
+            adMobTitleAdvertinsing.bannerView.Hide();
+            adMobTitleAdvertinsing.bannerView.Destroy();
+        }
+        
+
+        //SEの使用
+        soundManager.SEManager("Title_sound1");
+
+        //PlayerPrefs.DeleteKey("NickName");
+        //デバイスにニックネームが保持されているか確認
+        if (!PlayerPrefs.HasKey("NickName"))
+        {
+            //ニックネームが登録されていない場合
+            //画面遷移
+            SceneManager.LoadScene("SelectPlayerName");
+        }
+        else
+        {
+            //ニックネームが登録されている場合
+            //ログイン
+            FindObjectOfType<UserAuth>().login(PlayerPrefs.GetString("NickName"));
+            //画面遷移
+            SceneManager.LoadScene("Menu");
+        }
+    }
+
+    //NewsButton押下時
+    public void OnClick_NewsButton()
+    {
+        //NewsPanelを表示する
+        NewsPanel.SetActive(true);
+    }
+
+    //NewsCloseButton押下時
+    public void OnClick_NewsCloseButton()
+    {
+        //NewsPanelを非表示にする
+        NewsPanel.SetActive(false);
+        //すぐに次のシーンに行かないようにする
+        TitleNextInterval = 0.3f;
+    }
+
+    //TermsOfServiceButton押下時
+    public void OnClick_TermsOfServiceButton()
+    {
+        //TermsOfServicePanelを表示する
+        TermsOfServicePanel.SetActive(true);
+    }
+
+    //TermsOfServiceCloseButton押下時
+    public void OnClick_TermsOfServiceCloseButton()
+    {
+        //TermsOfServicePanelを非表示にする
+        TermsOfServicePanel.SetActive(false);
+        //すぐに次のシーンに行かないようにする
+        TitleNextInterval = 0.3f;
+    }
+
+    //CreditButton押下時
+    public void OnClick_CreditButton()
+    {
+        //CreditPanelを表示する
+        CreditPanel.SetActive(true);
+    }
+
+    //CreditCloseButton押下時
+    public void OnClick_CreditCloseButton()
+    {
+        //CreditPanelを非表示にする
+        CreditPanel.SetActive(false);
+        //すぐに次のシーンに行かないようにする
+        TitleNextInterval = 0.3f;
     }
 }
