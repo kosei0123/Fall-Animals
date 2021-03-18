@@ -157,7 +157,7 @@ public class MenuUI : MonoBehaviour
         }
         else
         {
-            WinCountText.text = "Win　" + PlayerPrefs.GetInt("WinCount").ToString("");
+            WinCountText.text = PlayerPrefs.GetInt("WinCount").ToString("");
         }
 
         //日付の確認
