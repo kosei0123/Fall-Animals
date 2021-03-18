@@ -58,18 +58,18 @@ public class TitleTap : MonoBehaviour
         TitleNextInterval -= Time.deltaTime;
 
         //画面のどこかをタップした際の動作
-        if (Input.GetMouseButtonUp(0))
-        {
-            //Rayを発射
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit2D = Physics2D.Raycast((Vector2)Input.mousePosition, (Vector2)ray.direction);
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    //Rayを発射
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit2D hit2D = Physics2D.Raycast((Vector2)Input.mousePosition, (Vector2)ray.direction);
 
-            //ボタン押下でなければ、スクリーンタッチ時のイベント
-            if (!hit2D && TitleNextInterval <= 0)
-            {
-                ScreenEvent();
-            }
-        }
+        //    //ボタン押下でなければ、スクリーンタッチ時のイベント
+        //    if (!hit2D && TitleNextInterval <= 0)
+        //    {
+        //        ScreenEvent();
+        //    }
+        //}
     }
 
     //テキストの点滅表示を行う関数
@@ -81,8 +81,8 @@ public class TitleTap : MonoBehaviour
         return color;
     }
 
-    //スクリーンタッチ時の挙動
-    private void ScreenEvent()
+    //スクリーンボタン時の挙動
+    public void OnClick_ScreenEventButton()
     {
         //オブジェクトの消去
         //Destroy(titleManager.titleAnimal);
