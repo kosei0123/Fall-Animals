@@ -120,6 +120,8 @@ public class TitleTap : MonoBehaviour
     //NewsButton押下時
     public void OnClick_NewsButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //NewsPanelを表示する
         NewsPanel.SetActive(true);
     }
@@ -127,6 +129,8 @@ public class TitleTap : MonoBehaviour
     //NewsCloseButton押下時
     public void OnClick_NewsCloseButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //NewsPanelを非表示にする
         NewsPanel.SetActive(false);
         //すぐに次のシーンに行かないようにする
@@ -134,15 +138,19 @@ public class TitleTap : MonoBehaviour
     }
 
     //TermsOfServiceButton押下時
-    public void OnClick_TermsOfServiceButton()
+    public void OnClick_PrivacyPolicyButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //TermsOfServicePanelを表示する
         TermsOfServicePanel.SetActive(true);
     }
 
     //TermsOfServiceCloseButton押下時
-    public void OnClick_TermsOfServiceCloseButton()
+    public void OnClick_PrivacyPolicyCloseButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //TermsOfServicePanelを非表示にする
         TermsOfServicePanel.SetActive(false);
         //すぐに次のシーンに行かないようにする
@@ -152,6 +160,8 @@ public class TitleTap : MonoBehaviour
     //CreditButton押下時
     public void OnClick_CreditButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //CreditPanelを表示する
         CreditPanel.SetActive(true);
     }
@@ -159,6 +169,8 @@ public class TitleTap : MonoBehaviour
     //CreditCloseButton押下時
     public void OnClick_CreditCloseButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
         //CreditPanelを非表示にする
         CreditPanel.SetActive(false);
         //すぐに次のシーンに行かないようにする

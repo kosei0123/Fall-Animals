@@ -606,7 +606,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -560, y: -275}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &408430686
 MonoBehaviour:
@@ -903,7 +903,7 @@ GameObject:
   - component: {fileID: 498350058}
   - component: {fileID: 498350057}
   m_Layer: 5
-  m_Name: NewsPanel
+  m_Name: CreditPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1779,7 +1779,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5229\u7528\u898F\u7D04"
+  m_Text: "\u30D7\u30E9\u30A4\u30D0\u30B7\u30FC\n\u30DD\u30EA\u30B7\u30FC"
 --- !u!222 &699133178
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3142,7 +3142,7 @@ GameObject:
   - component: {fileID: 1160647645}
   - component: {fileID: 1160647644}
   m_Layer: 5
-  m_Name: NewsCloseButton
+  m_Name: CreditCloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3400,7 +3400,7 @@ GameObject:
   - component: {fileID: 1174197386}
   - component: {fileID: 1174197389}
   m_Layer: 5
-  m_Name: TermsOfServiceButton
+  m_Name: PrivacyPolicyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3423,8 +3423,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -450, y: -275}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -420, y: -275}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174197386
 MonoBehaviour:
@@ -3471,7 +3471,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1261652671}
         m_TargetAssemblyTypeName: TitleTap, Assembly-CSharp
-        m_MethodName: OnClick_TermsOfServiceButton
+        m_MethodName: OnClick_PrivacyPolicyButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3889,7 +3889,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n\u5229\u7528\u898F\u7D04\n\n\u30FBLifeEye(\u4EE5\u4E0B\u5F53\u65B9)\u306F\u3001\u4EE5\u4E0B\u306E\u901A\u308A\u500B\u4EBA\u60C5\u5831\u4FDD\u8B77\u65B9\u91DD\u3092\u5B9A\u3081\u3001\u305D\u306E\u91CD\u8981\u6027\u3092\u8A8D\u8B58\u3059\u308B\u3053\u3068\u3067\u3001\u500B\u4EBA\u60C5\u5831\u306E\u4FDD\u8B77\u3092\u63A8\u9032\u3057\u3066\u307E\u3044\u308A\u307E\u3059\n\n\u30FB\u304A\u554F\u3044\u5408\u308F\u305B\nLifeEye\nMail:\n"
+  m_Text: "\n\u30D7\u30E9\u30A4\u30D0\u30B7\u30FC\u30DD\u30EA\u30B7\u30FC\n\n\u30FB\u30E9\u30A4\u30D5\u30A2\u30A4(\u4EE5\u4E0B\u5F53\u65B9)\u306F\u3001\u4EE5\u4E0B\u306E\u901A\u308A\u500B\u4EBA\u60C5\u5831\u4FDD\u8B77\u65B9\u91DD\u3092\u5B9A\u3081\u3001\u305D\u306E\u91CD\u8981\u6027\u3092\u8A8D\u8B58\u3059\u308B\u3053\u3068\u3067\u3001\u500B\u4EBA\u60C5\u5831\u306E\u4FDD\u8B77\u3092\u63A8\u9032\u3057\u3066\u307E\u3044\u308A\u307E\u3059\n\n\u30FB\u304A\u554F\u3044\u5408\u308F\u305B\n\u30E9\u30A4\u30D5\u30A2\u30A4\nMail:\n"
 --- !u!222 &1274399494
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3911,7 +3911,7 @@ GameObject:
   - component: {fileID: 1332820606}
   - component: {fileID: 1332820605}
   m_Layer: 5
-  m_Name: TermsOfServicePanel
+  m_Name: PrivacyPolicyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4112,7 +4112,7 @@ GameObject:
   - component: {fileID: 1396671195}
   - component: {fileID: 1396671194}
   m_Layer: 5
-  m_Name: NewsPanel
+  m_Name: PrivacyPolicyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4685,7 +4685,7 @@ GameObject:
   - component: {fileID: 1688751833}
   - component: {fileID: 1688751832}
   m_Layer: 5
-  m_Name: NewsCloseButton
+  m_Name: PrivacyPolicyCloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4756,7 +4756,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1261652671}
         m_TargetAssemblyTypeName: TitleTap, Assembly-CSharp
-        m_MethodName: OnClick_TermsOfServiceCloseButton
+        m_MethodName: OnClick_PrivacyPolicyCloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5107,8 +5107,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -340, y: -275}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -280, y: -275}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1964446604
 MonoBehaviour:
