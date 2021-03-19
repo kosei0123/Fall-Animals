@@ -8,17 +8,41 @@ public class UnityIAPUI : MonoBehaviour
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
 
+    //スクロールパネルGameObjectの取得
+    [SerializeField]
+    private GameObject BillingListScrollView;
+
+    //スクロールパネルを動的に動かす
+    RectTransform rectTransform;
+    private float rectHeight = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+        //FPSを60に設定
+        Application.targetFrameRate = 60;
+
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //スクロールパネルのRectTransformの変更
+        rectTransform = BillingListScrollView.GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //スクロールパネルを動的に動かす(10倍速)
+        if (rectHeight < 500.0f)
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                if (rectHeight < 500.0f) rectHeight++;
+            }
+        }
+            
+
+        rectTransform.sizeDelta = new Vector2(800.0f, rectHeight);
     }
 
     //メニューに戻るボタン押下

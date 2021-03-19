@@ -15,10 +15,15 @@ public class IAPExample : MonoBehaviour, IStoreListener
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
 
-    //コイン2000枚購入ボタン
-    public Button BuyCoin5000Button;
+    //コイン5000枚購入ボタン
+    [SerializeField]
+    private Button BuyCoin5000Button;
+    //コイン30000枚購入ボタン
+    [SerializeField]
+    private Button BuyCoin30000Button;
     //メニューに戻るボタン
-    public Button MenuButton;
+    [SerializeField]
+    private Button MenuButton;
 
     //表示するテキスト
     //public Text receiptText;
@@ -29,6 +34,11 @@ public class IAPExample : MonoBehaviour, IStoreListener
     private Text Announce2Text;
     [SerializeField]
     private Text AnnounceResultText;
+
+    [SerializeField]
+    private Text Price5000Text;
+    [SerializeField]
+    private Text Price30000Text;
 
     ConfigurationBuilder builder;
     private List<CatalogItem> Catalog;
@@ -55,6 +65,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
             //ボタン押下不可
             BuyCoin5000Button.interactable = false;
+            BuyCoin30000Button.interactable = false;
 
             return;
         }
@@ -63,6 +74,24 @@ public class IAPExample : MonoBehaviour, IStoreListener
         AnnounceText.text = "";
         //ボタン押下可にする
         BuyCoin5000Button.interactable = true;
+        BuyCoin30000Button.interactable = true;
+
+
+        if(storeController != null)
+        {
+            foreach (var product in storeController.products.all)
+            {
+                if (product.definition.id == "coin_bundle_ID")
+                {
+                    Price5000Text.text = product.metadata.localizedPriceString;
+                }
+                else if (product.definition.id == "coin_bundle2_ID")
+                {
+                    Price30000Text.text = product.metadata.localizedPriceString;
+                }
+            }
+        }
+        
 
         //foreach (var item in Catalog)
         //{
@@ -231,6 +260,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
             }
+            else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 30000);
+            }
 
             //メニュー遷移ボタンを押下可にする
             MenuButton.interactable = true;
@@ -268,6 +301,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
             if (e.purchasedProduct.definition.id == "coin_bundle_ID")
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
+            }
+            else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 30000);
             }
 
             //メニュー遷移ボタンを押下可にする
@@ -332,7 +369,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
     }
 
 
-    //コイン2000枚購入ボタン押下
+    //コイン5000枚購入ボタン押下
     public void OnClick_BuyCoin5000Button()
     {
         //SEの使用
@@ -340,7 +377,23 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         foreach (var item in Catalog)
         {
+            
             if (item.ItemId == "coin_bundle_ID")
+            {
+                BuyProductID(item.ItemId);
+            }
+        }
+    }
+
+    //コイン30000枚購入ボタン押下
+    public void OnClick_BuyCoin30000Button()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
+        foreach (var item in Catalog)
+        {
+            if (item.ItemId == "coin_bundle2_ID")
             {
                 BuyProductID(item.ItemId);
             }
