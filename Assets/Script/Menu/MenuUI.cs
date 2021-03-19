@@ -313,6 +313,12 @@ public class MenuUI : MonoBehaviour
         else if (OfflineRankingAnimalNameText.text == "Elephant")
         {
             OfflineRankingAnimalNameText.text = "Giraffe";
+
+            //初回のみランキング取得
+            if (OfflineRankingGiraffeNameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Giraffe");
+            }
             //ランキングテキストを表示/非表示にする
             OfflineRankingGiraffeNameTextGameObject.SetActive(true);
             OfflineRankingElephantNameTextGameObject.SetActive(false);
@@ -348,6 +354,13 @@ public class MenuUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+
+        //初回のみランキング取得
+        if (WinCountRankingNameText.text == "")
+        {
+            userAuth.TopRankers();
+        }
+
         //パネルの表示非表示
         OfflineRankingChildPanel.SetActive(false);
         WinCountRankingChildPanel.SetActive(true);
