@@ -1,24 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour
 {
+    /*
     //キリンオブジェクト
     public GameObject titleAnimal;
     //岩オブジェクト
     public GameObject titleRock;
+    */
+
+    [SerializeField]
+    private Text newsText = default;
+
+    [SerializeField]
+    private TextAsset newsDocument = default;
+
+    [SerializeField]
+    private Text policyText = default;
+
+    [SerializeField]
+    private TextAsset policyDocument = default;
+
+    [SerializeField]
+    private Text creditText = default;
+
+    [SerializeField]
+    private TextAsset creditDocument = default;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        newsText.text = newsDocument.text;
+        policyText.text = policyDocument.text;
+        creditText.text = creditDocument.text;
 
         //キリンオブジェクトの生成
         //titleAnimal = (GameObject)Instantiate(Resources.Load("Title/TitleGiraffe"), new Vector3(-4.5f, 1.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
     }
 
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -35,4 +59,5 @@ public class TitleManager : MonoBehaviour
             Screen.autorotateToLandscapeLeft = true;
         }
     }
+    */
 }
