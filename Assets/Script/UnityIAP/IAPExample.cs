@@ -20,7 +20,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
     private Button BuyCoin5000Button;
     //コイン30000枚購入ボタン
     [SerializeField]
-    private Button BuyCoin30000Button;
+    private Button BuyCoin15000Button;
     //メニューに戻るボタン
     [SerializeField]
     private Button MenuButton;
@@ -38,7 +38,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
     [SerializeField]
     private Text Price5000Text;
     [SerializeField]
-    private Text Price30000Text;
+    private Text Price15000Text;
 
     ConfigurationBuilder builder;
     private List<CatalogItem> Catalog;
@@ -65,7 +65,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
             //ボタン押下不可
             BuyCoin5000Button.interactable = false;
-            BuyCoin30000Button.interactable = false;
+            BuyCoin15000Button.interactable = false;
 
             return;
         }
@@ -74,7 +74,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
         AnnounceText.text = "";
         //ボタン押下可にする
         BuyCoin5000Button.interactable = true;
-        BuyCoin30000Button.interactable = true;
+        BuyCoin15000Button.interactable = true;
 
 
         if(storeController != null)
@@ -87,7 +87,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
                 }
                 else if (product.definition.id == "coin_bundle2_ID")
                 {
-                    Price30000Text.text = product.metadata.localizedPriceString;
+                    Price15000Text.text = product.metadata.localizedPriceString;
                 }
             }
         }
@@ -262,7 +262,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
             }
             else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
             {
-                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 30000);
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 15000);
             }
 
             //メニュー遷移ボタンを押下可にする
@@ -304,7 +304,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
             }
             else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
             {
-                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 30000);
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 15000);
             }
 
             //メニュー遷移ボタンを押下可にする
