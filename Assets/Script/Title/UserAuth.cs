@@ -169,6 +169,10 @@ public class UserAuth : MonoBehaviour
     /// </summary>
     public void TopRankers()
     {
+        //村上追加分
+        string nickName;
+        int bkIndex;
+
         //MenuUIスクリプトの関数使用
         menuUI = GameObject.Find("Canvas").GetComponent<MenuUI>();
 
@@ -185,15 +189,40 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
+                //for (int i = 0; i < objList.Count; i++)
+                //{
+                //    //ランキング名前の表示
+                //    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
+                //    //ランキング番号の表示
+                //    topRankingNumber[i] += objList[i]["Score"] + "ポイント\n";
+                //    menuUI.WinCountRankingNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+
+                //}
+
+                /* 村上追加分 */
                 for (int i = 0; i < objList.Count; i++)
                 {
-                    //ランキング名前の表示
-                    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
+                    //ランキング追跡中の名前からIDを抜き取る
+                    nickName = (string)objList[i]["Name"];
+                    bkIndex = nickName.LastIndexOf("(");
+
+                    /* 取得成功(名前の後ろに"("有り) */
+                    if (bkIndex != -1)
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
+                    }
+                    else
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName;
+                    }
                     //ランキング番号の表示
                     topRankingNumber[i] += objList[i]["Score"] + "ポイント\n";
                     menuUI.WinCountRankingNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
 
                 }
+                /* ここまで村上追加分 */
             }
             
         });
@@ -204,6 +233,10 @@ public class UserAuth : MonoBehaviour
     /// </summary>
     public void TopOfflineRankers(string animal)
     {
+        //村上追加分
+        string nickName;
+        int bkIndex;
+
         //MenuUIスクリプトの関数使用
         menuUI = GameObject.Find("Canvas").GetComponent<MenuUI>();
 
@@ -220,14 +253,55 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
+                //for (int i = 0; i < objList.Count; i++)
+                //{
+                //    //ランキング名前の表示
+                //    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
+                    
+                //    //ランキング番号の表示
+                //    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒\n";
+                    
+
+                //    //ランキング名前とベストタイムの表示
+                //    switch (animal)
+                //    {
+                //        case "Giraffe":
+                //            menuUI.OfflineRankingGiraffeNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                //            break;
+                //        case "Elephant":
+                //            menuUI.OfflineRankingElephantNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                //            break;
+                //        case "Dog":
+                //            menuUI.OfflineRankingDogNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                //            break;
+                //        case "Tiger":
+                //            menuUI.OfflineRankingTigerNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
+                //            break;
+                //    }
+
+                //}
+
+                /* 村上追加分 */
                 for (int i = 0; i < objList.Count; i++)
                 {
-                    //ランキング名前の表示
-                    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
-                    
+                    //ランキング追跡中の名前からIDを抜き取る
+                    nickName = (string)objList[i]["Name"];
+                    bkIndex = nickName.LastIndexOf("(");
+
+                    /* 取得成功(名前の後ろに"("有り) */
+                    if (bkIndex != -1)
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
+                    }
+                    else
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName;
+                    }
+
                     //ランキング番号の表示
-                    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒\n";
-                    
+                    topRankingNumber[i] += objList[i]["Score"] + "ポイント\n";
 
                     //ランキング名前とベストタイムの表示
                     switch (animal)
@@ -245,8 +319,8 @@ public class UserAuth : MonoBehaviour
                             menuUI.OfflineRankingTigerNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
                             break;
                     }
-
                 }
+                /* ここまで村上追加分 */
             }
 
         });
