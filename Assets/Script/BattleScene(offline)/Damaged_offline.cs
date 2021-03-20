@@ -108,6 +108,8 @@ public class Damaged_offline : MonoBehaviour
         if (PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName) < battleScene_offlineManager.timeRanking)
         {
             PlayerPrefs.SetInt("BestTime_" + SelectCharacterUI.animalName, battleScene_offlineManager.timeRanking);
+            //ベストタイムフラグをtrueに
+            endDialog_offline.bestTimeFlag = true;
             //サーバにオフラインハイスコアを保存
             userAuth.save_Offline();
         }
