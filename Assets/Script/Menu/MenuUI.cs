@@ -45,6 +45,12 @@ public class MenuUI : MonoBehaviour
     //オフラインランキングハイスコア表示
     [SerializeField]
     public Text OfflineRankingHighScoreText;
+    //オンラインタイムランキングユーザー名表示
+    [SerializeField]
+    public Text OnlineRankingUsernameText;
+    //オンラインランキング勝利数表示
+    [SerializeField]
+    public Text OnlineRankingWinCountText;
     ////Giraffe
     ////ベストタイムランキングテキスト表示
     //[SerializeField]
@@ -267,57 +273,44 @@ public class MenuUI : MonoBehaviour
         //ログインボーナスパネルを非表示にする
         LoginBounusPanel.SetActive(false);
 
-        
         //オンラインtop30
         userAuth.TopRankers();
         //オフラインtop15
         OfflineRankingAnimalNameText.text = "Giraffe";
         userAuth.TopOfflineRankers("Giraffe");
-        displayOfflineRankingData("Giraffe");
+        userAuth.TopOfflineRankers("Elephant");
+        userAuth.TopOfflineRankers("Dog");
+        userAuth.TopOfflineRankers("Tiger");
 
-        //ランキングパネルを表示する
-        WinCountRankingPanel.SetActive(true);
+        //非同期処理呼び出し(ランキング情報表示準備)
+        StartCoroutine(prepareRankingData());
     }
 
     //オフラインランキングのアニマル切り替えボタン(右)
     public void OnClick_OfflineRankingAnimalNameRightButton()
     {
+        string nextAnimalName = "";
+
         //キリン→象→犬→虎
         if (OfflineRankingAnimalNameText.text == "Giraffe")
         {
-            //アニマル名を表示
-            OfflineRankingAnimalNameText.text = "Elephant";
-
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Elephant");
-            }
+            nextAnimalName = "Elephant";
         }
         else if (OfflineRankingAnimalNameText.text == "Elephant")
         {
-            OfflineRankingAnimalNameText.text = "Dog";
-
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Dog");
-            }
+            nextAnimalName = "Dog";
         }
         else if (OfflineRankingAnimalNameText.text == "Dog")
         {
-            OfflineRankingAnimalNameText.text = "Tiger";
-
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Tiger");
-            }
+            nextAnimalName = "Tiger";
         }
         else if (OfflineRankingAnimalNameText.text == "Tiger")
         {
 
         }
+
+        //ランキングデータの表示
+        displayOfflineRankingData(nextAnimalName);
     }
     //public void OnClick_OfflineRankingAnimalNameRightButton()
     //{
@@ -380,33 +373,17 @@ public class MenuUI : MonoBehaviour
         else if (OfflineRankingAnimalNameText.text == "Elephant")
         {
             nextAnimalName = "Giraffe";
-
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Giraffe");
-            }
         }
         else if (OfflineRankingAnimalNameText.text == "Dog")
         {
             nextAnimalName = "Elephant";
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Elephant");
-            }
         }
         else if (OfflineRankingAnimalNameText.text == "Tiger")
         {
             nextAnimalName = "Dog";
-            //初回のみランキング取得
-            if (OfflineRankingUsernameText.text == "")
-            {
-                userAuth.TopOfflineRankers("Dog");
-            }
         }
 
-        //ランキング情報の表示
+        //ランキングデータの表示
         displayOfflineRankingData(nextAnimalName);
     }
     //public void OnClick_OfflineRankingAnimalNameLeftButton()
@@ -460,11 +437,12 @@ public class MenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
 
-        //初回のみランキング取得
-        if (WinCountRankingNameText.text == "")
-        {
-            userAuth.TopRankers();
-        }
+        ////初回のみランキング取得
+        //if (WinCountRankingNameText.text == "")
+        //{
+        //    userAuth.TopRankers();
+        //}
+        displayOnlineRankingData();
 
         //パネルの表示非表示
         OfflineRankingChildPanel.SetActive(false);
@@ -603,11 +581,16 @@ public class MenuUI : MonoBehaviour
     //オフライン用ランキングデータを表示する
     private void displayOfflineRankingData(string animal)
     {
+        //入力値エラーでリターン
+        if (animal == "")
+        {
+            return;
+        }
+
         //ランキングデータ初期化
         OfflineRankingUsernameText.text = "";
         OfflineRankingHighScoreText.text = "";
 
-        //表示中のアニマル名更新
         OfflineRankingAnimalNameText.text = animal;
 
         //データ更新
@@ -619,22 +602,19 @@ public class MenuUI : MonoBehaviour
     }
 
     //オンライン用ランキングデータを表示する
-    //private void displayOnlineRankingData(string animal)
-    //{
-    //    //ランキングデータ初期化
-    //    OnlineRankingUsernameText.text = "";
-    //    OnlineRankingHighScoreText.text = "";
+    private void displayOnlineRankingData()
+    {
+        //ランキングデータ初期化
+        OnlineRankingUsernameText.text = "";
+        OnlineRankingWinCountText.text = "";
 
-    //    //表示中のアニマル名更新
-    //    OnlineRankingAnimalNameText.text = animal;
-
-    //    //データ更新
-    //    foreach (OfflineRankingElement data in rankingData.offlineRankingData[animal])
-    //    {
-    //        OfflineRankingUsernameText.text += data.UserName + "\n";
-    //        OfflineRankingHighScoreText.text += data.HighScore + "\n";
-    //    }
-    //}
+        //データ更新
+        foreach (OnlineRankingElement data in rankingData.onlineRankingData)
+        {
+            OnlineRankingUsernameText.text += data.UserName + "\n";
+            OnlineRankingWinCountText.text += data.WinCount + "\n";
+        }
+    }
 
     //ランキングデータ
     public class RankingData
@@ -673,5 +653,21 @@ public class MenuUI : MonoBehaviour
     {
         public string UserName;
         public string WinCount;
+    }
+
+    //コルーチンで別スレッド化
+    //ランキング情報取得のためにちょっとだけ時間を稼ぐ
+    private IEnumerator prepareRankingData()
+    {
+        //1秒待つ
+        yield return new WaitForSeconds(1.0f);
+
+        //最初に表示されるデータ
+        displayOfflineRankingData("Giraffe");
+
+        //ランキングパネルを表示する
+        WinCountRankingPanel.SetActive(true);
+
+        yield break;
     }
 }

@@ -217,7 +217,7 @@ public class UserAuth : MonoBehaviour
                         topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName;
                     }
                     //ランキング番号の表示
-                    topRankingNumber[i] += objList[i]["Score"] + "ポイント\n";
+                    topRankingNumber[i] += objList[i]["Score"] + "ポイント";
 
                     //ランキング名前と番号の取得
                     menuUI.SetOnlineRankingInfo(topRankingName[i], topRankingNumber[i]);
@@ -299,7 +299,7 @@ public class UserAuth : MonoBehaviour
                     }
 
                     //ランキング番号
-                    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒\n";
+                    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒";
 
                     //ランキング名前とベストタイムの取得
                     menuUI.SetOfflineRankingInfo(animal, topRankingName[i], topRankingNumber[i]);
