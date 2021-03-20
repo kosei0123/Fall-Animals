@@ -199,7 +199,6 @@ public class UserAuth : MonoBehaviour
 
                 //}
 
-                /* 村上追加分 */
                 for (int i = 0; i < objList.Count; i++)
                 {
                     //ランキング追跡中の名前からIDを抜き取る
@@ -222,7 +221,6 @@ public class UserAuth : MonoBehaviour
                     menuUI.WinCountRankingNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
 
                 }
-                /* ここまで村上追加分 */
             }
             
         });
