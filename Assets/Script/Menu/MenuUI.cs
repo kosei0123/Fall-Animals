@@ -79,6 +79,11 @@ public class MenuUI : MonoBehaviour
     //ロビーマネジャーのゲームオブジェクト
     [SerializeField]
     private GameObject LobbyManager;
+
+    //ダイアログ表示
+    //ネットワークパネルを表示する
+    [SerializeField]
+    private GameObject NotNetworkPanel;
     //MaxPlayerPanelの表示
     [SerializeField]
     private GameObject MaxPlayerPanel;
@@ -422,18 +427,28 @@ public class MenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
 
-        //回転しないようにする
-        if (Screen.width > Screen.height)
+        //ネットワーク接続確認
+        //インターネット接続なし
+        if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            NotNetworkPanel.SetActive(true);
         }
+        //インターネット接続あり
         else
         {
-            Screen.orientation = ScreenOrientation.Portrait;
-        }
+            //回転しないようにする
+            if (Screen.width > Screen.height)
+            {
+                Screen.orientation = ScreenOrientation.LandscapeLeft;
+            }
+            else
+            {
+                Screen.orientation = ScreenOrientation.Portrait;
+            }
 
-        //ロビーマネジャーのゲームオブジェクトをオンにする
-        LobbyManager.SetActive(true);
+            //ロビーマネジャーのゲームオブジェクトをオンにする
+            LobbyManager.SetActive(true);
+        }
     }
 
     //アンロックボタンを押した際の挙動
@@ -460,6 +475,7 @@ public class MenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //パネルを非表示にする
+        NotNetworkPanel.SetActive(false);
         MaxPlayerPanel.SetActive(false);
         RoomMasterLeftPanel.SetActive(false);
     }

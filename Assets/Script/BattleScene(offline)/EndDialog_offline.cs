@@ -27,6 +27,9 @@ public class EndDialog_offline : MonoBehaviour
     private Text GetCoinText;
     private int getTotalCoin;
 
+    //ベストタイムかの確認
+    public bool bestTimeFlag = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -57,8 +60,16 @@ public class EndDialog_offline : MonoBehaviour
         //バトル終了時ダイアログ表示
         DialogPanel.SetActive(true);
 
-        //順位を表示する
-        TimeText.text = time.ToString("") + "秒";
+        //タイムを表示する
+        if (bestTimeFlag == true)
+        {
+            TimeText.text = time.ToString("") + "秒 (ベストタイム)";
+        }
+        else
+        {
+            TimeText.text = time.ToString("") + "秒";
+        }
+        
 
         //ゲットコインの表示
         getTotalCoin += battleScene_offlineManager.getBattleCoin;

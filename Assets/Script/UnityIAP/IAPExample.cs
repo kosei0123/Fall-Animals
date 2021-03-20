@@ -332,7 +332,8 @@ public class IAPExample : MonoBehaviour, IStoreListener
         storeController.InitiatePurchase(productId);
         //メニュー遷移ボタンを押下できなくする
         MenuButton.interactable = false;
-        Announce2Text.text = "処理中です...アプリを落とさないでください。";
+        Announce2Text.text = "処理中です...アプリを落とさないでください。\n(2,3分ほどかかる場合がございます)";
+        AnnounceResultText.text = "";
 
     }
     public void RestorePurchases()

@@ -16,7 +16,7 @@ public class CharacterMainMove_offline : MonoBehaviour
     //キャラクターのニックネームを取得
     public Text NameText;
     //ニックネームの表示位置の調整
-    private Vector3 nickNamePositionTweak = new Vector3(0, 2.0f, 0);
+    private Vector3 nickNamePositionTweak = new Vector3(0, 4.0f, 0);
     //プレイヤーのワールド座標
     private Vector3 playerWorldPosition;
 
@@ -94,6 +94,9 @@ public class CharacterMainMove_offline : MonoBehaviour
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
+        //ニックネームを表示
+        NameText.text = PlayerPrefs.GetString("NickName");
+
         //Transformをキャッシュする
         transformCache = transform;
 
@@ -119,8 +122,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
         //ニックネームを表示
-        NameText.text = PlayerPrefs.GetString("NickName");
-        //NameText.text = pun2Script.GetAnimalInformation().NickName;
+        //NameText.text = PlayerPrefs.GetString("NickName");
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
 
         //ジャンプ力の設定

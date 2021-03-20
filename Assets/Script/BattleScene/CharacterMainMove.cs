@@ -17,7 +17,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //キャラクターのニックネームを取得
     public Text NameText;
     //ニックネームの表示位置の調整
-    private Vector3 nickNamePositionTweak = new Vector3(0, 2.0f, 0);
+    private Vector3 nickNamePositionTweak = new Vector3(0, 4.0f, 0);
     //プレイヤーのワールド座標
     private Vector3 playerWorldPosition;
     //ラグ時の位置予想
@@ -99,6 +99,9 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
+        //ニックネームを表示
+        NameText.text = PhotonNetwork.LocalPlayer.NickName;
+
         //Transformをキャッシュする
         transformCache = transform;
 
@@ -124,8 +127,9 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
         //ニックネームを表示
-        NameText.text = PhotonNetwork.LocalPlayer.NickName;
-        //NameText.text = pun2Script.GetAnimalInformation().NickName;
+        //NameText.text = PhotonNetwork.LocalPlayer.NickName;
+        //プレイ動画用
+        NameText.text = PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] + "P";
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
 
         //ジャンプ力の設定
