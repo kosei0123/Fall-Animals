@@ -85,8 +85,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //プレイヤーが入っていた時にバトルスタート時間を設定する
-        waitingBattleStartTime = 12.0f;
-        waitingBattleStartStackTime = 12.0f;
+        waitingBattleStartTime = 10.0f;
+        waitingBattleStartStackTime = 10.0f;
 
         //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -101,19 +101,30 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         WaitingPlayerCountText.text = "待機プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
         //ロビー内の人数表示
         LobbyPlayerCountText.text = "ロビー内 : " + PhotonNetwork.CountOfPlayers.ToString() + " / 20";
-        //バトルスタート時間を表示する
-        StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
-
+        
         //バトルスタート時間を減らしていく
-        if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0)
+        if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0 && (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] >= 2)
         {
             waitingBattleStartStackTime -= Time.deltaTime;
 
             //バトル時間を同期する
             startTimePhotonView.RPC("StartTimeValue", RpcTarget.AllViaServer, waitingBattleStartStackTime);
+
+            //バトルスタート時間を表示する
+            StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
+        }
+        else if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0 && (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] < 2)
+        {
+            waitingBattleStartStackTime = 10.0f;
+
+            //バトル時間を同期する
+            startTimePhotonView.RPC("StartTimeValue", RpcTarget.AllViaServer, waitingBattleStartStackTime);
+
+            //バトルスタート時間を表示する
+            StartTimeText.text = "";
         }
 
-        
+
         //部屋内の人数と毎Updateで取得している人数で差異があれば呼び出す
         if (PhotonNetwork.IsMasterClient)
         {
@@ -223,8 +234,15 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             //}
         }
 
-        //人数により部屋をクローズする
-        LobbyManager.UpdateRoomOptions(true);
+        //時間が2秒より大きいとき
+        if (waitingBattleStartTime > 2.0f)
+        {
+            //人数により部屋をクローズする
+            LobbyManager.UpdateRoomOptions(true);
+            //メニューボタンを表示する
+            MenuButton.SetActive(true);
+        }
+        
 
         //時間が2以下になったとき
         if (waitingBattleStartTime <= 2.0f)
