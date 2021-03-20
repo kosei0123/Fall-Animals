@@ -26,8 +26,7 @@ public class Damaged : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //一定距離落下後に消去
+        //一定距離落下後にオブジェクトの削除
         if (this.transform.position.y < -50)
         {
             PhotonNetwork.Destroy(this.gameObject);
@@ -49,6 +48,12 @@ public class Damaged : MonoBehaviour
             return;
         }
 
+        //一定距離落下後にゲーム終了
+        if (this.transform.position.y < -15)
+        {
+            GameFinish();
+        }
+
     }
 
     //オブジェクトと接触した瞬間に呼び出される
@@ -66,34 +71,7 @@ public class Damaged : MonoBehaviour
         //岩や紙飛行機にあたり落下する
         if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Obstacle")
         {
-            //動きを止める
-            characterMainMove.onlineflag = false;
-            characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
-            //パーティクルの発生
-            PhotonNetwork.Instantiate("Particle", new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity, 0);
-
-            //バトル終了フラグをtrueにする
-            pun2Script.battleFinishFlag = true;
-
-            //アニメーションの設定
-            characterMainMove.anim.SetBool("Death", true);
-
-            //順位の確定と取得
-            pun2Script.battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
-            //ルーム内残り人数を減らす
-            var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
-            PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n - 1;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
-
-            //レイヤーを変更し、下に落ちていく
-            this.gameObject.layer = 9;
-            this.gameObject.transform.GetChild(0).gameObject.layer = 9;
-            //上方向に力を加える
-            characterMainMove.jumpPower = 5.0f;
-            characterMainMove.rb.AddForce(Vector3.up * characterMainMove.jumpPower, ForceMode.VelocityChange);
-
-            //終了時のダイアログ表示
-            endDialog.DialogPanelActive(pun2Script.battleRanking);
+            GameFinish();
         }
 
         //コインに当たる
@@ -101,6 +79,39 @@ public class Damaged : MonoBehaviour
         {
             pun2Script.getBattleCoin += 5;
         }
+    }
+
+    //ゲーム終了関数
+    private void GameFinish()
+    {
+        //動きを止める
+        characterMainMove.onlineflag = false;
+        characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
+        //パーティクルの発生
+        PhotonNetwork.Instantiate("Particle", new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity, 0);
+
+        //バトル終了フラグをtrueにする
+        pun2Script.battleFinishFlag = true;
+
+        //アニメーションの設定
+        characterMainMove.anim.SetBool("Death", true);
+
+        //順位の確定と取得
+        pun2Script.battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
+        //ルーム内残り人数を減らす
+        var n = PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] is int value ? value : 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] = n - 1;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
+
+        //レイヤーを変更し、下に落ちていく
+        this.gameObject.layer = 9;
+        this.gameObject.transform.GetChild(0).gameObject.layer = 9;
+        //上方向に力を加える
+        characterMainMove.jumpPower = 5.0f;
+        characterMainMove.rb.AddForce(Vector3.up * characterMainMove.jumpPower, ForceMode.VelocityChange);
+
+        //終了時のダイアログ表示
+        endDialog.DialogPanelActive(pun2Script.battleRanking);
     }
 
     //順位表示処理

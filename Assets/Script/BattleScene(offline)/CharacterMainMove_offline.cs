@@ -48,6 +48,10 @@ public class CharacterMainMove_offline : MonoBehaviour
     //アニメーション
     public Animator anim;
 
+    //すり抜け床でない地面にいるときにフラグ(レイヤー用)
+    public bool GroundSlidingFlag = false;
+
+
     //パーティクル
     public ParticleSystem particle;
 
@@ -199,6 +203,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             anim.SetFloat("RunSpeed", 0.6f);
         }
 
+        //レイヤー
         //ジャンプ中のレイヤー変更
         if (this.rb.velocity.y > 0)
         {
@@ -210,6 +215,17 @@ public class CharacterMainMove_offline : MonoBehaviour
                 childTransform.gameObject.layer = 13;
             }
 
+        }
+        //すり抜け床でない地面 or プレイヤーの上にいるとき
+        else if (GroundSlidingFlag == false)
+        {
+            //SlidingPlayer
+            this.gameObject.layer = 13;
+            //子オブジェクトもレイヤー変更
+            foreach (Transform childTransform in gameObject.transform)
+            {
+                childTransform.gameObject.layer = 13;
+            }
         }
         else
         {
@@ -235,15 +251,15 @@ public class CharacterMainMove_offline : MonoBehaviour
         if (SelectCharacterUI.animalName == "Giraffe")
         {
             //ジャンプ力
-            jumpPower = 7.0f;
+            jumpPower = 9.0f;
             //スピード
             if (isGround)
             {
-                runSpeed = 5.0f;
+                runSpeed = 9.0f;
             }
             else
             {
-                runSpeed = 4.5f;
+                runSpeed = 6.5f;
             }
 
         }
@@ -251,45 +267,45 @@ public class CharacterMainMove_offline : MonoBehaviour
         else if (SelectCharacterUI.animalName == "Elephant")
         {
             //ジャンプ力
-            jumpPower = 6.5f;
+            jumpPower = 8.5f;
             //スピード
             if (isGround)
             {
-                runSpeed = 4.5f;
+                runSpeed = 8.5f;
             }
             else
             {
-                runSpeed = 4.0f;
+                runSpeed = 6.0f;
             }
         }
         //犬
         else if (SelectCharacterUI.animalName == "Dog")
         {
             //ジャンプ力
-            jumpPower = 8.5f;
+            jumpPower = 10.5f;
             //スピード
             if (isGround)
             {
-                runSpeed = 8.0f;
+                runSpeed = 12.0f;
             }
             else
             {
-                runSpeed = 5.0f;
+                runSpeed = 7.0f;
             }
         }
         //虎
         else if (SelectCharacterUI.animalName == "Tiger")
         {
             //ジャンプ力
-            jumpPower = 7.5f;
+            jumpPower = 9.5f;
             //スピード
             if (isGround)
             {
-                runSpeed = 11.0f;
+                runSpeed = 15.0f;
             }
             else
             {
-                runSpeed = 6.0f;
+                runSpeed = 8.0f;
             }
         }
     }

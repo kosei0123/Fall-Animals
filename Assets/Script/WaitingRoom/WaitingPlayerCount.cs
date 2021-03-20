@@ -16,6 +16,9 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //ロビー内の人数表示
     [SerializeField]
     private Text LobbyPlayerCountText;
+    //メニューボタンのゲームオブジェクト
+    [SerializeField]
+    private GameObject MenuButton;
 
     //ルームマスター退出時のフラグ
     public static bool RoomMasterLeftFlag = false;
@@ -128,35 +131,49 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                 //ニックネームを取得
                 if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] == PhotonNetwork.CurrentRoom.MaxPlayers || ((waitingBattleStartTime <= 2 || waitingBattleStartTime % 5.0f <= 1.0f) && waitingBattleStartTime > 0))
                 {
-                    if (updateWaitingPlayerCount == 1)
+                    for (int i = 1; i < 5; i++)
                     {
-                        ////ニックネーム消去を共有する
-                        //PhotonView photonView = PhotonView.Get(this);
-                        //photonView.RPC("WaitingPlayerDeleteNickNameValue", RpcTarget.All);
-                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                        p.SetCustomProperties(p.CustomProperties);
-                        //ニックネームを取得
-                        //photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
+                        if (updateWaitingPlayerCount == i)
+                        {
+                            ////ニックネーム消去を共有する
+                            //PhotonView photonView = PhotonView.Get(this);
+                            //photonView.RPC("WaitingPlayerDeleteNickNameValue", RpcTarget.All);
+                            p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                            p.SetCustomProperties(p.CustomProperties);
+                            //ニックネームを取得
+                            //photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
+                        }
                     }
-                    else if (updateWaitingPlayerCount == 2)
-                    {
-                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                        p.SetCustomProperties(p.CustomProperties);
-                        //photonView.RPC("WaitingPlayer2NickNameValue", RpcTarget.All, p.NickName);
-                    }
-                    else if (updateWaitingPlayerCount == 3)
-                    {
-                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                        p.SetCustomProperties(p.CustomProperties);
-                        //photonView.RPC("WaitingPlayer3NickNameValue", RpcTarget.All, p.NickName);
-                    }
-                    else if (updateWaitingPlayerCount == 4)
-                    {
-                        p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                        p.SetCustomProperties(p.CustomProperties);
-                        //photonView.RPC("WaitingPlayer4NickNameValue", RpcTarget.All, p.NickName);
 
-                    }
+                    //if (updateWaitingPlayerCount == 1)
+                    //{
+                    //    ////ニックネーム消去を共有する
+                    //    //PhotonView photonView = PhotonView.Get(this);
+                    //    //photonView.RPC("WaitingPlayerDeleteNickNameValue", RpcTarget.All);
+                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                    //    p.SetCustomProperties(p.CustomProperties);
+                    //    //ニックネームを取得
+                    //    //photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
+                    //}
+                    //else if (updateWaitingPlayerCount == 2)
+                    //{
+                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                    //    p.SetCustomProperties(p.CustomProperties);
+                    //    //photonView.RPC("WaitingPlayer2NickNameValue", RpcTarget.All, p.NickName);
+                    //}
+                    //else if (updateWaitingPlayerCount == 3)
+                    //{
+                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                    //    p.SetCustomProperties(p.CustomProperties);
+                    //    //photonView.RPC("WaitingPlayer3NickNameValue", RpcTarget.All, p.NickName);
+                    //}
+                    //else if (updateWaitingPlayerCount == 4)
+                    //{
+                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
+                    //    p.SetCustomProperties(p.CustomProperties);
+                    //    //photonView.RPC("WaitingPlayer4NickNameValue", RpcTarget.All, p.NickName);
+
+                    //}
                 }
             }
 
@@ -214,6 +231,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         {
             //入室できないようにする
             LobbyManager.UpdateRoomOptions(false);
+            //メニューボタンを非表示にする
+            MenuButton.SetActive(false);
 
             //if (PhotonNetwork.IsMasterClient)
             //{
@@ -364,12 +383,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             prps["playerCreatedNumber"] = null;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-            //ルームマスターが退出したことを確認する
-            //if (PhotonNetwork.IsMasterClient)
-            //{
-            //    photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
-            //}
-
             //Photonに接続を解除する
             if (PhotonNetwork.IsConnected == true)
             {
@@ -389,12 +402,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //prps["NoKick"] = "false";
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
-
-        //ルームマスターが退出したことを確認する
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
-        //}
 
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)

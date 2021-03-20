@@ -9,6 +9,8 @@ public class GroundCheck : MonoBehaviour
 
     //Groundタグへの参照
     private string groundTag = "Ground";
+    //GroundSlidingタグへの参照
+    private string groundSlidingTag = "GroundSliding";
     //Playerタグへの参照
     private string playerTag = "Player";
 
@@ -29,10 +31,19 @@ public class GroundCheck : MonoBehaviour
     //入る
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == groundTag || other.tag == playerTag)
+        if (other.tag == groundTag || other.tag == playerTag)
         {
             //地面にいる判定
             characterMainMove.isGround = true;
+            //すり抜け床でない地面 or プレイヤーの上にいる
+            characterMainMove.GroundSlidingFlag = false;
+        }
+        if (other.tag == groundSlidingTag)
+        {
+            //地面にいる判定
+            characterMainMove.isGround = true;
+            //すり抜け床である
+            characterMainMove.GroundSlidingFlag = true;
         }
     }
     //入り続けている
@@ -42,6 +53,15 @@ public class GroundCheck : MonoBehaviour
         {
             //地面にいる判定
             characterMainMove.isGround = true;
+            //すり抜け床でない地面 or プレイヤーの上にいる
+            characterMainMove.GroundSlidingFlag = false;
+        }
+        if (other.tag == groundSlidingTag)
+        {
+            //地面にいる判定
+            characterMainMove.isGround = true;
+            //すり抜け床である
+            characterMainMove.GroundSlidingFlag = true;
         }
     }
     //抜ける
@@ -49,5 +69,7 @@ public class GroundCheck : MonoBehaviour
     {
         //地面にいない判定
         characterMainMove.isGround = false;
+        //空中では見ないようにするためtrueをいれる
+        characterMainMove.GroundSlidingFlag = true;
     }
 }

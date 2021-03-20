@@ -98,7 +98,7 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 20.0f || this.transform.position.x <= -20.0f || airplaneTime >= 15.0f)
+        if (this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f || airplaneTime >= 15.0f)
         {
             //マスタークライアントが削除する
             if (PhotonNetwork.IsMasterClient)

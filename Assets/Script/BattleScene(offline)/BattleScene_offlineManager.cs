@@ -43,6 +43,7 @@ public class BattleScene_offlineManager : MonoBehaviour
     public bool battleFinishFlag = false;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +60,8 @@ public class BattleScene_offlineManager : MonoBehaviour
 
         //ルームに入室後の設定
         CreateCharacter();
+
+        Physics.gravity = new Vector3(0, -11.0f, 0);
 
     }
 
@@ -125,38 +128,38 @@ public class BattleScene_offlineManager : MonoBehaviour
         //ゆっくり
         if (randomAirplane >= 0 && randomAirplane < 100)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane0";
         }
         //普通
         else if (randomAirplane >= 100 && randomAirplane < 200)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane1";
         }
         ////高速
         else if (randomAirplane >= 200 && randomAirplane < 300 && timer_offline.elapsedTime > 100)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane2";
         }
         //左に出現
         //ゆっくり
         else if (randomAirplane >= 300 && randomAirplane < 400)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane3";
         }
         //普通
         else if (randomAirplane >= 400 && randomAirplane < 500)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane4";
         }
         ////高速
         else if (randomAirplane >= 500 && randomAirplane < 600 && timer_offline.elapsedTime > 200)
         {
-            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+            airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane5";
         }
     }
@@ -171,38 +174,38 @@ public class BattleScene_offlineManager : MonoBehaviour
         //ゆっくり
         if (randomrock >= 0 && randomrock < 100)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(15.0f, 1.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 2.5f, 0), Quaternion.identity);
             rock.name = "Rock0";
         }
         ////普通
         else if (randomrock >= 100 && randomrock < 200 && timer_offline.elapsedTime > 300)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(15.0f, 1.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock1";
         }
         //高速
         else if (randomrock >= 200 && randomrock < 300)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(15.0f, 2.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock2";
         }
         //左に出現
         //ゆっくり
         else if (randomrock >= 300 && randomrock < 400)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-15.0f, 1.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 2.5f, 0), Quaternion.identity);
             rock.name = "Rock3";
         }
         ////普通
         else if (randomrock >= 400 && randomrock < 500 && timer_offline.elapsedTime > 400)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-15.0f, 1.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock4";
         }
         //高速
         else if (randomrock >= 500 && randomrock < 600)
         {
-            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-15.0f, 2.5f, 0), Quaternion.identity);
+            rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock5";
         }
     }
@@ -211,7 +214,7 @@ public class BattleScene_offlineManager : MonoBehaviour
     private void CoinCreated()
     {
         float randomCoin = Random.Range(-8.0f, 8.0f);
-        coin = (GameObject)Instantiate(Resources.Load("Offline/Coin"), new Vector3(randomCoin, 10.0f, 0), Quaternion.identity);
+        coin = (GameObject)Instantiate(Resources.Load("Offline/Coin"), new Vector3(randomCoin, 20.0f, 0), Quaternion.identity);
     }
 
     //勝敗のチェック

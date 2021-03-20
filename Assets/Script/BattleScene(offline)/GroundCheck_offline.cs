@@ -9,6 +9,8 @@ public class GroundCheck_offline : MonoBehaviour
 
     //Groundタグへの参照
     private string groundTag = "Ground";
+    //GroundSlidingタグへの参照
+    private string groundSlidingTag = "GroundSliding";
     //Playerタグへの参照
     private string playerTag = "Player";
 
@@ -33,7 +35,15 @@ public class GroundCheck_offline : MonoBehaviour
         {
             //地面にいる判定
             characterMainMove_offline.isGround = true;
-            
+            //すり抜け床でない地面 or プレイヤーの上にいる
+            characterMainMove_offline.GroundSlidingFlag = false;
+        }
+        if (other.tag == groundSlidingTag)
+        {
+            //地面にいる判定
+            characterMainMove_offline.isGround = true;
+            //すり抜け床である
+            characterMainMove_offline.GroundSlidingFlag = true;
         }
     }
     //入り続けている
@@ -43,6 +53,15 @@ public class GroundCheck_offline : MonoBehaviour
         {
             //地面にいる判定
             characterMainMove_offline.isGround = true;
+            //すり抜け床でない地面 or プレイヤーの上にいる
+            characterMainMove_offline.GroundSlidingFlag = false;
+        }
+        if (other.tag == groundSlidingTag)
+        {
+            //地面にいる判定
+            characterMainMove_offline.isGround = true;
+            //すり抜け床である
+            characterMainMove_offline.GroundSlidingFlag = true;
         }
     }
     //抜ける
@@ -50,5 +69,7 @@ public class GroundCheck_offline : MonoBehaviour
     {
         //地面にいない判定
         characterMainMove_offline.isGround = false;
+        //空中では見ないようにするためtrueをいれる
+        characterMainMove_offline.GroundSlidingFlag = true;
     }
 }

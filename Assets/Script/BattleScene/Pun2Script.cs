@@ -180,7 +180,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //mugenFlag==false：時間がくるか1人になった段階で終了
         //mugenFlag==true：1人になった段階で終了
         if ((timer.battleTime <= 0 && timer.mugenFlag == false) ||
-            (timer.elapsedTime >= 4.0f && (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] <= 1))
+            (timer.elapsedTime >= 4.0f && (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"] == 1))
         {
             Check();
         }
@@ -392,38 +392,38 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //ゆっくり
         if (randomAirplane >= 0 && randomAirplane < 100)
         {
-            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             airplane.name = "Airplane0";
         }
         //普通
         else if (randomAirplane >= 100 && randomAirplane < 200)
         {
-            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             airplane.name = "Airplane1";
         }
         ////高速
         //else if (randomAirplane >= 200 && randomAirplane < 300)
         //{
-        //    airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(15.0f, 3.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+        //    airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
         //    airplane.name = "Airplane2";
         //}
         //左に出現
         //ゆっくり
         else if (randomAirplane >= 300 && randomAirplane < 400)
         {
-            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             airplane.name = "Airplane3";
         }
         //普通
         else if (randomAirplane >= 400 && randomAirplane < 500)
         {
-            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-15.0f, 3.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
             airplane.name = "Airplane4";
         }
         ////高速
         //else if (randomAirplane >= 500 && randomAirplane < 600)
         //{
-        //    airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-15.0f, 3.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+        //    airplane = PhotonNetwork.Instantiate("Airplane", new Vector3(-30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
         //    airplane.name = "Airplane5";
         //}
     }
@@ -438,38 +438,38 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //ゆっくり
         if (randomrock >= 0 && randomrock < 100)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 1.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(25.0f, 2.5f, 0), Quaternion.identity, 0);
             rock.name = "Rock0";
         }
         ////普通
         //else if (randomrock >= 100 && randomrock < 200)
         //{
-        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 1.5f, 0), Quaternion.identity, 0);
+        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(25.0f, 3.0f, 0), Quaternion.identity, 0);
         //    rock.name = "Rock1";
         //}
         //高速
         else if (randomrock >= 200 && randomrock < 300)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(15.0f, 2.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(25.0f, 3.0f, 0), Quaternion.identity, 0);
             rock.name = "Rock2";
         }
         //左に出現
         //ゆっくり
         else if (randomrock >= 300 && randomrock < 400)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-25.0f, 2.5f, 0), Quaternion.identity, 0);
             rock.name = "Rock3";
         }
         ////普通
         //else if (randomrock >= 400 && randomrock < 500)
         //{
-        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 1.5f, 0), Quaternion.identity, 0);
+        //    rock = PhotonNetwork.Instantiate("Rock", new Vector3(-25.0f, 3.0f, 0), Quaternion.identity, 0);
         //    rock.name = "Rock4";
         //}
         //高速
         else if (randomrock >= 500 && randomrock < 600)
         {
-            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-15.0f, 2.5f, 0), Quaternion.identity, 0);
+            rock = PhotonNetwork.Instantiate("Rock", new Vector3(-25.0f, 3.0f, 0), Quaternion.identity, 0);
             rock.name = "Rock5";
         }
     }
@@ -479,7 +479,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     {
         float randomCoin = Random.Range(-8.0f, 8.0f);
 
-        coin = PhotonNetwork.Instantiate("Coin", new Vector3(randomCoin, 10.0f, 0), Quaternion.identity, 0);
+        coin = PhotonNetwork.Instantiate("Coin", new Vector3(randomCoin, 20.0f, 0), Quaternion.identity, 0);
     }
 
     //勝敗のチェック
