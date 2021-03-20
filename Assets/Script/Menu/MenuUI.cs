@@ -82,6 +82,9 @@ public class MenuUI : MonoBehaviour
     //MaxPlayerPanelの表示
     [SerializeField]
     private GameObject MaxPlayerPanel;
+    //RoomMasterLeftPanelの表示
+    [SerializeField]
+    private GameObject RoomMasterLeftPanel;
 
 
     // Start is called before the first frame update
@@ -131,6 +134,14 @@ public class MenuUI : MonoBehaviour
         else if (SelectCharacterUI.animalName == "Tiger")
         {
             menuAnimal = (GameObject)Instantiate(Resources.Load("Menu/Tiger"), new Vector3(1.1f, 0, -7.0f), Quaternion.Euler(0.0f, 180.0f, 0.0f));
+        }
+
+        //ルームマスターが退出し追い出されたことをダイアログで表示
+        if (WaitingPlayerCount.RoomMasterLeftFlag == true)
+        {
+            RoomMasterLeftPanel.SetActive(true);
+            //再度falseに戻しておく
+            WaitingPlayerCount.RoomMasterLeftFlag = false;
         }
 
     }
@@ -443,10 +454,14 @@ public class MenuUI : MonoBehaviour
         SceneManager.LoadScene("SelectCharacter");
     }
 
-    //MaxPlayerYesButtonボタンを押した時の挙動
-    public void OnClick_MaxPlayerYesButton()
+    //なんらかのダイアログのYesButtonボタンを押した時の挙動
+    public void OnClick_DialogYesButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //パネルを非表示にする
         MaxPlayerPanel.SetActive(false);
+        RoomMasterLeftPanel.SetActive(false);
     }
 
     //タイトルボタンを押した際の挙動

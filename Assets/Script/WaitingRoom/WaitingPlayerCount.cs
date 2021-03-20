@@ -13,6 +13,12 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //待機人数の表示
     [SerializeField]
     private Text WaitingPlayerCountText;
+    //ロビー内の人数表示
+    [SerializeField]
+    private Text LobbyPlayerCountText;
+
+    //ルームマスター退出時のフラグ
+    public static bool RoomMasterLeftFlag = false;
 
     //毎Updateによる取得人数
     private int updateWaitingPlayerCount = 0;
@@ -44,6 +50,9 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+
+        //FPSを60に設定
+        Application.targetFrameRate = 60;
 
         //メッセージの送信に使用される
         photonView = PhotonView.Get(this);
@@ -87,6 +96,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //待機人数の表示
         WaitingPlayerCountText.text = "待機プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+        //ロビー内の人数表示
+        LobbyPlayerCountText.text = "ロビー内 : " + PhotonNetwork.CountOfPlayers.ToString() + " / 20";
         //バトルスタート時間を表示する
         StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
 
@@ -312,6 +323,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         WaitingRoomMaxPlayerFlag = value;
     }
 
+    [PunRPC]
+    //ルームマスターが退出したかを確認する
+    private void RoomMasterLeftFlagValue(bool value)
+    {
+        //ルームマスターが退出したかを確認する
+        RoomMasterLeftFlag = value;
+    }
+
     //メニューボタンを押下した際の挙動
     public void OnClick_MenuButton()
     {
@@ -323,6 +342,12 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //prps["NoKick"] = "false";
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //ルームマスターが退出したことを確認する
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
+        }
 
         //画面遷移等(0.5秒後)
         Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
@@ -338,6 +363,12 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             //prps["NoKick"] = "false";
             prps["playerCreatedNumber"] = null;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+            //ルームマスターが退出したことを確認する
+            //if (PhotonNetwork.IsMasterClient)
+            //{
+            //    photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
+            //}
 
             //Photonに接続を解除する
             if (PhotonNetwork.IsConnected == true)
@@ -358,6 +389,18 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //prps["NoKick"] = "false";
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //ルームマスターが退出したことを確認する
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
+        //}
+
+        //Photonに接続を解除する
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
+        }
 
         //画面遷移等(0.5秒後)
         Invoke("WaitingPlayerCount_PhotonOff", 0.5f);

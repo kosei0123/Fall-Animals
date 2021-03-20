@@ -15,14 +15,30 @@ public class IAPExample : MonoBehaviour, IStoreListener
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
 
-    //コイン2000枚購入ボタン
-    public Button BuyCoin5000Button;
+    //コイン5000枚購入ボタン
+    [SerializeField]
+    private Button BuyCoin5000Button;
+    //コイン30000枚購入ボタン
+    [SerializeField]
+    private Button BuyCoin15000Button;
     //メニューに戻るボタン
-    public Button MenuButton;
+    [SerializeField]
+    private Button MenuButton;
 
-    public Text text;
-    public Text receiptText;
-    public Text restoreText;
+    //表示するテキスト
+    //public Text receiptText;
+    //public Text restoreText;
+    [SerializeField]
+    private Text AnnounceText;
+    [SerializeField]
+    private Text Announce2Text;
+    [SerializeField]
+    private Text AnnounceResultText;
+
+    [SerializeField]
+    private Text Price5000Text;
+    [SerializeField]
+    private Text Price15000Text;
 
     ConfigurationBuilder builder;
     private List<CatalogItem> Catalog;
@@ -44,16 +60,38 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         if (!IsInitialized)
         {
-            GUILayout.Label("Initializing IAP and logging in...");
+            //GUILayout.Label("Initializing IAP and logging in...");
+            AnnounceText.text = "準備中です...";
 
             //ボタン押下不可
             BuyCoin5000Button.interactable = false;
+            BuyCoin15000Button.interactable = false;
 
             return;
         }
 
+        //テキスト表示を非表示にする
+        AnnounceText.text = "";
         //ボタン押下可にする
         BuyCoin5000Button.interactable = true;
+        BuyCoin15000Button.interactable = true;
+
+
+        if(storeController != null)
+        {
+            foreach (var product in storeController.products.all)
+            {
+                if (product.definition.id == "coin_bundle_ID")
+                {
+                    Price5000Text.text = product.metadata.localizedPriceString;
+                }
+                else if (product.definition.id == "coin_bundle2_ID")
+                {
+                    Price15000Text.text = product.metadata.localizedPriceString;
+                }
+            }
+        }
+        
 
         //foreach (var item in Catalog)
         //{
@@ -139,16 +177,19 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
-        Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
-        text.text = "OnInitializeFailed InitializationFailureReason:" + error;
+        //Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
+        //text.text = "OnInitializeFailed InitializationFailureReason:" + error;
+        Announce2Text.text = "準備に失敗しました";
         //メニュー遷移ボタンを押下可にする
         MenuButton.interactable = true;
     }
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
-        Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
-        text.text = string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason);
+        //Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+        //text.text = string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason);
+        AnnounceResultText.text = "購入に失敗しました";
+        Announce2Text.text = "";
         //メニュー遷移ボタンを押下可にする
         MenuButton.interactable = true;
     }
@@ -171,9 +212,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         // Test edge case where product is unknown
         if (e.purchasedProduct == null)
         {
-            Debug.LogWarning("Attempted to process purchase with unknown product. Ignoring");
-            text.text = "Attempted to process purchase with unknown product. Ignoring";
-
+            //Debug.LogWarning("Attempted to process purchase with unknown product. Ignoring");
+            //text.text = "Attempted to process purchase with unknown product. Ignoring";
+            AnnounceResultText.text = "購入に失敗しました";
+            Announce2Text.text = "";
             //メニュー遷移ボタンを押下可にする
             MenuButton.interactable = true;
 
@@ -183,9 +225,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         // Test edge case where purchase has no receipt
         if (string.IsNullOrEmpty(e.purchasedProduct.receipt))
         {
-            Debug.LogWarning("Attempted to process purchase with no receipt: ignoring");
-            text.text = "Attempted to process purchase with no receipt: ignoring";
-
+            //Debug.LogWarning("Attempted to process purchase with no receipt: ignoring");
+            //text.text = "Attempted to process purchase with no receipt: ignoring";
+            AnnounceResultText.text = "購入に失敗しました";
+            Announce2Text.text = "";
             //メニュー遷移ボタンを押下可にする
             MenuButton.interactable = true;
 
@@ -193,7 +236,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
         }
 
         Debug.Log("Processing transaction: " + e.purchasedProduct.transactionID);
-        receiptText.text = e.purchasedProduct.receipt;
+        //receiptText.text = e.purchasedProduct.receipt;
 
 #if UNITY_IOS
         var wrapper = (Dictionary<string, object>)MiniJson.JsonDecode(e.purchasedProduct.receipt);
@@ -207,13 +250,19 @@ public class IAPExample : MonoBehaviour, IStoreListener
             PurchasePrice = (int)e.purchasedProduct.metadata.localizedPrice * 100,
             ReceiptData = payload
         }, result => {
-            Debug.Log("Validation successful!");
-            text.text = "Validation successful! ";
+            //Debug.Log("Validation successful!");
+            //text.text = "Validation successful! ";
+            AnnounceResultText.text = "購入に成功しました";
+            Announce2Text.text = "";
 
             //購入時に何をするか
             if (e.purchasedProduct.definition.id == "coin_bundle_ID")
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
+            }
+            else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 15000);
             }
 
             //メニュー遷移ボタンを押下可にする
@@ -222,8 +271,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         },
            error => {
 
-               Debug.Log("Validation failed: " + error.GenerateErrorReport());
-               text.text = "Validation failed: " + error.GenerateErrorReport();
+               //Debug.Log("Validation failed: " + error.GenerateErrorReport());
+               //text.text = "Validation failed: " + error.GenerateErrorReport();
+               AnnounceResultText.text = "購入に失敗しました";
+               Announce2Text.text = "";
                //メニュー遷移ボタンを押下可にする
                MenuButton.interactable = true;
            }
@@ -241,13 +292,19 @@ public class IAPExample : MonoBehaviour, IStoreListener
             Signature = googleReceipt.PayloadData.signature
         }, result =>
         {
-            Debug.Log("Validation successful!");
-            text.text = "Validation successful! ";
+            //Debug.Log("Validation successful!");
+            //text.text = "Validation successful! ";
+            AnnounceResultText.text = "購入に成功しました";
+            Announce2Text.text = "";
 
             //購入時に何をするか
             if (e.purchasedProduct.definition.id == "coin_bundle_ID")
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
+            }
+            else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
+            {
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 15000);
             }
 
             //メニュー遷移ボタンを押下可にする
@@ -255,8 +312,10 @@ public class IAPExample : MonoBehaviour, IStoreListener
         },
            error =>
            {
-               Debug.Log("Validation failed: " + error.GenerateErrorReport());
-               text.text = "Validation failed: " + error.GenerateErrorReport();
+               //Debug.Log("Validation failed: " + error.GenerateErrorReport());
+               //text.text = "Validation failed: " + error.GenerateErrorReport();
+               AnnounceResultText.text = "購入に失敗しました";
+               Announce2Text.text = "";
                //メニュー遷移ボタンを押下可にする
                MenuButton.interactable = true;
            }
@@ -273,6 +332,8 @@ public class IAPExample : MonoBehaviour, IStoreListener
         storeController.InitiatePurchase(productId);
         //メニュー遷移ボタンを押下できなくする
         MenuButton.interactable = false;
+        Announce2Text.text = "処理中です...アプリを落とさないでください。";
+
     }
     public void RestorePurchases()
     {
@@ -297,7 +358,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
                 // The first phase of restoration. If no more responses are received on ProcessPurchase then 
                 // no purchases are available to be restored.
                 Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
-                restoreText.text = "RestorePurchases continuing: " + result;
+                //restoreText.text = "RestorePurchases continuing: " + result;
             });
         }
         else
@@ -308,7 +369,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
     }
 
 
-    //コイン2000枚購入ボタン押下
+    //コイン5000枚購入ボタン押下
     public void OnClick_BuyCoin5000Button()
     {
         //SEの使用
@@ -316,7 +377,23 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         foreach (var item in Catalog)
         {
+            
             if (item.ItemId == "coin_bundle_ID")
+            {
+                BuyProductID(item.ItemId);
+            }
+        }
+    }
+
+    //コイン30000枚購入ボタン押下
+    public void OnClick_BuyCoin30000Button()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
+        foreach (var item in Catalog)
+        {
+            if (item.ItemId == "coin_bundle2_ID")
             {
                 BuyProductID(item.ItemId);
             }

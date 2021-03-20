@@ -5,28 +5,17 @@ using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour
 {
-    /*
-    //キリンオブジェクト
-    public GameObject titleAnimal;
-    //岩オブジェクト
-    public GameObject titleRock;
-    */
-
+    //ドキュメントの表示
     [SerializeField]
     private Text newsText = default;
-
     [SerializeField]
     private TextAsset newsDocument = default;
-
     [SerializeField]
     private Text policyText = default;
-
     [SerializeField]
     private TextAsset policyDocument = default;
-
     [SerializeField]
     private Text creditText = default;
-
     [SerializeField]
     private TextAsset creditDocument = default;
 
@@ -37,19 +26,14 @@ public class TitleManager : MonoBehaviour
         newsText.text = newsDocument.text;
         policyText.text = policyDocument.text;
         creditText.text = creditDocument.text;
-
-        //キリンオブジェクトの生成
-        //titleAnimal = (GameObject)Instantiate(Resources.Load("Title/TitleGiraffe"), new Vector3(-4.5f, 1.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
     }
 
-    /*
     // Update is called once per frame
     void Update()
     {
         //スプラッシュ画面が閉じた後での動作(岩オブジェクトの生成)
-        if (UnityEngine.Rendering.SplashScreen.isFinished && titleRock == null)
+        if (UnityEngine.Rendering.SplashScreen.isFinished)
         {
-            //titleRock = (GameObject)Instantiate(Resources.Load("Title/TitleRock"), new Vector3(2.0f, 1.5f, 0), Quaternion.identity);
 
             //画面の回転可能にする
             Screen.orientation = ScreenOrientation.AutoRotation;
@@ -59,5 +43,4 @@ public class TitleManager : MonoBehaviour
             Screen.autorotateToLandscapeLeft = true;
         }
     }
-    */
 }
