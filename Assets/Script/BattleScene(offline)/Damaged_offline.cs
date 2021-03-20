@@ -15,6 +15,13 @@ public class Damaged_offline : MonoBehaviour
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
 
+    //オフライン時はレコードtrueにしておく
+    public static bool bestTimeRecode_Giraffe = false;
+    public static bool bestTimeRecode_Elephant = false;
+    public static bool bestTimeRecode_Dog = false;
+    public static bool bestTimeRecode_Tiger = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -104,14 +111,44 @@ public class Damaged_offline : MonoBehaviour
 
         //時間の確定と取得
         battleScene_offlineManager.timeRanking = (int)timer_offline.elapsedTime;
+
         //ベストスコアに反映
         if (PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName) < battleScene_offlineManager.timeRanking)
         {
             PlayerPrefs.SetInt("BestTime_" + SelectCharacterUI.animalName, battleScene_offlineManager.timeRanking);
             //ベストタイムフラグをtrueに
             endDialog_offline.bestTimeFlag = true;
-            //サーバにオフラインハイスコアを保存
-            userAuth.save_Offline();
+
+            //ネットワーク接続確認
+            //インターネット接続なし
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                //オンライン時にデータを保存する
+                switch (SelectCharacterUI.animalName)
+                {
+                    case "Giraffe":
+                        PlayerPrefs.SetInt("bestTimeRecode_Giraffe", 1);
+                        break;
+                    case "Elephant":
+                        PlayerPrefs.SetInt("bestTimeRecode_Elephant", 1);
+                        break;
+                    case "Dog":
+                        PlayerPrefs.SetInt("bestTimeRecode_Dog", 1);
+                        break;
+                    case "Tiger":
+                        PlayerPrefs.SetInt("bestTimeRecode_Tiger", 1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //インターネット接続あり
+            else
+            {
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline(SelectCharacterUI.animalName);
+            }
+            
         }
 
         //レイヤーを変更し、下に落ちていく
