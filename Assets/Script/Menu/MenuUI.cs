@@ -16,6 +16,9 @@ public class MenuUI : MonoBehaviour
     //動物の表示用
     private GameObject menuAnimal;
 
+    //ランキングデータ
+    private RankingData rankingData = new RankingData();
+
     //自己Win数のテキスト表示
     [SerializeField]
     private Text WinCountText;
@@ -36,30 +39,36 @@ public class MenuUI : MonoBehaviour
     //アニマル名の表示
     [SerializeField]
     private Text OfflineRankingAnimalNameText;
-    //Giraffe
-    //ベストタイムランキングテキスト表示
+    //オフラインタイムランキングユーザー名表示
     [SerializeField]
-    public GameObject OfflineRankingGiraffeNameTextGameObject;
+    public Text OfflineRankingUsernameText;
+    //オフラインランキングハイスコア表示
     [SerializeField]
-    public Text OfflineRankingGiraffeNameText;
-    //Elephant
-    //ベストタイムランキングテキスト表示
-    [SerializeField]
-    public GameObject OfflineRankingElephantNameTextGameObject;
-    [SerializeField]
-    public Text OfflineRankingElephantNameText;
-    //Dog
-    //ベストタイムランキングテキスト表示
-    [SerializeField]
-    public GameObject OfflineRankingDogNameTextGameObject;
-    [SerializeField]
-    public Text OfflineRankingDogNameText;
-    //Tiger
-    //ベストタイムランキングテキスト表示
-    [SerializeField]
-    public GameObject OfflineRankingTigerNameTextGameObject;
-    [SerializeField]
-    public Text OfflineRankingTigerNameText;
+    public Text OfflineRankingHighScoreText;
+    ////Giraffe
+    ////ベストタイムランキングテキスト表示
+    //[SerializeField]
+    //public GameObject OfflineRankingGiraffeNameTextGameObject;
+    //[SerializeField]
+    //public Text OfflineRankingGiraffeNameText;
+    ////Elephant
+    ////ベストタイムランキングテキスト表示
+    //[SerializeField]
+    //public GameObject OfflineRankingElephantNameTextGameObject;
+    //[SerializeField]
+    //public Text OfflineRankingElephantNameText;
+    ////Dog
+    ////ベストタイムランキングテキスト表示
+    //[SerializeField]
+    //public GameObject OfflineRankingDogNameTextGameObject;
+    //[SerializeField]
+    //public Text OfflineRankingDogNameText;
+    ////Tiger
+    ////ベストタイムランキングテキスト表示
+    //[SerializeField]
+    //public GameObject OfflineRankingTigerNameTextGameObject;
+    //[SerializeField]
+    //public Text OfflineRankingTigerNameText;
 
     //コインの枚数を表示
     [SerializeField]
@@ -264,7 +273,8 @@ public class MenuUI : MonoBehaviour
         //オフラインtop15
         OfflineRankingAnimalNameText.text = "Giraffe";
         userAuth.TopOfflineRankers("Giraffe");
-        
+        displayOfflineRankingData("Giraffe");
+
         //ランキングパネルを表示する
         WinCountRankingPanel.SetActive(true);
     }
@@ -279,81 +289,160 @@ public class MenuUI : MonoBehaviour
             OfflineRankingAnimalNameText.text = "Elephant";
 
             //初回のみランキング取得
-            if (OfflineRankingElephantNameText.text == "")
+            if (OfflineRankingUsernameText.text == "")
             {
                 userAuth.TopOfflineRankers("Elephant");
             }
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingElephantNameTextGameObject.SetActive(true);
-            OfflineRankingGiraffeNameTextGameObject.SetActive(false);
         }
         else if (OfflineRankingAnimalNameText.text == "Elephant")
         {
             OfflineRankingAnimalNameText.text = "Dog";
 
             //初回のみランキング取得
-            if (OfflineRankingDogNameText.text == "")
+            if (OfflineRankingUsernameText.text == "")
             {
                 userAuth.TopOfflineRankers("Dog");
             }
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingDogNameTextGameObject.SetActive(true);
-            OfflineRankingElephantNameTextGameObject.SetActive(false);
         }
         else if (OfflineRankingAnimalNameText.text == "Dog")
         {
             OfflineRankingAnimalNameText.text = "Tiger";
 
             //初回のみランキング取得
-            if (OfflineRankingTigerNameText.text == "")
+            if (OfflineRankingUsernameText.text == "")
             {
                 userAuth.TopOfflineRankers("Tiger");
             }
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingTigerNameTextGameObject.SetActive(true);
-            OfflineRankingDogNameTextGameObject.SetActive(false);
         }
         else if (OfflineRankingAnimalNameText.text == "Tiger")
         {
 
         }
     }
+    //public void OnClick_OfflineRankingAnimalNameRightButton()
+    //{
+    //    //キリン→象→犬→虎
+    //    if (OfflineRankingAnimalNameText.text == "Giraffe")
+    //    {
+    //        //アニマル名を表示
+    //        OfflineRankingAnimalNameText.text = "Elephant";
+
+    //        //初回のみランキング取得
+    //        if (OfflineRankingElephantNameText.text == "")
+    //        {
+    //            userAuth.TopOfflineRankers("Elephant");
+    //        }
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingElephantNameTextGameObject.SetActive(true);
+    //        OfflineRankingGiraffeNameTextGameObject.SetActive(false);
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Elephant")
+    //    {
+    //        OfflineRankingAnimalNameText.text = "Dog";
+
+    //        //初回のみランキング取得
+    //        if (OfflineRankingDogNameText.text == "")
+    //        {
+    //            userAuth.TopOfflineRankers("Dog");
+    //        }
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingDogNameTextGameObject.SetActive(true);
+    //        OfflineRankingElephantNameTextGameObject.SetActive(false);
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Dog")
+    //    {
+    //        OfflineRankingAnimalNameText.text = "Tiger";
+
+    //        //初回のみランキング取得
+    //        if (OfflineRankingTigerNameText.text == "")
+    //        {
+    //            userAuth.TopOfflineRankers("Tiger");
+    //        }
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingTigerNameTextGameObject.SetActive(true);
+    //        OfflineRankingDogNameTextGameObject.SetActive(false);
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Tiger")
+    //    {
+
+    //    }
+    //}
 
     //オフラインランキングのアニマル切り替えボタン(左)
     public void OnClick_OfflineRankingAnimalNameLeftButton()
     {
+        string nextAnimalName = "";
+
         //キリン←象←犬←虎
         if (OfflineRankingAnimalNameText.text == "Giraffe")
         {
         }
         else if (OfflineRankingAnimalNameText.text == "Elephant")
         {
-            OfflineRankingAnimalNameText.text = "Giraffe";
+            nextAnimalName = "Giraffe";
 
             //初回のみランキング取得
-            if (OfflineRankingGiraffeNameText.text == "")
+            if (OfflineRankingUsernameText.text == "")
             {
                 userAuth.TopOfflineRankers("Giraffe");
             }
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingGiraffeNameTextGameObject.SetActive(true);
-            OfflineRankingElephantNameTextGameObject.SetActive(false);
         }
         else if (OfflineRankingAnimalNameText.text == "Dog")
         {
-            OfflineRankingAnimalNameText.text = "Elephant";
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingElephantNameTextGameObject.SetActive(true);
-            OfflineRankingDogNameTextGameObject.SetActive(false);
+            nextAnimalName = "Elephant";
+            //初回のみランキング取得
+            if (OfflineRankingUsernameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Elephant");
+            }
         }
         else if (OfflineRankingAnimalNameText.text == "Tiger")
         {
-            OfflineRankingAnimalNameText.text = "Dog";
-            //ランキングテキストを表示/非表示にする
-            OfflineRankingDogNameTextGameObject.SetActive(true);
-            OfflineRankingTigerNameTextGameObject.SetActive(false);
+            nextAnimalName = "Dog";
+            //初回のみランキング取得
+            if (OfflineRankingUsernameText.text == "")
+            {
+                userAuth.TopOfflineRankers("Dog");
+            }
         }
+
+        //ランキング情報の表示
+        displayOfflineRankingData(nextAnimalName);
     }
+    //public void OnClick_OfflineRankingAnimalNameLeftButton()
+    //{
+    //    //キリン←象←犬←虎
+    //    if (OfflineRankingAnimalNameText.text == "Giraffe")
+    //    {
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Elephant")
+    //    {
+    //        OfflineRankingAnimalNameText.text = "Giraffe";
+
+    //        //初回のみランキング取得
+    //        if (OfflineRankingGiraffeNameText.text == "")
+    //        {
+    //            userAuth.TopOfflineRankers("Giraffe");
+    //        }
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingGiraffeNameTextGameObject.SetActive(true);
+    //        OfflineRankingElephantNameTextGameObject.SetActive(false);
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Dog")
+    //    {
+    //        OfflineRankingAnimalNameText.text = "Elephant";
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingElephantNameTextGameObject.SetActive(true);
+    //        OfflineRankingDogNameTextGameObject.SetActive(false);
+    //    }
+    //    else if (OfflineRankingAnimalNameText.text == "Tiger")
+    //    {
+    //        OfflineRankingAnimalNameText.text = "Dog";
+    //        //ランキングテキストを表示/非表示にする
+    //        OfflineRankingDogNameTextGameObject.SetActive(true);
+    //        OfflineRankingTigerNameTextGameObject.SetActive(false);
+    //    }
+    //}
 
     //ランキングのRankingOfflineButton押下時
     public void OnClick_RankingOfflineButton()
@@ -487,5 +576,102 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //画面遷移
         SceneManager.LoadScene("Title");
+    }
+
+    //オフライン用ランキングデータに情報を突っ込む
+    public void SetOfflineRankingInfo(string animal, string userName, string highScore)
+    {
+        OfflineRankingElement data = new OfflineRankingElement();
+
+        data.UserName = userName;
+        data.HighScore = highScore;
+
+        rankingData.offlineRankingData[animal].Add(data);
+    }
+
+    //オンライン用ランキングデータに情報を突っ込む
+    public void SetOnlineRankingInfo(string userName, string winCount)
+    {
+        OnlineRankingElement data = new OnlineRankingElement();
+
+        data.UserName = userName;
+        data.WinCount = winCount;
+
+        rankingData.onlineRankingData.Add(data);
+    }
+
+    //オフライン用ランキングデータを表示する
+    private void displayOfflineRankingData(string animal)
+    {
+        //ランキングデータ初期化
+        OfflineRankingUsernameText.text = "";
+        OfflineRankingHighScoreText.text = "";
+
+        //表示中のアニマル名更新
+        OfflineRankingAnimalNameText.text = animal;
+
+        //データ更新
+        foreach (OfflineRankingElement data in rankingData.offlineRankingData[animal])
+        {
+            OfflineRankingUsernameText.text += data.UserName + "\n";
+            OfflineRankingHighScoreText.text += data.HighScore + "\n";
+        }
+    }
+
+    //オンライン用ランキングデータを表示する
+    //private void displayOnlineRankingData(string animal)
+    //{
+    //    //ランキングデータ初期化
+    //    OnlineRankingUsernameText.text = "";
+    //    OnlineRankingHighScoreText.text = "";
+
+    //    //表示中のアニマル名更新
+    //    OnlineRankingAnimalNameText.text = animal;
+
+    //    //データ更新
+    //    foreach (OfflineRankingElement data in rankingData.offlineRankingData[animal])
+    //    {
+    //        OfflineRankingUsernameText.text += data.UserName + "\n";
+    //        OfflineRankingHighScoreText.text += data.HighScore + "\n";
+    //    }
+    //}
+
+    //ランキングデータ
+    public class RankingData
+    {
+        public Dictionary<string, List<OfflineRankingElement>> offlineRankingData
+            = new Dictionary<string, List<OfflineRankingElement>>();
+        public List<OnlineRankingElement> onlineRankingData
+            = new List<OnlineRankingElement>();
+
+        //ランキングデータのインスタンス化
+        public RankingData()
+        {
+            List<OfflineRankingElement> giraffeRankingList = new List<OfflineRankingElement>();
+            offlineRankingData.Add("Giraffe", giraffeRankingList);
+
+            List<OfflineRankingElement> elephantRankingList = new List<OfflineRankingElement>();
+            offlineRankingData.Add("Elephant", elephantRankingList);
+
+            List<OfflineRankingElement> dogRankingList = new List<OfflineRankingElement>();
+            offlineRankingData.Add("Dog", dogRankingList);
+
+            List<OfflineRankingElement> tigerRankingList = new List<OfflineRankingElement>();
+            offlineRankingData.Add("Tiger", tigerRankingList);
+        }
+    }
+
+    //オフラインランキング要素
+    public class OfflineRankingElement
+    {
+        public string UserName;
+        public string HighScore;
+    }
+
+    //オンラインランキング要素
+    public class OnlineRankingElement
+    {
+        public string UserName;
+        public string WinCount;
     }
 }
