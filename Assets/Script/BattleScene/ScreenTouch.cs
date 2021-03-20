@@ -316,7 +316,7 @@ public class ScreenTouch : MonoBehaviour
     }
 
     //ジャンプ
-    public void OnClick_UpButton()
+    public void PointerDown_UpButton()
     {
         if (characterMainMove.sitFlag == false && characterMainMove.jumpCount == 0)
         {

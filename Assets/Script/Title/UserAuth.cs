@@ -148,7 +148,7 @@ public class UserAuth : MonoBehaviour
     /// <summary>
     /// サーバにオフラインハイスコアを保存
     /// </summary>
-    public void save_Offline()
+    public void save_Offline(string animal)
     {
         //データスコアの「HighScore」クラスから、Nameをキーにして検索
         NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
@@ -158,7 +158,7 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
-                objList[0]["Offline" + SelectCharacterUI.animalName + "Time"] = PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName);
+                objList[0]["Offline" + animal + "Time"] = PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName);
                 objList[0].SaveAsync();
             }
         });
@@ -198,6 +198,7 @@ public class UserAuth : MonoBehaviour
                 //    menuUI.WinCountRankingNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
 
                 //}
+
 
                 for (int i = 0; i < objList.Count; i++)
                 {

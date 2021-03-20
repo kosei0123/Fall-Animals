@@ -132,6 +132,9 @@ public class MenuUI : MonoBehaviour
         //ベストタイムスコアを取得
         SelectCharacterBestTimeGet();
 
+        //オフラインで記録できなかったベストタイムをオンライン時にいれる
+        SelectCharacterBestTimeSet();
+
         //アニマルの初期設定を入れる
         if (SelectCharacterUI.animalName == null)
         {
@@ -260,6 +263,52 @@ public class MenuUI : MonoBehaviour
             userAuth.firstSetBestTime();
         }
         
+    }
+
+    //オフラインで記録できなかったベストタイムをオンライン時にいれる
+    private void SelectCharacterBestTimeSet()
+    {
+        //ネットワーク接続確認
+        //インターネット接続なし
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+        }
+        //インターネット接続あり
+        else
+        {
+            //キリン
+            if (PlayerPrefs.GetInt("bestTimeRecode_Giraffe") == 1)
+            {
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline("Giraffe");
+                //ランキングに登録完了したら0にする
+                PlayerPrefs.SetInt("bestTimeRecode_Giraffe", 0);
+            }
+            //ゾウ
+            if (PlayerPrefs.GetInt("bestTimeRecode_Elephant") == 1)
+            {
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline("Elephant");
+                //ランキングに登録完了したらfalseにする
+                PlayerPrefs.SetInt("bestTimeRecode_Elephant", 0);
+            }
+            //犬
+            if (PlayerPrefs.GetInt("bestTimeRecode_Dog") == 1)
+            {
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline("Dog");
+                //ランキングに登録完了したらfalseにする
+                PlayerPrefs.SetInt("bestTimeRecode_Dog", 0);
+            }
+            //虎
+            if (PlayerPrefs.GetInt("bestTimeRecode_Tiger") == 1)
+            {
+                //サーバにオフラインハイスコアを保存
+                userAuth.save_Offline("Tiger");
+                //ランキングに登録完了したらfalseにする
+                PlayerPrefs.SetInt("bestTimeRecode_Tiger", 0);
+            }
+        }
     }
 
     //LoginBounusYesButtonボタンを押した時の挙動
