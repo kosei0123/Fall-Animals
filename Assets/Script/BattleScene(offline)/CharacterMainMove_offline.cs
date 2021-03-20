@@ -95,7 +95,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         boxCol = this.GetComponent<BoxCollider>();
 
         //ニックネームを表示
-        NameText.text = PlayerPrefs.GetString("NickName");
+        NameText.text = PlayerPrefs.GetString("NickName").Substring(0, PlayerPrefs.GetString("NickName").LastIndexOf("("));
 
         //Transformをキャッシュする
         transformCache = transform;

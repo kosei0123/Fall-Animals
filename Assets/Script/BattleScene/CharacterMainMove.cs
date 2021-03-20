@@ -100,7 +100,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         boxCol = this.GetComponent<BoxCollider>();
 
         //ニックネームを表示
-        NameText.text = PhotonNetwork.LocalPlayer.NickName;
+        NameText.text = PhotonNetwork.LocalPlayer.NickName.Substring(0, PhotonNetwork.LocalPlayer.NickName.LastIndexOf("("));
 
         //Transformをキャッシュする
         transformCache = transform;
