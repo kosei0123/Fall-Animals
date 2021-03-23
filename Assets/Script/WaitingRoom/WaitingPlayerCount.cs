@@ -109,9 +109,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
             //バトル時間を同期する
             startTimePhotonView.RPC("StartTimeValue", RpcTarget.AllViaServer, waitingBattleStartStackTime);
-
-            //バトルスタート時間を表示する
-            StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
         }
         else if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0 && (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] < 2)
         {
@@ -119,11 +116,19 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
             //バトル時間を同期する
             startTimePhotonView.RPC("StartTimeValue", RpcTarget.AllViaServer, waitingBattleStartStackTime);
-
-            //バトルスタート時間を表示する
-            StartTimeText.text = "";
         }
 
+        //バトルスタート時間の表示
+        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] >= 2)
+        {
+            //バトルスタート時間を表示する
+            StartTimeText.text = ((int)waitingBattleStartTime).ToString("D2");
+        }
+        else
+        {
+            //バトルスタート時間を表示しない
+            StartTimeText.text = "";
+        }
 
         //部屋内の人数と毎Updateで取得している人数で差異があれば呼び出す
         if (PhotonNetwork.IsMasterClient)

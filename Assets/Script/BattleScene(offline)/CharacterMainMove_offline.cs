@@ -257,11 +257,11 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 9.0f;
+                runSpeed = 4.5f;
             }
             else
             {
-                runSpeed = 6.5f;
+                runSpeed = 4.5f;
             }
 
         }
@@ -273,7 +273,7 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 8.5f;
+                runSpeed = 6.5f;
             }
             else
             {
@@ -284,7 +284,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         else if (SelectCharacterUI.animalName == "Dog")
         {
             //ジャンプ力
-            jumpPower = 10.5f;
+            jumpPower = 13.0f;
             //スピード
             if (isGround)
             {
@@ -299,7 +299,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         else if (SelectCharacterUI.animalName == "Tiger")
         {
             //ジャンプ力
-            jumpPower = 9.5f;
+            jumpPower = 12.5f;
             //スピード
             if (isGround)
             {
