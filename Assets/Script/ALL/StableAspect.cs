@@ -12,8 +12,11 @@ public class StableAspect : MonoBehaviour
     private string currentScreenDirection = "";
 
     // 固定したい表示サイズ
-    private int width = 1334;
-    private int height = 750;
+    private bool aspectScreenCheckFlag = false;
+    private static int aspectScreenWidth = 1334;
+    private static int aspectScreenHeight = 750;
+    //private static int aspectScreenWidth = 2688;
+    //private static int aspectScreenHeight = 1242;
 
     // 画像のPixel Per Unit
     private float pixelPerUnit = 100f;
@@ -23,6 +26,19 @@ public class StableAspect : MonoBehaviour
 
     void Awake()
     {
+        //画面サイズを取得する
+        if (aspectScreenCheckFlag == false && Screen.width > Screen.height)
+        {
+            aspectScreenWidth = Screen.width;
+            aspectScreenHeight = Screen.height;
+            aspectScreenCheckFlag = true;
+        }
+        else if (aspectScreenCheckFlag == false && Screen.width < Screen.height)
+        {
+            aspectScreenWidth = Screen.height;
+            aspectScreenHeight = Screen.width;
+            aspectScreenCheckFlag = true;
+        }
 
         if (refCamera == null)
         {
@@ -30,6 +46,11 @@ public class StableAspect : MonoBehaviour
             refCamera = GetComponent<Camera>();
         }
         UpdateCamera();
+    }
+
+    void Start()
+    {
+        
     }
 
     private void Update()
@@ -65,8 +86,8 @@ public class StableAspect : MonoBehaviour
     {
         float screen_w = (float)Screen.width;
         float screen_h = (float)Screen.height;
-        float target_w = (float)width;
-        float target_h = (float)height;
+        float target_w = (float)aspectScreenWidth;
+        float target_h = (float)aspectScreenHeight;
 
         //アスペクト比
         float aspect = screen_w / screen_h;

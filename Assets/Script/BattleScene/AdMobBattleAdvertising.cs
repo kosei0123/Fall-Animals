@@ -48,7 +48,9 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //iPhoneでの動作
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            adUnitId = "ca-app-pub-3940256099942544/1712485313";
+            //テスト
+            adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            //adUnitId = "ca-app-pub-8452025378548231/9250095442";
         }
 
         //広告ユニットIDを指定してrewardedAdをインスタンス化する
@@ -95,7 +97,7 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //シーン移動可能
         moveScreenTimer.moveScreenFlag = true;
         //横向き固定にする
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        //Screen.orientation = ScreenOrientation.LandscapeLeft;
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
     }
@@ -106,7 +108,7 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //再度コインを獲得する
         endDialog.DialogPanelActive(pun2Script.battleRanking);
         //横向き固定にする
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        //Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame

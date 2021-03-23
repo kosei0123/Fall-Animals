@@ -112,7 +112,6 @@ public class MenuUI : MonoBehaviour
     {
 
         //回転可能にする
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
         Screen.orientation = ScreenOrientation.AutoRotation;
 
         //SoundManagerのスクリプトの関数使用
@@ -524,14 +523,14 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
 
         //回転しないようにする
-        if (Screen.width > Screen.height)
-        {
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
-        }
-        else
-        {
-            Screen.orientation = ScreenOrientation.Portrait;
-        }
+        //if (Screen.width > Screen.height)
+        //{
+        //    Screen.orientation = ScreenOrientation.LandscapeLeft;
+        //}
+        //else
+        //{
+        //    Screen.orientation = ScreenOrientation.Portrait;
+        //}
 
         //画面遷移
         SceneManager.LoadScene("WaitingRoom(offline)");
@@ -552,15 +551,15 @@ public class MenuUI : MonoBehaviour
         //インターネット接続あり
         else
         {
-            //回転しないようにする
-            if (Screen.width > Screen.height)
-            {
-                Screen.orientation = ScreenOrientation.LandscapeLeft;
-            }
-            else
-            {
-                Screen.orientation = ScreenOrientation.Portrait;
-            }
+            ////回転しないようにする
+            //if (Screen.width > Screen.height)
+            //{
+            //    Screen.orientation = ScreenOrientation.LandscapeLeft;
+            //}
+            //else
+            //{
+            //    Screen.orientation = ScreenOrientation.Portrait;
+            //}
 
             //ロビーマネジャーのゲームオブジェクトをオンにする
             LobbyManager.SetActive(true);

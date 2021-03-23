@@ -13,12 +13,18 @@ public class AdMobTitleAdvertising : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //PlayerPrefs.DeleteKey("Unlock_TitleAdvertising");
+        //広告解除初期化
+        //PlayerPrefs.DeleteKey("Unlock_WaitingRoomAdvertising");
 
         //タイトル広告解除初期値
         if (!PlayerPrefs.HasKey("Unlock_TitleAdvertising"))
         {
             PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
+        }
+        //ゲーム開始前広告解除初期値
+        if (!PlayerPrefs.HasKey("Unlock_WaitingRoomAdvertising"))
+        {
+            PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 0);
         }
 
         // アプリID(不要)
@@ -40,13 +46,15 @@ public class AdMobTitleAdvertising : MonoBehaviour
         //iPhoneでの動作
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
+            //テストID
             adUnitId = "ca-app-pub-3940256099942544/2934735716";
+            //adUnitId = "ca-app-pub-8452025378548231/8071948989";
         }
         //Androidでの動作
-        else if (Application.platform == RuntimePlatform.Android)
-        {
-            adUnitId = "ca-app-pub-3940256099942544/6300978111";
-        }
+        //else if (Application.platform == RuntimePlatform.Android)
+        //{
+        //    adUnitId = "ca-app-pub-3940256099942544/6300978111";
+        //}
 
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
@@ -54,8 +62,6 @@ public class AdMobTitleAdvertising : MonoBehaviour
         AdRequest request = new AdRequest.Builder().Build();
         // Load the banner with the request.
         bannerView.LoadAd(request);
-        // Create a 320x50 banner at the top of the screen.
-        //bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
 
     }
     // Update is called once per frame

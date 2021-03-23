@@ -127,9 +127,9 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
         //ニックネームを表示
-        //NameText.text = PhotonNetwork.LocalPlayer.NickName;
+        NameText.text = PhotonNetwork.LocalPlayer.NickName;
         //プレイ動画用
-        NameText.text = PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] + "P";
+        //NameText.text = PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] + "P";
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
 
         //ジャンプ力の設定
@@ -385,48 +385,48 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //他プレイヤー画面にてニックネームの共有
     private void ShowNickName()
     {
-        //if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
-        //    animal1NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
-        //    animal2NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
-        //    animal3NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
-        //    animal4NickNameFlag = true;
-        //}
-
-        //動画用
         if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().CustomProperties["playerCreatedNumber"] + "P";
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
             animal1NickNameFlag = true;
         }
         if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().CustomProperties["playerCreatedNumber"] + "P";
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
             animal2NickNameFlag = true;
         }
         if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().CustomProperties["playerCreatedNumber"] + "P";
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
             animal3NickNameFlag = true;
         }
         if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().CustomProperties["playerCreatedNumber"] + "P";
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
             animal4NickNameFlag = true;
         }
+
+        //動画用
+        //if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
+        //{
+        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().CustomProperties["playerCreatedNumber"] + "P";
+        //    animal1NickNameFlag = true;
+        //}
+        //if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
+        //{
+        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().CustomProperties["playerCreatedNumber"] + "P";
+        //    animal2NickNameFlag = true;
+        //}
+        //if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
+        //{
+        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().CustomProperties["playerCreatedNumber"] + "P";
+        //    animal3NickNameFlag = true;
+        //}
+        //if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
+        //{
+        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().CustomProperties["playerCreatedNumber"] + "P";
+        //    animal4NickNameFlag = true;
+        //}
 
     }
 

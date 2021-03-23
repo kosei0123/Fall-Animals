@@ -34,12 +34,11 @@ public class TitleManager : MonoBehaviour
         //スプラッシュ画面が閉じた後での動作(岩オブジェクトの生成)
         if (UnityEngine.Rendering.SplashScreen.isFinished)
         {
-
             //画面の回転可能にする
             Screen.orientation = ScreenOrientation.AutoRotation;
-            Screen.autorotateToPortrait = true;
+            Screen.autorotateToPortrait = false;
             Screen.autorotateToPortraitUpsideDown = false;
-            Screen.autorotateToLandscapeRight = false;
+            Screen.autorotateToLandscapeRight = true;
             Screen.autorotateToLandscapeLeft = true;
         }
     }

@@ -52,6 +52,7 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject TigerBuyDonePanel;
+
     //タイトル広告解除
     //購入ボタン
     [SerializeField]
@@ -62,6 +63,16 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject TitleAdvertisingBuyDonePanel;
+    //ゲーム開始前広告解除
+    //購入ボタン
+    [SerializeField]
+    private Button WaitingRoomAdvertisingBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text WaitingRoomAdvertisingBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject WaitingRoomAdvertisingBuyDonePanel;
 
     //BuyPanel
     [SerializeField]
@@ -81,7 +92,9 @@ public class UnlockUI : MonoBehaviour
     //虎
     private int tigerPrice = 5000;
     //タイトル広告解除
-    private int titleAdvertisingPrice = 50000;
+    private int titleAdvertisingPrice = 30000;
+    //ゲーム開始前広告解除
+    private int waitingRoomAdvertisingPrice = 30000;
 
     // Start is called before the first frame update
     void Start()
@@ -113,42 +126,21 @@ public class UnlockUI : MonoBehaviour
     private void CheckBuy()
     {
         //キリン
-        if (PlayerPrefs.GetInt("myCoin") > giraffePrice && PlayerPrefs.GetInt("Unlock_Giraffe") == 0)
-        {
-            GiraffeBuyButton.interactable = true;
-        }
-        else
-        {
-            GiraffeBuyButton.interactable = false;
-        }
+        if (PlayerPrefs.GetInt("myCoin") > giraffePrice && PlayerPrefs.GetInt("Unlock_Giraffe") == 0) GiraffeBuyButton.interactable = true;
+        else { GiraffeBuyButton.interactable = false; }
         //象
-        if (PlayerPrefs.GetInt("myCoin") > elephantPrice && PlayerPrefs.GetInt("Unlock_Elephant") == 0)
-        {
-            ElephantBuyButton.interactable = true;
-        }
-        else
-        {
-            ElephantBuyButton.interactable = false;
-        }
+        if (PlayerPrefs.GetInt("myCoin") > elephantPrice && PlayerPrefs.GetInt("Unlock_Elephant") == 0) ElephantBuyButton.interactable = true;
+        else { ElephantBuyButton.interactable = false; }
         //虎
-        if (PlayerPrefs.GetInt("myCoin") > tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0)
-        {
-            TigerBuyButton.interactable = true;
-        }
-        else
-        {
-            TigerBuyButton.interactable = false;
-        }
+        if (PlayerPrefs.GetInt("myCoin") > tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0) TigerBuyButton.interactable = true;
+        else { TigerBuyButton.interactable = false; }
 
         //タイトル広告解除
-        if (PlayerPrefs.GetInt("myCoin") > titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
-        {
-            TitleAdvertisingBuyButton.interactable = true;
-        }
-        else
-        {
-            TitleAdvertisingBuyButton.interactable = false;
-        }
+        if (PlayerPrefs.GetInt("myCoin") > titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0) TitleAdvertisingBuyButton.interactable = true;
+        else { TitleAdvertisingBuyButton.interactable = false; }
+        //ゲーム開始前広告解除
+        if (PlayerPrefs.GetInt("myCoin") > waitingRoomAdvertisingPrice && PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0) WaitingRoomAdvertisingBuyButton.interactable = true;
+        else { WaitingRoomAdvertisingBuyButton.interactable = false; }
     }
 
     //表示値段の取得
@@ -163,48 +155,29 @@ public class UnlockUI : MonoBehaviour
 
         //タイトル広告解除
         TitleAdvertisingBuyText.text = titleAdvertisingPrice.ToString("");
+        //ゲーム開始前広告解除
+        WaitingRoomAdvertisingBuyText.text = waitingRoomAdvertisingPrice.ToString("");
     }
 
     //動物購入済みかを確認
     private void CheckBuyDone()
     {
         //キリン
-        if (PlayerPrefs.GetInt("Unlock_Giraffe") == 1)
-        {
-            GiraffeBuyDonePanel.SetActive(true);
-        }
-        else
-        {
-            GiraffeBuyDonePanel.SetActive(false);
-        }
+        if (PlayerPrefs.GetInt("Unlock_Giraffe") == 1) GiraffeBuyDonePanel.SetActive(true);
+        else { GiraffeBuyDonePanel.SetActive(false); }
         //象
-        if (PlayerPrefs.GetInt("Unlock_Elephant") == 1)
-        {
-            ElephantBuyDonePanel.SetActive(true);
-        }
-        else
-        {
-            ElephantBuyDonePanel.SetActive(false);
-        }
+        if (PlayerPrefs.GetInt("Unlock_Elephant") == 1) ElephantBuyDonePanel.SetActive(true);
+        else { ElephantBuyDonePanel.SetActive(false); }
         //虎
-        if (PlayerPrefs.GetInt("Unlock_Tiger") == 1)
-        {
-            TigerBuyDonePanel.SetActive(true);
-        }
-        else
-        {
-            TigerBuyDonePanel.SetActive(false);
-        }
+        if (PlayerPrefs.GetInt("Unlock_Tiger") == 1) TigerBuyDonePanel.SetActive(true);
+        else { TigerBuyDonePanel.SetActive(false); }
 
         //タイトル広告解除
-        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 1)
-        {
-            TitleAdvertisingBuyDonePanel.SetActive(true);
-        }
-        else
-        {
-            TitleAdvertisingBuyDonePanel.SetActive(false);
-        }
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 1) TitleAdvertisingBuyDonePanel.SetActive(true);
+        else { TitleAdvertisingBuyDonePanel.SetActive(false); }
+        //ゲーム開始前広告解除
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 1) WaitingRoomAdvertisingBuyDonePanel.SetActive(true);
+        else { WaitingRoomAdvertisingBuyDonePanel.SetActive(false); }
     }
 
 
@@ -265,19 +238,30 @@ public class UnlockUI : MonoBehaviour
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
-        //象を指定する
+        //虎を指定する
         unlockName = "Tiger";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
 
-    //
+    //TitleAdvertisingBuyButtonを押した際の挙動
     public void OnClick_TitleAdvertisingBuyButton()
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
-        //象を指定する
+        //タイトル広告を指定する
         unlockName = "TitleAdvertising";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
+    //WaitingRoomAdvertisingBuyButtonを押した際の挙動
+    public void OnClick_WaitingRoomAdvertisingBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //ゲームまえ広告を指定する
+        unlockName = "WaitingRoomAdvertising";
         //BuyPanelを表示
         BuyPanel.SetActive(true);
     }
@@ -318,6 +302,13 @@ public class UnlockUI : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_TitleAdvertising", 1);
                 //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - titleAdvertisingPrice);
+                break;
+            //ゲーム開始前広告解除
+            case "WaitingRoomAdvertising":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - waitingRoomAdvertisingPrice);
                 break;
             default:
                 break;

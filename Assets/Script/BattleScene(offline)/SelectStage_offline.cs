@@ -17,10 +17,13 @@ public class SelectStage_offline : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int randomStage = Random.Range(1,4);
+        int randomStage = Random.Range(0,4);
 
         switch (randomStage)
         {
+            case 0:
+                Stage1.SetActive(true);
+                break;
             case 1:
                 Stage1.SetActive(true);
                 break;

@@ -19,8 +19,23 @@ public class RectScalerWithViewport : MonoBehaviour
 
     private const float kLogBase = 2;
 
+    // 固定したい表示サイズ
+    private bool aspectScreenCheckFlag = false;
+
     private void Awake()
     {
+        //画面サイズを取得する
+        if (aspectScreenCheckFlag == false && Screen.width > Screen.height)
+        {
+            referenceResolution = new Vector2(Screen.width, Screen.height);
+            aspectScreenCheckFlag = true;
+        }
+        else if (aspectScreenCheckFlag == false && Screen.width < Screen.height)
+        {
+            referenceResolution = new Vector2(Screen.height, Screen.width);
+            aspectScreenCheckFlag = true;
+        }
+
         if (refRect == null)
         {
             refRect = GetComponent<RectTransform>();

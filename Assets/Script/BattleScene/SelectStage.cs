@@ -20,6 +20,9 @@ public class SelectStage : MonoBehaviour
     {
         switch (PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"])
         {
+            case 0:
+                Stage1.SetActive(true);
+                break;
             case 1:
                 Stage1.SetActive(true);
                 break;
