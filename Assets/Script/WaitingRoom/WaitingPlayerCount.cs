@@ -9,6 +9,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 {
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
+    //AdMobWaitingRoomAdvertisingのpublic定数を取得
+    AdMobWaitingRoomAdvertising adMobWaitingRoomAdvertising;
 
     //待機人数の表示
     [SerializeField]
@@ -53,6 +55,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //AdMobWaitingRoomAdvertisingのpublic定数を取得
+        adMobWaitingRoomAdvertising = GameObject.Find("WaitingRoomAdvertising").GetComponent<AdMobWaitingRoomAdvertising>();
 
         //FPSを60に設定
         Application.targetFrameRate = 60;
@@ -252,6 +256,13 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //時間が2以下になったとき
         if (waitingBattleStartTime <= 2.0f)
         {
+            //広告解除していない場合
+            if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+            {
+                adMobWaitingRoomAdvertising.bannerView.Hide();
+                adMobWaitingRoomAdvertising.bannerView.Destroy();
+            }
+
             //入室できないようにする
             LobbyManager.UpdateRoomOptions(false);
             //メニューボタンを非表示にする

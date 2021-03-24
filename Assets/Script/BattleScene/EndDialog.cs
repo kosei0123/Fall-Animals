@@ -83,16 +83,16 @@ public class EndDialog : MonoBehaviourPunCallbacks
                     getCoin = 10;
                     break;
                 case 3:
-                    getCoin = 20;
-                    break;
-                case 2:
                     getCoin = 30;
                     break;
+                case 2:
+                    getCoin = 60;
+                    break;
                 case 1:
-                    getCoin = 40;
+                    getCoin = 120;
                     break;
                 default:
-                    getCoin = 40;
+                    getCoin = 60;
                     break;
             }
         }
@@ -104,10 +104,10 @@ public class EndDialog : MonoBehaviourPunCallbacks
                     getCoin = 10;
                     break;
                 case 2:
-                    getCoin = 20;
+                    getCoin = 30;
                     break;
                 case 1:
-                    getCoin = 30;
+                    getCoin = 60;
                     break;
                 default:
                     getCoin = 30;
@@ -122,10 +122,10 @@ public class EndDialog : MonoBehaviourPunCallbacks
                     getCoin = 10;
                     break;
                 case 1:
-                    getCoin = 20;
+                    getCoin = 30;
                     break;
                 default:
-                    getCoin = 20;
+                    getCoin = 10;
                     break;
             }
         }
