@@ -34,22 +34,22 @@ public class AirplaneMove_offline : MonoBehaviour
             
 
             case "Airplane0":
-                rbAirplane.velocity = new Vector3(-3.0f - (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-3.0f - (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane1":
-                rbAirplane.velocity = new Vector3(-6.0f - (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-6.0f - (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane2":
-                rbAirplane.velocity = new Vector3(-9.0f - (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-9.0f - (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane3":
-                rbAirplane.velocity = new Vector3(3.0f + (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(3.0f + (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane4":
-                rbAirplane.velocity = new Vector3(6.0f + (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(6.0f + (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane5":
-                rbAirplane.velocity = new Vector3(9.0f + (timer_offline.elapsedTime / 40), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(9.0f + (timer_offline.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
                 break;
             default:
                 break;

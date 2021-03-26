@@ -165,7 +165,6 @@ public class MenuUI : MonoBehaviour
             //再度falseに戻しておく
             WaitingPlayerCount.RoomMasterLeftFlag = false;
         }
-
     }
 
     // Update is called once per frame
@@ -587,6 +586,13 @@ public class MenuUI : MonoBehaviour
     //ランキングボタンを押した際
     public void OnClick_RankingButton()
     {
+        //ランキングデータの消去
+        if (rankingData.offlineRankingData["Giraffe"] != null) rankingData.offlineRankingData["Giraffe"].Clear();
+        if (rankingData.offlineRankingData["Elephant"] != null) rankingData.offlineRankingData["Elephant"].Clear();
+        if (rankingData.offlineRankingData["Dog"] != null) rankingData.offlineRankingData["Dog"].Clear();
+        if (rankingData.offlineRankingData["Tiger"] != null) rankingData.offlineRankingData["Tiger"].Clear();
+        if (rankingData.onlineRankingData != null) rankingData.onlineRankingData.Clear();
+
         //オンラインtop30
         userAuth.TopRankers();
         //オフラインtop15

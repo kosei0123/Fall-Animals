@@ -25,26 +25,29 @@ public class RockMove_offline : MonoBehaviour
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
 
+        //Y軸方向の力をランダムに加える
+        float randomRockVelocity_Y = Random.Range(0, 2);
+
         //岩の移動方向に力をかける
         switch (this.name)
         {
             case "Rock0":
-                rbRock.velocity = new Vector3(-3.0f - (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(-3.0f - (timer_offline.elapsedTime / 10), randomRockVelocity_Y, 0);
                 break;
             case "Rock1":
-                rbRock.velocity = new Vector3(-6.0f - (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(-6.0f - (timer_offline.elapsedTime / 10), randomRockVelocity_Y, 0);
                 break;
             case "Rock2":
-                rbRock.velocity = new Vector3(-9.0f - (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(-9.0f - (timer_offline.elapsedTime / 10), randomRockVelocity_Y, 0);
                 break;
             case "Rock3":
-                rbRock.velocity = new Vector3(3.0f + (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(3.0f + (timer_offline.elapsedTime / 20), randomRockVelocity_Y, 0);
                 break;
             case "Rock4":
-                rbRock.velocity = new Vector3(6.0f + (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(6.0f + (timer_offline.elapsedTime / 20), randomRockVelocity_Y, 0);
                 break;
             case "Rock5":
-                rbRock.velocity = new Vector3(9.0f + (timer_offline.elapsedTime / 20), 0, 0);
+                rbRock.velocity = new Vector3(9.0f + (timer_offline.elapsedTime / 20), randomRockVelocity_Y, 0);
                 break;
             default:
                 break;

@@ -121,7 +121,7 @@ public class UserAuth : MonoBehaviour
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Tiger" + "Time"] = 0;
                 }
-                objList[0].SaveAsync();
+                objList[0].Save();
             }
         });
     }

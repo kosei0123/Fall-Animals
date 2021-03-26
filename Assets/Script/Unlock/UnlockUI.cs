@@ -86,13 +86,13 @@ public class UnlockUI : MonoBehaviour
 
     //値段
     //キリン
-    private int giraffePrice = 5000;
+    private int giraffePrice = 4000;
     //象
-    private int elephantPrice = 4000;
+    private int elephantPrice = 500;
     //虎
-    private int tigerPrice = 5000;
+    private int tigerPrice = 2000;
     //タイトル広告解除
-    private int titleAdvertisingPrice = 30000;
+    private int titleAdvertisingPrice = 20000;
     //ゲーム開始前広告解除
     private int waitingRoomAdvertisingPrice = 30000;
 
