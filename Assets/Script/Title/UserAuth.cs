@@ -111,7 +111,7 @@ public class UserAuth : MonoBehaviour
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Dog", 0);
                     //mobile backendサーバにデータ保存
-                    objList[0]["Offline" + "Dog" + "Time"] = 1;
+                    objList[0]["Offline" + "Dog" + "Time"] = 0;
                 }
                 //虎
                 if (!PlayerPrefs.HasKey("BestTime_Tiger"))

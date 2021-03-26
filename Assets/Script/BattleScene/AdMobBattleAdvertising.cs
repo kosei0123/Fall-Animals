@@ -49,8 +49,8 @@ public class AdMobBattleAdvertising : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テスト
-            adUnitId = "ca-app-pub-3940256099942544/5224354917";
-            //adUnitId = "ca-app-pub-8452025378548231/9250095442";
+            //adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            adUnitId = "ca-app-pub-8452025378548231/9250095442";
         }
 
         //広告ユニットIDを指定してrewardedAdをインスタンス化する

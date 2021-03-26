@@ -584,6 +584,22 @@ public class MenuUI : MonoBehaviour
         SceneManager.LoadScene("SelectCharacter");
     }
 
+    //ランキングボタンを押した際
+    public void OnClick_RankingButton()
+    {
+        //オンラインtop30
+        userAuth.TopRankers();
+        //オフラインtop15
+        OfflineRankingAnimalNameText.text = "Giraffe";
+        userAuth.TopOfflineRankers("Giraffe");
+        userAuth.TopOfflineRankers("Elephant");
+        userAuth.TopOfflineRankers("Dog");
+        userAuth.TopOfflineRankers("Tiger");
+
+        //非同期処理呼び出し(ランキング情報表示準備)
+        StartCoroutine(prepareRankingData());
+    }
+
     //なんらかのダイアログのYesButtonボタンを押した時の挙動
     public void OnClick_DialogYesButton()
     {

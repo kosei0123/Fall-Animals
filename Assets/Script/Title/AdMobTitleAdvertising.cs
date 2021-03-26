@@ -47,8 +47,8 @@ public class AdMobTitleAdvertising : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テストID
-            adUnitId = "ca-app-pub-3940256099942544/2934735716";
-            //adUnitId = "ca-app-pub-8452025378548231/8071948989";
+            //adUnitId = "ca-app-pub-3940256099942544/2934735716";
+            adUnitId = "ca-app-pub-8452025378548231/8071948989";
         }
         //Androidでの動作
         //else if (Application.platform == RuntimePlatform.Android)

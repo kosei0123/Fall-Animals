@@ -396,6 +396,13 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
+        //広告解除していない場合
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+        {
+            adMobWaitingRoomAdvertising.bannerView.Hide();
+            adMobWaitingRoomAdvertising.bannerView.Destroy();
+        }
+
         //ルームマスターが退出したことを確認する
         if (PhotonNetwork.IsMasterClient)
         {
@@ -417,6 +424,13 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             prps["playerCreatedNumber"] = null;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
+            //広告解除していない場合
+            if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+            {
+                adMobWaitingRoomAdvertising.bannerView.Hide();
+                adMobWaitingRoomAdvertising.bannerView.Destroy();
+            }
+
             //Photonに接続を解除する
             if (PhotonNetwork.IsConnected == true)
             {
@@ -436,6 +450,13 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //prps["NoKick"] = "false";
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
+
+        //広告解除していない場合
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+        {
+            adMobWaitingRoomAdvertising.bannerView.Hide();
+            adMobWaitingRoomAdvertising.bannerView.Destroy();
+        }
 
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
