@@ -141,6 +141,7 @@ public class Damaged_offline : MonoBehaviour
                     default:
                         break;
                 }
+                PlayerPrefs.Save();
             }
             //インターネット接続あり
             else

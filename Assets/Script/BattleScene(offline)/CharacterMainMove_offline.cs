@@ -94,7 +94,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
-        //ニックネームを表示
+        //ニックネームを表示(IDを抜き取る)
         NameText.text = PlayerPrefs.GetString("NickName").Substring(0, PlayerPrefs.GetString("NickName").LastIndexOf("("));
 
         //Transformをキャッシュする
@@ -122,7 +122,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
         //ニックネームを表示
-        //NameText.text = PlayerPrefs.GetString("NickName");
+        //NameText.text = PlayerPrefs.GetString("NickName").Substring(0, PlayerPrefs.GetString("NickName").LastIndexOf("("));
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);
 
         //ジャンプ力の設定

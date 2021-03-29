@@ -51,6 +51,13 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
             //adUnitId = "ca-app-pub-3940256099942544/5224354917";
             adUnitId = "ca-app-pub-8452025378548231/9250095442";
         }
+        //Androidでの動作
+        else if (Application.platform == RuntimePlatform.Android)
+        {
+            //テストID
+            //adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            adUnitId = "ca-app-pub-8452025378548231/1115773337";
+        }
 
         //広告ユニットIDを指定してrewardedAdをインスタンス化する
         this.rewardedAd = new RewardedAd(adUnitId);

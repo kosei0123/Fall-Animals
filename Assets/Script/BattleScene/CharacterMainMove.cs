@@ -99,7 +99,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
-        //ニックネームを表示
+        //ニックネームを表示(ID抜き取る)
         NameText.text = PhotonNetwork.LocalPlayer.NickName.Substring(0, PhotonNetwork.LocalPlayer.NickName.LastIndexOf("("));
 
         //Transformをキャッシュする
@@ -126,8 +126,8 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
         //GroundCheckをtrueに
         groudCheck_Collider.enabled = true;
-        //ニックネームを表示
-        NameText.text = PhotonNetwork.LocalPlayer.NickName;
+        //ニックネームを表示(ID抜き取る)
+        NameText.text = PhotonNetwork.LocalPlayer.NickName.Substring(0, PhotonNetwork.LocalPlayer.NickName.LastIndexOf("("));
         //プレイ動画用
         //NameText.text = PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] + "P";
         NameText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position + nickNamePositionTweak);

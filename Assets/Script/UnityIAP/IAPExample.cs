@@ -124,7 +124,6 @@ public class IAPExample : MonoBehaviour, IStoreListener
         }, result =>
         {
             Debug.Log("Logged in");
-            text.text = "Logged in";
 
             // Refresh available items
             RefreshIAPItems();
