@@ -17,6 +17,9 @@ public class SelectPlayerNameUI : MonoBehaviour
     //禁止文字を入力した際に表示
     [SerializeField]
     private GameObject TabooText;
+    //初期設定時のネットワークエラー
+    [SerializeField]
+    private GameObject FirstNotNetworkPanel;
 
     //ニックネーム取得用
     private string nickname;
@@ -41,6 +44,13 @@ public class SelectPlayerNameUI : MonoBehaviour
     //SelectNameButton押下した際の挙動
     public void OnClick_SelectNameButton()
     {
+        //オフラインであれば抜ける
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            FirstNotNetworkPanel.SetActive(true);
+            return;
+        }
+
         nickname = GameObject.Find("InputField").GetComponent<InputField>().text;
 
         //ニックネームが空の場合は適当なものを代入する
@@ -71,6 +81,12 @@ public class SelectPlayerNameUI : MonoBehaviour
             SceneManager.LoadScene("Menu");
         }
         
+    }
+
+    //オンライン未接続時のYesボタン押下時
+    public void OnClick_FirstNotNetworkYesButton()
+    {
+        FirstNotNetworkPanel.SetActive(false);
     }
 
     //メニューボタン押下した際の挙動

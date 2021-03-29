@@ -19,6 +19,7 @@ public class TitleTap : MonoBehaviour
     //TapTextオブジェクトを指定する
     [SerializeField]
     private Text TapText;
+    
 
     //NewsPanelを表示する
     [SerializeField]
@@ -32,6 +33,8 @@ public class TitleTap : MonoBehaviour
 
     //ボタンを押した後のインターバル
     private float TitleNextInterval = 0;
+    //タイトル画面のオンライン状態確認
+    private bool titleOnlineFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +51,8 @@ public class TitleTap : MonoBehaviour
         //mobile backendに接続し、ログアウトする
         userAuth.logOut();
 
-        
+        //オンラインかの確認
+        if (Application.internetReachability != NetworkReachability.NotReachable) titleOnlineFlag = true;
     }
 
     // Update is called once per frame
@@ -90,13 +94,13 @@ public class TitleTap : MonoBehaviour
         //Destroy(titleManager.titleAnimal);
         //Destroy(titleManager.titleRock);
 
-        //広告解除していない場合
-        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        //広告解除していない場合(オンライン)
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0 && adMobTitleAdvertinsing.bannerView != null)
         {
             adMobTitleAdvertinsing.bannerView.Hide();
             adMobTitleAdvertinsing.bannerView.Destroy();
         }
-        
+
 
         //SEの使用
         soundManager.SEManager("Title_sound1");

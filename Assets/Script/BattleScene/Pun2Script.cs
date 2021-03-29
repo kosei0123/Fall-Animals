@@ -497,6 +497,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if (battleRanking == 1)
         {
             PlayerPrefs.SetInt("WinCount", PlayerPrefs.GetInt("WinCount") + 1);
+            PlayerPrefs.Save();
             //mobile backendに接続してデータの保存
             userAuth.save();
         }

@@ -51,30 +51,6 @@ public class MenuUI : MonoBehaviour
     //オンラインランキング勝利数表示
     [SerializeField]
     public Text OnlineRankingWinCountText;
-    ////Giraffe
-    ////ベストタイムランキングテキスト表示
-    //[SerializeField]
-    //public GameObject OfflineRankingGiraffeNameTextGameObject;
-    //[SerializeField]
-    //public Text OfflineRankingGiraffeNameText;
-    ////Elephant
-    ////ベストタイムランキングテキスト表示
-    //[SerializeField]
-    //public GameObject OfflineRankingElephantNameTextGameObject;
-    //[SerializeField]
-    //public Text OfflineRankingElephantNameText;
-    ////Dog
-    ////ベストタイムランキングテキスト表示
-    //[SerializeField]
-    //public GameObject OfflineRankingDogNameTextGameObject;
-    //[SerializeField]
-    //public Text OfflineRankingDogNameText;
-    ////Tiger
-    ////ベストタイムランキングテキスト表示
-    //[SerializeField]
-    //public GameObject OfflineRankingTigerNameTextGameObject;
-    //[SerializeField]
-    //public Text OfflineRankingTigerNameText;
 
     //コインの枚数を表示
     [SerializeField]
@@ -306,6 +282,8 @@ public class MenuUI : MonoBehaviour
                 //ランキングに登録完了したらfalseにする
                 PlayerPrefs.SetInt("bestTimeRecode_Tiger", 0);
             }
+
+            PlayerPrefs.Save();
         }
     }
 

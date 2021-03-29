@@ -20,11 +20,13 @@ public class AdMobTitleAdvertising : MonoBehaviour
         if (!PlayerPrefs.HasKey("Unlock_TitleAdvertising"))
         {
             PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
+            PlayerPrefs.Save();
         }
         //ゲーム開始前広告解除初期値
         if (!PlayerPrefs.HasKey("Unlock_WaitingRoomAdvertising"))
         {
             PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 0);
+            PlayerPrefs.Save();
         }
 
         // アプリID(不要)
@@ -51,10 +53,12 @@ public class AdMobTitleAdvertising : MonoBehaviour
             adUnitId = "ca-app-pub-8452025378548231/8071948989";
         }
         //Androidでの動作
-        //else if (Application.platform == RuntimePlatform.Android)
-        //{
-        //    adUnitId = "ca-app-pub-3940256099942544/6300978111";
-        //}
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            //テストID
+            adUnitId = "ca-app-pub-3940256099942544/6300978111";
+            //adUnitId = "ca-app-pub-8452025378548231/5720506408";
+        }
 
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
