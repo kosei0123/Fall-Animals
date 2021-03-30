@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ public class Stage2Move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -33,6 +33,6 @@ public class Stage2Move : MonoBehaviour
                 Stage2_scaffold.transform.position = new Vector3(Stage2_scaffold.transform.position.x, Stage2_scaffold.transform.position.y - 0.01f, Stage2_scaffold.transform.position.z);
                 break;
         }
-        
+
     }
 }
