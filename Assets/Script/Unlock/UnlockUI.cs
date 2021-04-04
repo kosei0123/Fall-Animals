@@ -126,20 +126,20 @@ public class UnlockUI : MonoBehaviour
     private void CheckBuy()
     {
         //キリン
-        if (PlayerPrefs.GetInt("myCoin") > giraffePrice && PlayerPrefs.GetInt("Unlock_Giraffe") == 0) GiraffeBuyButton.interactable = true;
+        if (PlayerPrefs.GetInt("myCoin") >= giraffePrice && PlayerPrefs.GetInt("Unlock_Giraffe") == 0) GiraffeBuyButton.interactable = true;
         else { GiraffeBuyButton.interactable = false; }
         //象
-        if (PlayerPrefs.GetInt("myCoin") > elephantPrice && PlayerPrefs.GetInt("Unlock_Elephant") == 0) ElephantBuyButton.interactable = true;
+        if (PlayerPrefs.GetInt("myCoin") >= elephantPrice && PlayerPrefs.GetInt("Unlock_Elephant") == 0) ElephantBuyButton.interactable = true;
         else { ElephantBuyButton.interactable = false; }
         //虎
-        if (PlayerPrefs.GetInt("myCoin") > tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0) TigerBuyButton.interactable = true;
+        if (PlayerPrefs.GetInt("myCoin") >= tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0) TigerBuyButton.interactable = true;
         else { TigerBuyButton.interactable = false; }
 
         //タイトル広告解除
-        if (PlayerPrefs.GetInt("myCoin") > titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0) TitleAdvertisingBuyButton.interactable = true;
+        if (PlayerPrefs.GetInt("myCoin") >= titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0) TitleAdvertisingBuyButton.interactable = true;
         else { TitleAdvertisingBuyButton.interactable = false; }
         //ゲーム開始前広告解除
-        if (PlayerPrefs.GetInt("myCoin") > waitingRoomAdvertisingPrice && PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0) WaitingRoomAdvertisingBuyButton.interactable = true;
+        if (PlayerPrefs.GetInt("myCoin") >= waitingRoomAdvertisingPrice && PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0) WaitingRoomAdvertisingBuyButton.interactable = true;
         else { WaitingRoomAdvertisingBuyButton.interactable = false; }
     }
 

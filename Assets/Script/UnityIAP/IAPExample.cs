@@ -81,6 +81,7 @@ public class IAPExample : MonoBehaviour, IStoreListener
         {
             foreach (var product in storeController.products.all)
             {
+#if UNITY_IOS
                 if (product.definition.id == "coin_bundle_ID")
                 {
                     Price5000Text.text = product.metadata.localizedPriceString;
@@ -89,6 +90,16 @@ public class IAPExample : MonoBehaviour, IStoreListener
                 {
                     Price15000Text.text = product.metadata.localizedPriceString;
                 }
+#elif UNITY_ANDROID
+                if (product.definition.id == "coin_bundle_id")
+                {
+                    Price5000Text.text = product.metadata.localizedPriceString;
+                }
+                else if (product.definition.id == "coin_bundle2_id")
+                {
+                    Price15000Text.text = product.metadata.localizedPriceString;
+                }
+#endif
             }
         }
         
@@ -297,11 +308,11 @@ public class IAPExample : MonoBehaviour, IStoreListener
             Announce2Text.text = "";
 
             //購入時に何をするか
-            if (e.purchasedProduct.definition.id == "coin_bundle_ID")
+            if (e.purchasedProduct.definition.id == "coin_bundle_id")
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 5000);
             }
-            else if (e.purchasedProduct.definition.id == "coin_bundle2_ID")
+            else if (e.purchasedProduct.definition.id == "coin_bundle2_id")
             {
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 15000);
             }
@@ -377,15 +388,22 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         foreach (var item in Catalog)
         {
-            
+
+#if UNITY_IOS
             if (item.ItemId == "coin_bundle_ID")
             {
                 BuyProductID(item.ItemId);
             }
+#elif UNITY_ANDROID
+            if (item.ItemId == "coin_bundle_id")
+            {
+                BuyProductID(item.ItemId);
+            }
+#endif
         }
     }
 
-    //コイン30000枚購入ボタン押下
+    //コイン15000枚購入ボタン押下
     public void OnClick_BuyCoin30000Button()
     {
         //SEの使用
@@ -393,10 +411,17 @@ public class IAPExample : MonoBehaviour, IStoreListener
 
         foreach (var item in Catalog)
         {
+#if UNITY_IOS
             if (item.ItemId == "coin_bundle2_ID")
             {
                 BuyProductID(item.ItemId);
             }
+#elif UNITY_ANDROID
+            if (item.ItemId == "coin_bundle2_id")
+            {
+                BuyProductID(item.ItemId);
+            }
+#endif
         }
     }
 }

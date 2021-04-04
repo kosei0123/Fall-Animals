@@ -1,5 +1,5 @@
 ﻿/*******
- Copyright 2017-2020 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
+ Copyright 2017-2021 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -191,7 +191,6 @@ namespace NCMB
 			_useAnalytics = useAnalytics;
 
 			// Register
-			/*
 			if (usePush) {
 				//Installation基本情報を取得
 				NCMBManager.CreateInstallationProperty ();
@@ -210,7 +209,6 @@ namespace NCMB
 					#endif
 				}
 			}
-			*/
 		}
 
 		/// <summary>

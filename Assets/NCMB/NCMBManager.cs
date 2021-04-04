@@ -1,5 +1,5 @@
 ﻿/*******
- Copyright 2017-2020 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
+ Copyright 2017-2021 FUJITSU CLOUD TECHNOLOGIES LIMITED All Rights Reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -127,16 +127,13 @@ namespace NCMB
 
 		void Update ()
 		{
-			/*
 			if (UnityEngine.iOS.NotificationServices.remoteNotificationCount > 0) {
 				ProcessNotification ();
 				NCMBPush push = new NCMBPush ();
 				push.ClearAll ();
 			}
-			*/
 		}
 
-		/*
 		void ProcessNotification ()
 		{
 			// Payload data dictionary
@@ -181,7 +178,6 @@ namespace NCMB
 				onNotificationReceived (pl);
 			}
 		}
-		*/
 
 		void OnApplicationPause (bool pause)
 		{
@@ -198,10 +194,8 @@ namespace NCMB
 		IEnumerator IEClearAfterAFrame ()
 		{
 			yield return 0;
-			/*
 			NCMBPush push = new NCMBPush ();
 			push.ClearAll ();
-			*/
 		}
 		#endif
 		#endregion
