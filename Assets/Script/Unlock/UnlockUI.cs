@@ -73,6 +73,16 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject WaitingRoomAdvertisingBuyDonePanel;
+    //ゲーム開始前広告解除(オフライン)
+    //購入ボタン
+    [SerializeField]
+    private Button WaitingRoomAdvertisingBuyButton_offline;
+    //値段テキスト
+    [SerializeField]
+    private Text WaitingRoomAdvertisingBuyText_offline;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject WaitingRoomAdvertisingBuyDonePanel_offline;
 
     //BuyPanel
     [SerializeField]
@@ -95,6 +105,8 @@ public class UnlockUI : MonoBehaviour
     private int titleAdvertisingPrice = 20000;
     //ゲーム開始前広告解除
     private int waitingRoomAdvertisingPrice = 30000;
+    //ゲーム開始前広告解除(オフライン)
+    private int waitingRoomAdvertisingPrice_offline = 30000;
 
     // Start is called before the first frame update
     void Start()
@@ -141,6 +153,9 @@ public class UnlockUI : MonoBehaviour
         //ゲーム開始前広告解除
         if (PlayerPrefs.GetInt("myCoin") >= waitingRoomAdvertisingPrice && PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0) WaitingRoomAdvertisingBuyButton.interactable = true;
         else { WaitingRoomAdvertisingBuyButton.interactable = false; }
+        //ゲーム開始前広告解除(オフライン)
+        if (PlayerPrefs.GetInt("myCoin") >= waitingRoomAdvertisingPrice_offline && PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 0) WaitingRoomAdvertisingBuyButton_offline.interactable = true;
+        else { WaitingRoomAdvertisingBuyButton_offline.interactable = false; }
     }
 
     //表示値段の取得
@@ -157,6 +172,8 @@ public class UnlockUI : MonoBehaviour
         TitleAdvertisingBuyText.text = titleAdvertisingPrice.ToString("");
         //ゲーム開始前広告解除
         WaitingRoomAdvertisingBuyText.text = waitingRoomAdvertisingPrice.ToString("");
+        //ゲーム開始前広告解除(オフライン)
+        WaitingRoomAdvertisingBuyText_offline.text = waitingRoomAdvertisingPrice_offline.ToString("");
     }
 
     //動物購入済みかを確認
@@ -178,6 +195,9 @@ public class UnlockUI : MonoBehaviour
         //ゲーム開始前広告解除
         if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 1) WaitingRoomAdvertisingBuyDonePanel.SetActive(true);
         else { WaitingRoomAdvertisingBuyDonePanel.SetActive(false); }
+        //ゲーム開始前広告解除(オフライン)
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 1) WaitingRoomAdvertisingBuyDonePanel_offline.SetActive(true);
+        else { WaitingRoomAdvertisingBuyDonePanel_offline.SetActive(false); }
     }
 
 
@@ -266,6 +286,17 @@ public class UnlockUI : MonoBehaviour
         BuyPanel.SetActive(true);
     }
 
+    //WaitingRoomAdvertisingBuyButton_offlineを押した際の挙動
+    public void OnClick_WaitingRoomAdvertisingBuyButton_offline()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //ゲームまえ広告を指定する
+        unlockName = "WaitingRoomAdvertising_offline";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
     //BuyPanelにてYesButtonボタンを押した際の挙動
     public void OnClick_YesButton()
     {
@@ -309,6 +340,13 @@ public class UnlockUI : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 1);
                 //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - waitingRoomAdvertisingPrice);
+                break;
+            //ゲーム開始前広告解除(オフライン)
+            case "WaitingRoomAdvertising_offline":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising_offline", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - waitingRoomAdvertisingPrice_offline);
                 break;
             default:
                 break;

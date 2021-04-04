@@ -22,10 +22,16 @@ public class AdMobTitleAdvertising : MonoBehaviour
             PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
             PlayerPrefs.Save();
         }
-        //ゲーム開始前広告解除初期値
+        //ゲーム開始前広告解除初期値Unlock_WaitingRoomAdvertising_offline
         if (!PlayerPrefs.HasKey("Unlock_WaitingRoomAdvertising"))
         {
             PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 0);
+            PlayerPrefs.Save();
+        }
+        //ゲーム開始前広告解除初期値(オフライン)
+        if (!PlayerPrefs.HasKey("Unlock_WaitingRoomAdvertising_offline"))
+        {
+            PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising_offline", 0);
             PlayerPrefs.Save();
         }
 
@@ -36,8 +42,8 @@ public class AdMobTitleAdvertising : MonoBehaviour
         //アプリ起動時に必ず一回実行(ここでやるため他のスクリプトでやる必要なし)
         MobileAds.Initialize(initStatas => { });
 
-        //広告解除していない場合、RequestBanner()関数を呼ぶ
-        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0)
+        //広告解除していない場合かつオンライン時、RequestBanner()関数を呼ぶ
+        if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0 && Application.internetReachability != NetworkReachability.NotReachable)
         {
             RequestBanner();
         }
