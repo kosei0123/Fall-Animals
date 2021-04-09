@@ -88,7 +88,7 @@ public class AirplaneMove_offline : MonoBehaviour
             soundManager.SEManager("Airplane_sound1");
         }
 
-        if (other.gameObject.tag != "Obstacle")
+        if (other.gameObject.tag != "Obstacle_Airplane")
         {
             return;
         }

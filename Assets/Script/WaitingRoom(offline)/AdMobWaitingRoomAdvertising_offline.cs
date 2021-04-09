@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class AdMobWaitingRoomAdvertising : MonoBehaviour
+public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
 {
     //バナー
     public BannerView bannerView;
@@ -17,8 +17,8 @@ public class AdMobWaitingRoomAdvertising : MonoBehaviour
         //アプリ起動時に必ず一回実行(ここでやるため他のスクリプトでやる必要なし)
         MobileAds.Initialize(initStatas => { });
 
-        //広告解除していない場合、RequestBanner()関数を呼ぶ
-        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+        //広告解除していない場合かつオンライン時、RequestBanner()関数を呼ぶ
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 0 && Application.internetReachability != NetworkReachability.NotReachable)
         {
             RequestBanner();
         }

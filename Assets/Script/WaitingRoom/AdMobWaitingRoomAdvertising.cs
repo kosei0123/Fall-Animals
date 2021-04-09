@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
+public class AdMobWaitingRoomAdvertising : MonoBehaviour
 {
     //バナー
     public BannerView bannerView;
@@ -17,11 +17,12 @@ public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
         //アプリ起動時に必ず一回実行(ここでやるため他のスクリプトでやる必要なし)
         MobileAds.Initialize(initStatas => { });
 
-        //広告解除していない場合かつオンライン時、RequestBanner()関数を呼ぶ
-        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 0 && Application.internetReachability != NetworkReachability.NotReachable)
+        //広告解除していない場合、RequestBanner()関数を呼ぶ
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
         {
             RequestBanner();
         }
+        
     }
     private void RequestBanner()
     {
@@ -30,8 +31,8 @@ public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テストID
-            //adUnitId = "ca-app-pub-3940256099942544/2934735716";
-            adUnitId = "ca-app-pub-8452025378548231/4247966035";
+            adUnitId = "ca-app-pub-3940256099942544/2934735716";
+            //adUnitId = "ca-app-pub-8452025378548231/4247966035";
         }
         //Androidでの動作
         else if (Application.platform == RuntimePlatform.Android)

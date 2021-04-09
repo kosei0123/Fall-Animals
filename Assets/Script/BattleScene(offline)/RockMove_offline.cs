@@ -80,7 +80,7 @@ public class RockMove_offline : MonoBehaviour
             soundManager.SEManager("Rock_sound1");
         }
 
-        if (other.gameObject.tag != "Obstacle")
+        if (other.gameObject.tag != "Obstacle_Rock")
         {
             return;
         }

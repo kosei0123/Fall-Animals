@@ -10,6 +10,8 @@ public class SelectCharacterUI : MonoBehaviour
     SoundManager soundManager;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
+    //SelectSkinsのスクリプトの関数使用
+    SelectSkins selectSkins;
 
     //Buttonのコンポーネントを取得
     [SerializeField]
@@ -43,8 +45,9 @@ public class SelectCharacterUI : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
+        //SelectSkinsのスクリプトの関数使用
+        selectSkins = this.gameObject.GetComponent<SelectSkins>();
 
-        
     }
 
     // Update is called once per frame
@@ -146,6 +149,8 @@ public class SelectCharacterUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //仮で入れていた動物の名前を正式に入力する
         animalName = animalName_Temporary;
+        //仮で入れていたスキンを正式に入力する
+        SelectSkins.skinsName = selectSkins.skinsName_Temporary;
         //画面遷移
         SceneManager.LoadScene("Menu");
     }

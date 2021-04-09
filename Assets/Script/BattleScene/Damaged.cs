@@ -69,7 +69,7 @@ public class Damaged : MonoBehaviour
         }
 
         //岩や紙飛行機にあたり落下する
-        if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Obstacle")
+        if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && (other.gameObject.tag == "Obstacle_Rock" || other.gameObject.tag == "Obstacle_Airplane"))
         {
             GameFinish();
         }

@@ -189,8 +189,13 @@ public class MenuUI : MonoBehaviour
         {
             PlayerPrefs.SetInt("Unlock_Tiger", 0);
         }
+        //スキン
+        //キャンディ
+        if (!PlayerPrefs.HasKey("Unlock_Candy"))
+        {
+            PlayerPrefs.SetInt("Unlock_Candy", 0);
+        }
 
-        
     }
 
     //日付の確認
@@ -314,6 +319,9 @@ public class MenuUI : MonoBehaviour
     //オフラインランキングのアニマル切り替えボタン(右)
     public void OnClick_OfflineRankingAnimalNameRightButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         string nextAnimalName = "";
 
         //キリン→象→犬→虎
@@ -389,6 +397,9 @@ public class MenuUI : MonoBehaviour
     //オフラインランキングのアニマル切り替えボタン(左)
     public void OnClick_OfflineRankingAnimalNameLeftButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         string nextAnimalName = "";
 
         //キリン←象←犬←虎
@@ -564,6 +575,9 @@ public class MenuUI : MonoBehaviour
     //ランキングボタンを押した際
     public void OnClick_RankingButton()
     {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
         //ランキングデータの消去
         if (rankingData.offlineRankingData["Giraffe"] != null) rankingData.offlineRankingData["Giraffe"].Clear();
         if (rankingData.offlineRankingData["Elephant"] != null) rankingData.offlineRankingData["Elephant"].Clear();

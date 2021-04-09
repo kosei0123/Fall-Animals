@@ -8,6 +8,8 @@ public class UnlockUI : MonoBehaviour
 {
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
+    //UnlockSkinsUIのスクリプトの関数使用
+    UnlockSkinsUI unlockSkinsUI;
 
     //コインの枚数を表示
     [SerializeField]
@@ -15,6 +17,9 @@ public class UnlockUI : MonoBehaviour
     //キャラクタースクロールビュー
     [SerializeField]
     private GameObject CharacterScrollView;
+    //スキンスクロールビュー
+    [SerializeField]
+    private GameObject SkinsScrollView;
     //ステージスクロールビュー
     [SerializeField]
     private GameObject StageScrollView;
@@ -92,7 +97,8 @@ public class UnlockUI : MonoBehaviour
     private GameObject BuyDonePanel;
 
     //どの動物をアンロックさせるか
-    private string unlockName;
+    [HideInInspector]
+    public string unlockName;
 
     //値段
     //キリン
@@ -113,9 +119,12 @@ public class UnlockUI : MonoBehaviour
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //UnlockSkinsUIのスクリプトの関数使用
+        unlockSkinsUI = this.gameObject.GetComponent<UnlockSkinsUI>();
 
         //初期表示はキャラクタースクロールビューを表示させておく
         CharacterScrollView.SetActive(true);
+        SkinsScrollView.SetActive(false);
         StageScrollView.SetActive(false);
         OtherScrollView.SetActive(false);
     }
@@ -205,6 +214,18 @@ public class UnlockUI : MonoBehaviour
     public void OnClick_CharacterButton()
     {
         CharacterScrollView.SetActive(true);
+        SkinsScrollView.SetActive(false);
+        StageScrollView.SetActive(false);
+        OtherScrollView.SetActive(false);
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+    }
+
+    //SkinsButtonボタンを押した際の挙動
+    public void OnClick_SkinsButton()
+    {
+        CharacterScrollView.SetActive(false);
+        SkinsScrollView.SetActive(true);
         StageScrollView.SetActive(false);
         OtherScrollView.SetActive(false);
         //SEの使用
@@ -215,6 +236,7 @@ public class UnlockUI : MonoBehaviour
     public void OnClick_StageButton()
     {
         CharacterScrollView.SetActive(false);
+        SkinsScrollView.SetActive(false);
         StageScrollView.SetActive(true);
         OtherScrollView.SetActive(false);
         //SEの使用
@@ -225,6 +247,7 @@ public class UnlockUI : MonoBehaviour
     public void OnClick_OtherButton()
     {
         CharacterScrollView.SetActive(false);
+        SkinsScrollView.SetActive(false);
         StageScrollView.SetActive(false);
         OtherScrollView.SetActive(true);
         //SEの使用
@@ -326,6 +349,13 @@ public class UnlockUI : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_Tiger", 1);
                 //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - tigerPrice);
+                break;
+            //キャンディ
+            case "Candy":
+                //アンロック解除
+                PlayerPrefs.SetInt("Unlock_Candy", 1);
+                //コインを減少させる
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - unlockSkinsUI.candyPrice);
                 break;
             //タイトル広告解除
             case "TitleAdvertising":

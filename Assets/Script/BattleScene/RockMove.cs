@@ -7,6 +7,8 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
 {
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
+    //Timerのpublic定数を使う
+    Timer timer;
 
     //岩にかかる重力や摩擦
     private Rigidbody rbRock;
@@ -24,6 +26,8 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //Timerのpublic定数を使う
+        timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
 
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
@@ -47,22 +51,22 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         switch (this.name)
         {
             case "Rock0":
-                rbRock.velocity = new Vector3(-3.0f, 0, 0);
+                rbRock.velocity = new Vector3(-3.0f - (timer.elapsedTime / 5), 0, 0);
                 break;
             case "Rock1":
-                rbRock.velocity = new Vector3(-6.0f, 0, 0);
+                rbRock.velocity = new Vector3(-6.0f - (timer.elapsedTime / 5), 0, 0);
                 break;
             case "Rock2":
-                rbRock.velocity = new Vector3(-9.0f, 0, 0);
+                rbRock.velocity = new Vector3(-9.0f - (timer.elapsedTime / 5), 0, 0);
                 break;
             case "Rock3":
-                rbRock.velocity = new Vector3(3.0f, 0, 0);
+                rbRock.velocity = new Vector3(3.0f + (timer.elapsedTime / 5), 0, 0);
                 break;
             case "Rock4":
-                rbRock.velocity = new Vector3(6.0f, 0, 0);
+                rbRock.velocity = new Vector3(6.0f + (timer.elapsedTime / 5), 0, 0);
                 break;
             case "Rock5":
-                rbRock.velocity = new Vector3(9.0f, 0, 0);
+                rbRock.velocity = new Vector3(9.0f + (timer.elapsedTime / 5), 0, 0);
                 break;
             default:
                 break;
@@ -112,7 +116,7 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
             soundManager.SEManager("Rock_sound1");
         }
 
-        if (other.gameObject.tag != "Obstacle")
+        if (other.gameObject.tag != "Obstacle_Rock")
         {
             return;
         }
@@ -124,7 +128,8 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
             if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Destroy(this.gameObject);
-            }        }
+            }
+        }
     }
 
     //同期

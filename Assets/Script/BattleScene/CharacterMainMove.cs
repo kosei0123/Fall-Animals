@@ -320,9 +320,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     }
 
     //同期
-    [System.Obsolete]
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        Debug.Log("A");
+
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
 
@@ -339,14 +340,14 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(this.name);
             //レイヤー
             stream.SendNext(this.gameObject.layer);
-            foreach (Transform childTransform in gameObject.transform)
-            {
-                stream.SendNext(childTransform.gameObject.layer);
-            }
-            //stream.SendNext(this.transform.GetChild(0).gameObject.layer);
-            //stream.SendNext(this.transform.GetChild(1).gameObject.layer);
-            //stream.SendNext(this.transform.GetChild(2).gameObject.layer);
-            //stream.SendNext(this.transform.GetChild(3).gameObject.layer);
+            //foreach (Transform childTransform in gameObject.transform)
+            //{
+            //    stream.SendNext(childTransform.gameObject.layer);
+            //}
+            stream.SendNext(this.transform.GetChild(0).gameObject.layer);
+            stream.SendNext(this.transform.GetChild(1).gameObject.layer);
+            stream.SendNext(this.transform.GetChild(2).gameObject.layer);
+            stream.SendNext(this.transform.GetChild(3).gameObject.layer);
             //コライダー
             stream.SendNext(meshCol.enabled);
             stream.SendNext(boxCol.enabled);
@@ -360,14 +361,14 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             gameObject.name = (string)stream.ReceiveNext();
             //レイヤー
             gameObject.layer = (int)stream.ReceiveNext();
-            foreach (Transform childTransform in gameObject.transform)
-            {
-                childTransform.gameObject.layer = (int)stream.ReceiveNext();
-            }
-            //transform.GetChild(0).gameObject.layer = (int)stream.ReceiveNext();
-            //transform.GetChild(1).gameObject.layer = (int)stream.ReceiveNext();
-            //transform.GetChild(2).gameObject.layer = (int)stream.ReceiveNext();
-            //transform.GetChild(3).gameObject.layer = (int)stream.ReceiveNext();
+            //foreach (Transform childTransform in gameObject.transform)
+            //{
+            //    childTransform.gameObject.layer = (int)stream.ReceiveNext();
+            //}
+            transform.GetChild(0).gameObject.layer = (int)stream.ReceiveNext();
+            transform.GetChild(1).gameObject.layer = (int)stream.ReceiveNext();
+            transform.GetChild(2).gameObject.layer = (int)stream.ReceiveNext();
+            transform.GetChild(3).gameObject.layer = (int)stream.ReceiveNext();
             //コライダー
             this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>().enabled = (bool)stream.ReceiveNext();
             this.gameObject.GetComponent <BoxCollider>().enabled = (bool)stream.ReceiveNext();
@@ -387,22 +388,22 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().NickName.Substring(0, pun2Script.GetAnimalInformation().NickName.LastIndexOf("("));
             animal1NickNameFlag = true;
         }
         if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().NickName.Substring(0, pun2Script.GetAnimal2Information().NickName.LastIndexOf("("));
             animal2NickNameFlag = true;
         }
         if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().NickName.Substring(0, pun2Script.GetAnimal3Information().NickName.LastIndexOf("("));
             animal3NickNameFlag = true;
         }
         if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
         {
-            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName;
+            gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName.Substring(0, pun2Script.GetAnimal4Information().NickName.LastIndexOf("("));
             animal4NickNameFlag = true;
         }
 

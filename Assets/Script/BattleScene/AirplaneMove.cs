@@ -7,6 +7,8 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
 {
     //SoundManagerのスクリプトの関数使用
     SoundManager soundManager;
+    //Timerのpublic定数を使う
+    Timer timer;
 
     //紙飛行機にかかる重力や摩擦
     private Rigidbody rbAirplane;
@@ -24,6 +26,8 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+        //Timerのpublic定数を使う
+        timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
 
         //重力や摩擦
         rbAirplane = this.GetComponent<Rigidbody>();
@@ -50,22 +54,22 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         switch (this.name)
         {
             case "Airplane0":
-                rbAirplane.velocity = new Vector3(-3.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-3.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane1":
-                rbAirplane.velocity = new Vector3(-6.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-6.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane2":
-                rbAirplane.velocity = new Vector3(-9.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-9.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane3":
-                rbAirplane.velocity = new Vector3(3.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(3.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane4":
-                rbAirplane.velocity = new Vector3(6.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(6.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             case "Airplane5":
-                rbAirplane.velocity = new Vector3(9.0f, randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(9.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
                 break;
             default:
                 break;
@@ -120,7 +124,7 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
             soundManager.SEManager("Airplane_sound1");
         }
 
-        if (other.gameObject.tag != "Obstacle")
+        if (other.gameObject.tag != "Obstacle_Airplane")
         {
             return;
         }
