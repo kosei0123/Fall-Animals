@@ -19,6 +19,10 @@ public class TitleManager : MonoBehaviour
     [SerializeField]
     private TextAsset creditDocument = default;
 
+    //ボタン
+    [SerializeField]
+    private Button DeleteDataButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +30,10 @@ public class TitleManager : MonoBehaviour
         newsText.text = newsDocument.text;
         policyText.text = policyDocument.text;
         creditText.text = creditDocument.text;
+
+        //ニックネーム登録がまだであればボタン非表示
+        if (!PlayerPrefs.HasKey("NickName")) DeleteDataButton.interactable = false;
+        else { DeleteDataButton.interactable = true; }
     }
 
     // Update is called once per frame

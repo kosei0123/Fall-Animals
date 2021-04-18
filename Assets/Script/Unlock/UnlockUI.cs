@@ -97,8 +97,7 @@ public class UnlockUI : MonoBehaviour
     private GameObject BuyDonePanel;
 
     //どの動物をアンロックさせるか
-    [HideInInspector]
-    public string unlockName;
+    private string unlockName;
 
     //値段
     //キリン
@@ -338,44 +337,27 @@ public class UnlockUI : MonoBehaviour
                 break;
             //象
             case "Elephant":
-                //アンロック解除
                 PlayerPrefs.SetInt("Unlock_Elephant", 1);
-                //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - elephantPrice);
                 break;
             //虎
             case "Tiger":
-                //アンロック解除
                 PlayerPrefs.SetInt("Unlock_Tiger", 1);
-                //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - tigerPrice);
-                break;
-            //キャンディ
-            case "Candy":
-                //アンロック解除
-                PlayerPrefs.SetInt("Unlock_Candy", 1);
-                //コインを減少させる
-                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - unlockSkinsUI.candyPrice);
                 break;
             //タイトル広告解除
             case "TitleAdvertising":
-                //アンロック解除
                 PlayerPrefs.SetInt("Unlock_TitleAdvertising", 1);
-                //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - titleAdvertisingPrice);
                 break;
             //ゲーム開始前広告解除
             case "WaitingRoomAdvertising":
-                //アンロック解除
                 PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 1);
-                //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - waitingRoomAdvertisingPrice);
                 break;
             //ゲーム開始前広告解除(オフライン)
             case "WaitingRoomAdvertising_offline":
-                //アンロック解除
                 PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising_offline", 1);
-                //コインを減少させる
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - waitingRoomAdvertisingPrice_offline);
                 break;
             default:

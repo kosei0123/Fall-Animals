@@ -8,6 +8,10 @@ public class MenuSkins : MonoBehaviour
     [SerializeField]
     private GameObject Candy;
     private bool CandyFlag = false;
+    //Crown
+    [SerializeField]
+    private GameObject Crown;
+    private bool CrownFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +26,9 @@ public class MenuSkins : MonoBehaviour
         //Candy
         CandyFlag = (SelectSkins.skinsName == "Candy") ? true : false;
         Candy.SetActive(CandyFlag);
+        //Crown
+        CrownFlag = (SelectSkins.skinsName == "Crown") ? true : false;
+        Crown.SetActive(CrownFlag);
 
     }
 

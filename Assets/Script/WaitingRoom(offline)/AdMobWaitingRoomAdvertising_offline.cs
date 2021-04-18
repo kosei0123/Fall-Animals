@@ -37,8 +37,8 @@ public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
         else if (Application.platform == RuntimePlatform.Android)
         {
             //テストID
-            adUnitId = "ca-app-pub-3940256099942544/6300978111";
-            //adUnitId = "ca-app-pub-8452025378548231/6706285016";
+            //adUnitId = "ca-app-pub-3940256099942544/6300978111";
+            adUnitId = "ca-app-pub-8452025378548231/6706285016";
         }
 
         // Create a 320x50 banner at the top of the screen.

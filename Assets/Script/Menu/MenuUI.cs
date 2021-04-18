@@ -195,6 +195,11 @@ public class MenuUI : MonoBehaviour
         {
             PlayerPrefs.SetInt("Unlock_Candy", 0);
         }
+        //クラウン
+        if (!PlayerPrefs.HasKey("Unlock_Crown"))
+        {
+            PlayerPrefs.SetInt("Unlock_Crown", 0);
+        }
 
     }
 
@@ -239,7 +244,7 @@ public class MenuUI : MonoBehaviour
         if (!PlayerPrefs.HasKey("BestTime_Giraffe") || !PlayerPrefs.HasKey("BestTime_Elephant") || !PlayerPrefs.HasKey("BestTime_Dog") || !PlayerPrefs.HasKey("BestTime_Tiger"))
         {
             //mobile backendに接続しベストタイムを初期登録する
-            userAuth.firstSetBestTime();
+            userAuth.firstSetBestTime(false);
         }
         
     }

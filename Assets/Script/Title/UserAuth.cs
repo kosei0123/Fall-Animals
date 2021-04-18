@@ -78,7 +78,7 @@ public class UserAuth : MonoBehaviour
     /// <summary>
     /// mobile backendに接続してベストタイムを初期登録する
     /// </summary>
-    public void firstSetBestTime()
+    public void firstSetBestTime(bool deleteFlag)
     {
         //データスコアの「HighScore」クラスから、Nameをキーにして検索
         NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
@@ -89,7 +89,7 @@ public class UserAuth : MonoBehaviour
             if (e == null)
             {
                 //キリン
-                if (!PlayerPrefs.HasKey("BestTime_Giraffe"))
+                if (!PlayerPrefs.HasKey("BestTime_Giraffe") || deleteFlag == true)
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Giraffe", 0);
@@ -98,7 +98,7 @@ public class UserAuth : MonoBehaviour
                     
                 }
                 //象
-                if (!PlayerPrefs.HasKey("BestTime_Elephant"))
+                if (!PlayerPrefs.HasKey("BestTime_Elephant") || deleteFlag == true)
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Elephant", 0);
@@ -106,7 +106,7 @@ public class UserAuth : MonoBehaviour
                     objList[0]["Offline" + "Elephant" + "Time"] = 0;
                 }
                 //犬
-                if (!PlayerPrefs.HasKey("BestTime_Dog"))
+                if (!PlayerPrefs.HasKey("BestTime_Dog") || deleteFlag == true)
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Dog", 0);
@@ -114,12 +114,20 @@ public class UserAuth : MonoBehaviour
                     objList[0]["Offline" + "Dog" + "Time"] = 0;
                 }
                 //虎
-                if (!PlayerPrefs.HasKey("BestTime_Tiger"))
+                if (!PlayerPrefs.HasKey("BestTime_Tiger") || deleteFlag == true)
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Tiger", 0);
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Tiger" + "Time"] = 0;
+                }
+                //スコア(データ消去時のみ)
+                if (deleteFlag == true)
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("WinCount", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Score"] = 0;
                 }
                 objList[0].Save();
             }

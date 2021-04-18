@@ -55,15 +55,15 @@ public class AdMobTitleAdvertising : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テストID
-            adUnitId = "ca-app-pub-3940256099942544/2934735716";
-            //adUnitId = "ca-app-pub-8452025378548231/8071948989";
+            //adUnitId = "ca-app-pub-3940256099942544/2934735716";
+            adUnitId = "ca-app-pub-8452025378548231/8071948989";
         }
         //Androidでの動作
         if (Application.platform == RuntimePlatform.Android)
         {
             //テストID
-            adUnitId = "ca-app-pub-3940256099942544/6300978111";
-            //adUnitId = "ca-app-pub-8452025378548231/5720506408";
+            //adUnitId = "ca-app-pub-3940256099942544/6300978111";
+            adUnitId = "ca-app-pub-8452025378548231/5720506408";
         }
 
         // Create a 320x50 banner at the top of the screen.

@@ -322,7 +322,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     //同期
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Debug.Log("A");
 
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();

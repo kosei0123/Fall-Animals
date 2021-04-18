@@ -62,7 +62,8 @@ public class RockMove_offline : MonoBehaviour
     {
 
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 27.0f || this.transform.position.x <= -27.0f || rockTime >= 15.0f)
+        if (this.transform.position.x >= 30.0f || this.transform.position.x <= -30.0f ||
+            this.transform.position.y < -50.0f || rockTime >= 15.0f)
         {
             Destroy(this.gameObject);
         }

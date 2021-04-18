@@ -30,6 +30,9 @@ public class TitleTap : MonoBehaviour
     //CreditPanelを表示する
     [SerializeField]
     private GameObject CreditPanel;
+    //DeleteDataPanelを表示する
+    [SerializeField]
+    private GameObject DeleteDataPanel;
 
     //ボタンを押した後のインターバル
     private float TitleNextInterval = 0;
@@ -50,6 +53,9 @@ public class TitleTap : MonoBehaviour
 
         //mobile backendに接続し、ログアウトする
         userAuth.logOut();
+
+        //デバイスにニックネームが保持されているか確認しログインする
+        if (PlayerPrefs.HasKey("NickName")) FindObjectOfType<UserAuth>().login(PlayerPrefs.GetString("NickName"));
 
         //オンラインかの確認
         if (Application.internetReachability != NetworkReachability.NotReachable) titleOnlineFlag = true;
@@ -116,8 +122,6 @@ public class TitleTap : MonoBehaviour
         else
         {
             //ニックネームが登録されている場合
-            //ログイン
-            FindObjectOfType<UserAuth>().login(PlayerPrefs.GetString("NickName"));
             //画面遷移
             SceneManager.LoadScene("Menu");
         }
@@ -183,5 +187,22 @@ public class TitleTap : MonoBehaviour
         TitleNextInterval = 0.3f;
     }
 
+    //DeleteDataButton押下時
+    public void OnClick_DeleteDataButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //DeleteDataPanelを非表示にする
+        DeleteDataPanel.SetActive(true);
+    }
+
+    //DeleteDataCloseButton押下時
+    public void OnClick_DeleteDataCloseButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //DeleteDataPanelを非表示にする
+        DeleteDataPanel.SetActive(false);
+    }
 
 }

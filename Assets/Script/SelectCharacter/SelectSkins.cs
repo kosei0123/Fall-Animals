@@ -21,6 +21,17 @@ public class SelectSkins : MonoBehaviour
     //パネル
     [SerializeField]
     private GameObject CandyPanel;
+    private bool CandyPanelFlag = false;
+
+    //Crown
+    //フレーム
+    [SerializeField]
+    private GameObject CrownFlame;
+    private bool CrownFlameFlag = false;
+    //パネル
+    [SerializeField]
+    private GameObject CrownPanel;
+    private bool CrownPanelFlag = false;
 
     //スキンの名前取得
     public static string skinsName;
@@ -47,20 +58,23 @@ public class SelectSkins : MonoBehaviour
         //None
         NoneFlameFlag = (skinsName_Temporary == null) ? true : false;
         NoneFlame.SetActive(NoneFlameFlag);
-
         //Candy
         CandyFlameFlag = (skinsName_Temporary == "Candy") ? true : false;
         CandyFlame.SetActive(CandyFlameFlag);
+        //Crown
+        CrownFlameFlag = (skinsName_Temporary == "Crown") ? true : false;
+        CrownFlame.SetActive(CrownFlameFlag);
     }
 
     //アンロックされたスキンを表示する
     private void CheckSkinsUnlock()
     {
-        //キリンパネル
-        if (PlayerPrefs.GetInt("Unlock_Candy") == 1)
-        {
-            CandyPanel.SetActive(true);
-        }
+        //Candy
+        CandyPanelFlag = (PlayerPrefs.GetInt("Unlock_Candy") == 1) ? true : false;
+        CandyPanel.SetActive(CandyPanelFlag);
+        //Crown
+        CrownPanelFlag = (PlayerPrefs.GetInt("Unlock_Crown") == 1) ? true : false;
+        CrownPanel.SetActive(CrownPanelFlag);
     }
 
     //None
@@ -77,5 +91,13 @@ public class SelectSkins : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         skinsName_Temporary = "Candy";
+    }
+
+    //Crown
+    public void OnClick_CrownButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        skinsName_Temporary = "Crown";
     }
 }
