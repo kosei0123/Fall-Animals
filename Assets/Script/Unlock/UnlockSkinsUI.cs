@@ -25,6 +25,13 @@ public class UnlockSkinsUI : MonoBehaviour
     //結果イメージ
     [SerializeField]
     private GameObject CrownResultImage;
+    //雲
+    //購入完了パネル
+    [SerializeField]
+    private GameObject CloudBuyDonePanel;
+    //結果イメージ
+    [SerializeField]
+    private GameObject CloudResultImage;
 
     //ガチャ
     //開始ボタン
@@ -50,7 +57,7 @@ public class UnlockSkinsUI : MonoBehaviour
 
     //値段
     //ガチャ
-    private int skinsCapsuleStartPrice = 200;
+    private int skinsCapsuleStartPrice = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -94,6 +101,9 @@ public class UnlockSkinsUI : MonoBehaviour
         //王冠
         if (PlayerPrefs.GetInt("Unlock_Crown") == 1) CrownBuyDonePanel.SetActive(true);
         else { CrownBuyDonePanel.SetActive(false); }
+        //雲
+        if (PlayerPrefs.GetInt("Unlock_Cloud") == 1) CloudBuyDonePanel.SetActive(true);
+        else { CloudBuyDonePanel.SetActive(false); }
     }
 
     //SkinsCapsuleStartButtonボタンを押した際の挙動
@@ -109,7 +119,7 @@ public class UnlockSkinsUI : MonoBehaviour
     public void OnClick_YesButton()
     {
         //ランダム値をいれる
-        unlockSkinsName = Random.Range(1,3);
+        unlockSkinsName = Random.Range(1,4);
 
         //ガチャ結果表示パネルの表示
         CapsuleResultPanel.SetActive(true);
@@ -123,6 +133,10 @@ public class UnlockSkinsUI : MonoBehaviour
             case 2:
                 PlayerPrefs.SetInt("Unlock_Crown", 1);
                 CrownResultImage.SetActive(true);
+                break;
+            case 3:
+                PlayerPrefs.SetInt("Unlock_Cloud", 1);
+                CloudResultImage.SetActive(true);
                 break;
             default:
                 break;

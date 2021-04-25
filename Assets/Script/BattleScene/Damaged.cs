@@ -96,6 +96,9 @@ public class Damaged : MonoBehaviour
         //アニメーションの設定
         characterMainMove.anim.SetBool("Death", true);
 
+        //プレイ数の追加
+        PlayerPrefs.SetInt("PlayCount", PlayerPrefs.GetInt("PlayCount") + 1);
+
         //順位の確定と取得
         pun2Script.battleRanking = (int)PhotonNetwork.CurrentRoom.CustomProperties["RemainingPlayerCount"];
         //ルーム内残り人数を減らす

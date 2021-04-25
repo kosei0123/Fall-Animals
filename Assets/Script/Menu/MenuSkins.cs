@@ -12,6 +12,10 @@ public class MenuSkins : MonoBehaviour
     [SerializeField]
     private GameObject Crown;
     private bool CrownFlag = false;
+    //Cloud
+    [SerializeField]
+    private GameObject Cloud;
+    private bool CloudFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +33,9 @@ public class MenuSkins : MonoBehaviour
         //Crown
         CrownFlag = (SelectSkins.skinsName == "Crown") ? true : false;
         Crown.SetActive(CrownFlag);
+        //Cloud
+        CloudFlag = (SelectSkins.skinsName == "Cloud") ? true : false;
+        Cloud.SetActive(CloudFlag);
 
     }
 

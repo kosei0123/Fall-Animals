@@ -15,6 +15,10 @@ public class Skins_offline : MonoBehaviour
     [SerializeField]
     private GameObject Crown;
     private bool CrownFlag = false;
+    //Cloud
+    [SerializeField]
+    private GameObject Cloud;
+    private bool CloudFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +31,8 @@ public class Skins_offline : MonoBehaviour
         if (SelectSkins.skinsName == null)
         {
             Candy.SetActive(false);
+            Crown.SetActive(false);
+            Cloud.SetActive(false);
             return;
         }
 
@@ -36,6 +42,9 @@ public class Skins_offline : MonoBehaviour
         //Crown
         CrownFlag = (SelectSkins.skinsName == "Crown") ? true : false;
         Crown.SetActive(CrownFlag);
+        //Cloud
+        CloudFlag = (SelectSkins.skinsName == "Cloud") ? true : false;
+        Cloud.SetActive(CloudFlag);
 
     }
 
@@ -55,19 +64,6 @@ public class Skins_offline : MonoBehaviour
         {
             return;
         }
-
-        //向きの反転
-        //Candy
-        //if (((characterMainMove_Offline.transformCache.localScale.z < 0 && characterMainMove_Offline.moveDirection > 0.1) ||
-        //    (characterMainMove_Offline.transformCache.localScale.z > 0 && characterMainMove_Offline.moveDirection < -0.1)) && Candy.activeSelf == true)
-        //{
-        //    Candy.transform.localScale = new Vector3(Candy.transform.localScale.x, Candy.transform.localScale.y, Candy.transform.localScale.z * (-1));
-        //}
-        //if (((characterMainMove_Offline.transformCache.localScale.z < 0 && characterMainMove_Offline.moveDirection > 0.1) ||
-        //    (characterMainMove_Offline.transformCache.localScale.z > 0 && characterMainMove_Offline.moveDirection < -0.1)) && Candy_Sit.activeSelf == true)
-        //{
-        //    Candy_Sit.transform.localScale = new Vector3(Candy_Sit.transform.localScale.x, Candy_Sit.transform.localScale.y, Candy_Sit.transform.localScale.z * (-1));
-        //}
 
     }
 }
