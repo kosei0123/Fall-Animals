@@ -27,6 +27,9 @@ public class TitleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //FPSを60に設定
+        Application.targetFrameRate = 60;
+
         newsText.text = newsDocument.text;
         policyText.text = policyDocument.text;
         creditText.text = creditDocument.text;

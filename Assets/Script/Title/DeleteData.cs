@@ -82,6 +82,7 @@ public class DeleteData : MonoBehaviour
                 //スキン
                 PlayerPrefs.SetInt("Unlock_Candy", 0);
                 PlayerPrefs.SetInt("Unlock_Crown", 0);
+                PlayerPrefs.SetInt("Unlock_Cloud", 0);
                 //広告
                 PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
                 PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 0);

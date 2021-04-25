@@ -16,6 +16,10 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
     [SerializeField]
     private GameObject Crown;
     private bool CrownFlag = false;
+    //Cloud
+    [SerializeField]
+    private GameObject Cloud;
+    private bool CloudFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +38,8 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
         if (SelectSkins.skinsName == null)
         {
             Candy.SetActive(false);
+            Crown.SetActive(false);
+            Cloud.SetActive(false);
             return;
         }
 
@@ -43,6 +49,9 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
         //Crown
         CrownFlag = (SelectSkins.skinsName == "Crown") ? true : false;
         Crown.SetActive(CrownFlag);
+        //Cloud
+        CloudFlag = (SelectSkins.skinsName == "Cloud") ? true : false;
+        Cloud.SetActive(CloudFlag);
 
     }
 
@@ -63,19 +72,6 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             return;
         }
 
-        //向きの反転
-        //Candy
-        //if (((characterMainMove.transformCache.localScale.z < 0 && characterMainMove.moveDirection > 0.1) ||
-        //    (characterMainMove.transformCache.localScale.z > 0 && characterMainMove.moveDirection < -0.1)) && Candy.activeSelf == true)
-        //{
-        //    Candy.transform.localScale = new Vector3(Candy.transform.localScale.x, Candy.transform.localScale.y, Candy.transform.localScale.z * (-1));
-        //}
-        //if (((characterMainMove.transformCache.localScale.z < 0 && characterMainMove.moveDirection > 0.1) ||
-        //    (characterMainMove.transformCache.localScale.z > 0 && characterMainMove.moveDirection < -0.1)) && Candy_Sit.activeSelf == true)
-        //{
-        //    Candy_Sit.transform.localScale = new Vector3(Candy_Sit.transform.localScale.x, Candy_Sit.transform.localScale.y, Candy_Sit.transform.localScale.z * (-1));
-        //}
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -90,11 +86,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //キリン
             if (SelectCharacterUI.animalName == "Giraffe")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(4).gameObject.transform)
+                {
+                    stream.SendNext(childTransform.gameObject.activeSelf);
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.transform)
                 {
                     stream.SendNext(childTransform.gameObject.activeSelf);
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform)
@@ -105,6 +109,13 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //象
             else if (SelectCharacterUI.animalName == "Elephant")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    stream.SendNext(childTransform.gameObject.activeSelf);
+                }
+                //Candy,Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(4).gameObject.transform)
                 {
@@ -114,11 +125,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //犬
             else if (SelectCharacterUI.animalName == "Dog")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    stream.SendNext(childTransform.gameObject.activeSelf);
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.transform)
                 {
                     stream.SendNext(childTransform.gameObject.activeSelf);
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform)
                 {
@@ -128,11 +147,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //虎
             else if (SelectCharacterUI.animalName == "Tiger")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    stream.SendNext(childTransform.gameObject.activeSelf);
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.transform)
                 {
                     stream.SendNext(childTransform.gameObject.activeSelf);
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform)
                 {
@@ -148,11 +175,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //キリン
             if (gameObject.transform.GetChild(0).gameObject.name == "Giraffe")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(4).gameObject.transform)
+                {
+                    childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.transform)
                 {
                     childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform)
@@ -163,6 +198,13 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //象
             else if (gameObject.transform.GetChild(0).gameObject.name == "Elephant")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
+                }
+                //Candy,Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(4).gameObject.transform)
                 {
@@ -172,11 +214,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //犬
             else if (gameObject.transform.GetChild(0).gameObject.name == "Dog")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.transform)
                 {
                     childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform)
                 {
@@ -186,11 +236,19 @@ public class Skins : MonoBehaviourPunCallbacks,IPunObservable
             //虎
             else if (gameObject.transform.GetChild(0).gameObject.name == "Tiger")
             {
+                //Cloud
+                foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
+                    transform.GetChild(2).gameObject.transform)
+                {
+                    childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
+                }
+                //Candy
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(3).gameObject.transform)
                 {
                     childTransform.gameObject.SetActive((bool)stream.ReceiveNext());
                 }
+                //Crown
                 foreach (Transform childTransform in this.gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.
                     transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(2).gameObject.transform)
                 {

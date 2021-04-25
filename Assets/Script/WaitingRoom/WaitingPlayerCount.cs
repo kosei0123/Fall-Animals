@@ -15,9 +15,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //待機人数の表示
     [SerializeField]
     private Text WaitingPlayerCountText;
-    //ロビー内の人数表示
-    [SerializeField]
-    private Text LobbyPlayerCountText;
     //メニューボタンのゲームオブジェクト
     [SerializeField]
     private GameObject MenuButton;
@@ -30,6 +27,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
     //ランダム値の取得(ステージ)
     private int randomStage;
+    //ステージリストの初期化
+    private List<int> stageList = new List<int>();
 
     //ニックネームを所持する
     private string WaitingPlayerNickName = "0";
@@ -69,10 +68,11 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
         //ステージを確定する
+        StageList();
         if (PhotonNetwork.IsMasterClient)
         {
-            randomStage = Random.Range(0, 4);
-            PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = randomStage;
+            randomStage = Random.Range(0, stageList.Count);
+            PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = stageList[randomStage];
         }
         //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
@@ -103,8 +103,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //待機人数の表示
         WaitingPlayerCountText.text = "待機プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
-        //ロビー内の人数表示
-        LobbyPlayerCountText.text = "ロビー内 : " + PhotonNetwork.CountOfPlayers.ToString() + " / 20";
         
         //バトルスタート時間を減らしていく
         if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0 && (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] >= 2)
@@ -382,6 +380,19 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //ルームマスターが退出したかを確認する
         RoomMasterLeftFlag = value;
+    }
+
+    //ステージリスト
+    private void StageList()
+    {
+        //ステージ1~3
+        stageList.Add(1);
+        stageList.Add(2);
+        stageList.Add(3);
+        //追加ステージ
+        if (PlayerPrefs.GetInt("Unlock_Stage4") == 1) stageList.Add(4);
+        if (PlayerPrefs.GetInt("Unlock_Stage5") == 1) stageList.Add(5);
+
     }
 
     //メニューボタンを押下した際の挙動

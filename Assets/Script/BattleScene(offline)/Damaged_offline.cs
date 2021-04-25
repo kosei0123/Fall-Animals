@@ -112,6 +112,9 @@ public class Damaged_offline : MonoBehaviour
         //時間の確定と取得
         battleScene_offlineManager.timeRanking = (int)timer_offline.elapsedTime;
 
+        //プレイ数の追加
+        PlayerPrefs.SetInt("PlayCount", PlayerPrefs.GetInt("PlayCount") + 1);
+
         //ベストスコアに反映
         if (PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName) < battleScene_offlineManager.timeRanking)
         {

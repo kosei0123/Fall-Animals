@@ -502,6 +502,9 @@ public class Pun2Script : MonoBehaviourPunCallbacks
             userAuth.save();
         }
 
+        //プレイ数の追加
+        PlayerPrefs.SetInt("PlayCount", PlayerPrefs.GetInt("PlayCount") + 1);
+
         //終了時のダイアログ表示
         endDialog.DialogPanelActive(battleRanking);
     }

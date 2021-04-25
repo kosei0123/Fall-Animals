@@ -33,6 +33,16 @@ public class SelectSkins : MonoBehaviour
     private GameObject CrownPanel;
     private bool CrownPanelFlag = false;
 
+    //Cloud
+    //フレーム
+    [SerializeField]
+    private GameObject CloudFlame;
+    private bool CloudFlameFlag = false;
+    //パネル
+    [SerializeField]
+    private GameObject CloudPanel;
+    private bool CloudPanelFlag = false;
+
     //スキンの名前取得
     public static string skinsName;
     //スキンの名前取得(仮)
@@ -64,6 +74,9 @@ public class SelectSkins : MonoBehaviour
         //Crown
         CrownFlameFlag = (skinsName_Temporary == "Crown") ? true : false;
         CrownFlame.SetActive(CrownFlameFlag);
+        //Cloud
+        CloudFlameFlag = (skinsName_Temporary == "Cloud") ? true : false;
+        CloudFlame.SetActive(CloudFlameFlag);
     }
 
     //アンロックされたスキンを表示する
@@ -75,6 +88,9 @@ public class SelectSkins : MonoBehaviour
         //Crown
         CrownPanelFlag = (PlayerPrefs.GetInt("Unlock_Crown") == 1) ? true : false;
         CrownPanel.SetActive(CrownPanelFlag);
+        //Cloud
+        CloudPanelFlag = (PlayerPrefs.GetInt("Unlock_Cloud") == 1) ? true : false;
+        CloudPanel.SetActive(CloudPanelFlag);
     }
 
     //None
@@ -99,5 +115,13 @@ public class SelectSkins : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         skinsName_Temporary = "Crown";
+    }
+
+    //Cloud
+    public void OnClick_CloudButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        skinsName_Temporary = "Cloud";
     }
 }

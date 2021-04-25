@@ -19,9 +19,9 @@ public class MenuUI : MonoBehaviour
     //ランキングデータ
     private RankingData rankingData = new RankingData();
 
-    //自己Win数のテキスト表示
+    //プレイ数のテキスト表示
     [SerializeField]
-    private Text WinCountText;
+    private Text PlayCountText;
 
     //WinCountRankingPanelの表示
     [SerializeField]
@@ -81,6 +81,11 @@ public class MenuUI : MonoBehaviour
     //RoomMasterLeftPanelの表示
     [SerializeField]
     private GameObject RoomMasterLeftPanel;
+    //謝罪等用メッセージパネルの表紙
+    [SerializeField]
+    private GameObject MessagePanel;
+    [SerializeField]
+    private GameObject Message2Panel;
 
 
     // Start is called before the first frame update
@@ -158,48 +163,49 @@ public class MenuUI : MonoBehaviour
             MyCoinText.text = PlayerPrefs.GetInt("myCoin").ToString("");
         }
 
-        //デバイスに保持されているWin数の表示
-        if (!PlayerPrefs.HasKey("WinCount"))
+        //デバイスに保持されているプレイ数の表示
+        if (!PlayerPrefs.HasKey("PlayCount")) PlayerPrefs.SetInt("PlayCount", 0);
+        else { PlayCountText.text = PlayerPrefs.GetInt("PlayCount").ToString(""); }
+
+
+        //メッセージの表示と日付の確認
+        if (!PlayerPrefs.HasKey("MessageVersion")) PlayerPrefs.SetInt("MessageVersion", 0);
+        if (PlayerPrefs.GetInt("MessageVersion") <= 0)
         {
-            PlayerPrefs.SetInt("WinCount", 0);
+            if (PlayerPrefs.GetString("NickName") == "SINVINO@chimolove(6177)") MessagePanel.SetActive(true);
+            else { Message2Panel.SetActive(true); }
         }
         else
         {
-            WinCountText.text = PlayerPrefs.GetInt("WinCount").ToString("");
+            CheckToday();
         }
+        
 
-        //日付の確認
-        CheckToday();
-
+        //デバイスに保持されているWin数情報を取得
+        if (!PlayerPrefs.HasKey("WinCount")) PlayerPrefs.SetInt("WinCount", 0);
         //デバイスに保持されているUnlockキャラクター情報を取得
         //0：アンロックされていない
         //1：アンロックされている
         //キリン
-        if (!PlayerPrefs.HasKey("Unlock_Giraffe"))
-        {
-            PlayerPrefs.SetInt("Unlock_Giraffe", 0);
-        }
+        if (!PlayerPrefs.HasKey("Unlock_Giraffe")) PlayerPrefs.SetInt("Unlock_Giraffe", 0);
         //象
-        if (!PlayerPrefs.HasKey("Unlock_Elephant"))
-        {
-            PlayerPrefs.SetInt("Unlock_Elephant", 0);
-        }
+        if (!PlayerPrefs.HasKey("Unlock_Elephant")) PlayerPrefs.SetInt("Unlock_Elephant", 0);
         //虎
-        if (!PlayerPrefs.HasKey("Unlock_Tiger"))
-        {
-            PlayerPrefs.SetInt("Unlock_Tiger", 0);
-        }
+        if (!PlayerPrefs.HasKey("Unlock_Tiger")) PlayerPrefs.SetInt("Unlock_Tiger", 0);
         //スキン
         //キャンディ
-        if (!PlayerPrefs.HasKey("Unlock_Candy"))
-        {
-            PlayerPrefs.SetInt("Unlock_Candy", 0);
-        }
-        //クラウン
-        if (!PlayerPrefs.HasKey("Unlock_Crown"))
-        {
-            PlayerPrefs.SetInt("Unlock_Crown", 0);
-        }
+        if (!PlayerPrefs.HasKey("Unlock_Candy")) PlayerPrefs.SetInt("Unlock_Candy", 0);
+        //王冠
+        if (!PlayerPrefs.HasKey("Unlock_Crown")) PlayerPrefs.SetInt("Unlock_Crown", 0);
+        //雲
+        if (!PlayerPrefs.HasKey("Unlock_Cloud")) PlayerPrefs.SetInt("Unlock_Cloud", 0);
+        //ステージ
+        //ステージ4
+        if (!PlayerPrefs.HasKey("Unlock_Stage4")) PlayerPrefs.SetInt("Unlock_Stage4", 0);
+        if (!PlayerPrefs.HasKey("Unlock_Stage4_ON")) PlayerPrefs.SetString("Unlock_Stage4_ON","false");
+        //ステージ5
+        if (!PlayerPrefs.HasKey("Unlock_Stage5")) PlayerPrefs.SetInt("Unlock_Stage5", 0);
+        if (!PlayerPrefs.HasKey("Unlock_Stage5_ON")) PlayerPrefs.SetString("Unlock_Stage5_ON", "false");
 
     }
 
@@ -601,6 +607,23 @@ public class MenuUI : MonoBehaviour
 
         //非同期処理呼び出し(ランキング情報表示準備)
         StartCoroutine(prepareRankingData());
+    }
+
+    //MessageYesButtonボタン押下時
+    public void OnClick_MessageYesButton()
+    {
+        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 1000);
+        PlayerPrefs.SetInt("BestTime_Dog", 0);
+        PlayerPrefs.SetInt("MessageVersion", 1);
+        MessagePanel.SetActive(false);
+    }
+
+    //Message2YesButtonボタン押下時
+    public void OnClick_Message2YesButton()
+    {
+        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + 500);
+        PlayerPrefs.SetInt("MessageVersion", 1);
+        Message2Panel.SetActive(false);
     }
 
     //なんらかのダイアログのYesButtonボタンを押した時の挙動
