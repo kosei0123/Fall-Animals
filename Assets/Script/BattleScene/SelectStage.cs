@@ -30,13 +30,13 @@ public class SelectStage : MonoBehaviour
                 Stage1.SetActive(true);
                 break;
             case 2:
-                Stage1.SetActive(true);
-                break;
-            case 3:
                 Stage2.SetActive(true);
                 break;
-            case 4:
+            case 3:
                 Stage3.SetActive(true);
+                break;
+            case 4:
+                Stage4.SetActive(true);
                 break;
             case 5:
                 Stage5.SetActive(true);
