@@ -14,6 +14,9 @@ public class RockMove_offline : MonoBehaviour
     //時間計測
     private float rockTime;
 
+    //速度を保持する
+    private float rbRockVelocityX_Retention;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +71,9 @@ public class RockMove_offline : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        //岩の速度を保持する
+        if (rbRock.velocity.x != 0) rbRockVelocityX_Retention = rbRock.velocity.x;
+
         //岩が作られてからの時間計測
         rockTime += Time.deltaTime;
     }
@@ -79,6 +85,12 @@ public class RockMove_offline : MonoBehaviour
         {
             //SEの使用
             soundManager.SEManager("Rock_sound1");
+        }
+
+        if (other.gameObject.tag == "Ground_Reflection")
+        {
+            //x方向のベクトルを反転させる
+            rbRock.velocity = new Vector3(rbRockVelocityX_Retention * (-1.0f), rbRock.velocity.y, 0);
         }
 
         if (other.gameObject.tag != "Obstacle_Rock")

@@ -9,6 +9,8 @@ public class GroundCheck_offline : MonoBehaviour
 
     //Groundタグへの参照
     private string groundTag = "Ground";
+    //Groundタグへの参照
+    private string ground_ReflectionTag = "Ground_Reflection";
     //GroundSlidingタグへの参照
     private string groundSlidingTag = "GroundSliding";
     //Playerタグへの参照
@@ -31,7 +33,7 @@ public class GroundCheck_offline : MonoBehaviour
     //入る
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == groundTag || other.tag == playerTag)
+        if (other.tag == groundTag || other.tag == playerTag || other.tag == ground_ReflectionTag)
         {
             //地面にいる判定
             characterMainMove_offline.isGround = true;
@@ -49,7 +51,7 @@ public class GroundCheck_offline : MonoBehaviour
     //入り続けている
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == groundTag || other.tag == playerTag)
+        if (other.tag == groundTag || other.tag == playerTag || other.tag == ground_ReflectionTag)
         {
             //地面にいる判定
             characterMainMove_offline.isGround = true;

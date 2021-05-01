@@ -32,6 +32,20 @@ public class UnlockSkinsUI : MonoBehaviour
     //結果イメージ
     [SerializeField]
     private GameObject CloudResultImage;
+    //マップピン
+    //購入完了パネル
+    [SerializeField]
+    private GameObject MappinBuyDonePanel;
+    //結果イメージ
+    [SerializeField]
+    private GameObject MappinResultImage;
+    //クリスタル
+    //購入完了パネル
+    [SerializeField]
+    private GameObject CrystalBuyDonePanel;
+    //結果イメージ
+    [SerializeField]
+    private GameObject CrystalResultImage;
 
     //ガチャ
     //開始ボタン
@@ -57,7 +71,7 @@ public class UnlockSkinsUI : MonoBehaviour
 
     //値段
     //ガチャ
-    private int skinsCapsuleStartPrice = 100;
+    private int skinsCapsuleStartPrice = 50;
 
     // Start is called before the first frame update
     void Start()
@@ -104,6 +118,12 @@ public class UnlockSkinsUI : MonoBehaviour
         //雲
         if (PlayerPrefs.GetInt("Unlock_Cloud") == 1) CloudBuyDonePanel.SetActive(true);
         else { CloudBuyDonePanel.SetActive(false); }
+        //マップピン
+        if (PlayerPrefs.GetInt("Unlock_Mappin") == 1) MappinBuyDonePanel.SetActive(true);
+        else { MappinBuyDonePanel.SetActive(false); }
+        //クリスタル
+        if (PlayerPrefs.GetInt("Unlock_Crystal") == 1) CrystalBuyDonePanel.SetActive(true);
+        else { CrystalBuyDonePanel.SetActive(false); }
     }
 
     //SkinsCapsuleStartButtonボタンを押した際の挙動
@@ -119,7 +139,7 @@ public class UnlockSkinsUI : MonoBehaviour
     public void OnClick_YesButton()
     {
         //ランダム値をいれる
-        unlockSkinsName = Random.Range(1,4);
+        unlockSkinsName = Random.Range(1,6);
 
         //ガチャ結果表示パネルの表示
         CapsuleResultPanel.SetActive(true);
@@ -137,6 +157,14 @@ public class UnlockSkinsUI : MonoBehaviour
             case 3:
                 PlayerPrefs.SetInt("Unlock_Cloud", 1);
                 CloudResultImage.SetActive(true);
+                break;
+            case 4:
+                PlayerPrefs.SetInt("Unlock_Mappin", 1);
+                MappinResultImage.SetActive(true);
+                break;
+            case 5:
+                PlayerPrefs.SetInt("Unlock_Crystal", 1);
+                CrystalResultImage.SetActive(true);
                 break;
             default:
                 break;

@@ -75,6 +75,7 @@ public class AirplaneMove_offline : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+
         //紙飛行機が作られてからの時間計測
         airplaneTime += Time.deltaTime;
     }

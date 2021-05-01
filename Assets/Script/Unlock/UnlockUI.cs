@@ -57,6 +57,26 @@ public class UnlockUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject TigerBuyDonePanel;
+    //猫
+    //購入ボタン
+    [SerializeField]
+    private Button CatBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text CatBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject CatBuyDonePanel;
+    //ウサギ
+    //購入ボタン
+    [SerializeField]
+    private Button RabbitBuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text RabbitBuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject RabbitBuyDonePanel;
 
     //タイトル広告解除
     //購入ボタン
@@ -106,12 +126,16 @@ public class UnlockUI : MonoBehaviour
     private int elephantPrice = 500;
     //虎
     private int tigerPrice = 2000;
+    //猫
+    private int catPrice = 1000;
+    //ウサギ
+    private int rabbitPrice = 1000;
     //タイトル広告解除
-    private int titleAdvertisingPrice = 20000;
+    private int titleAdvertisingPrice = 15000;
     //ゲーム開始前広告解除
-    private int waitingRoomAdvertisingPrice = 30000;
+    private int waitingRoomAdvertisingPrice = 15000;
     //ゲーム開始前広告解除(オフライン)
-    private int waitingRoomAdvertisingPrice_offline = 30000;
+    private int waitingRoomAdvertisingPrice_offline = 15000;
 
     // Start is called before the first frame update
     void Start()
@@ -154,6 +178,12 @@ public class UnlockUI : MonoBehaviour
         //虎
         if (PlayerPrefs.GetInt("myCoin") >= tigerPrice && PlayerPrefs.GetInt("Unlock_Tiger") == 0) TigerBuyButton.interactable = true;
         else { TigerBuyButton.interactable = false; }
+        //猫
+        if (PlayerPrefs.GetInt("myCoin") >= catPrice && PlayerPrefs.GetInt("Unlock_Cat") == 0) CatBuyButton.interactable = true;
+        else { CatBuyButton.interactable = false; }
+        //ウサギ
+        if (PlayerPrefs.GetInt("myCoin") >= rabbitPrice && PlayerPrefs.GetInt("Unlock_Rabbit") == 0) RabbitBuyButton.interactable = true;
+        else { RabbitBuyButton.interactable = false; }
 
         //タイトル広告解除
         if (PlayerPrefs.GetInt("myCoin") >= titleAdvertisingPrice && PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0) TitleAdvertisingBuyButton.interactable = true;
@@ -175,6 +205,10 @@ public class UnlockUI : MonoBehaviour
         ElephantBuyText.text = elephantPrice.ToString("");
         //虎
         TigerBuyText.text = tigerPrice.ToString("");
+        //猫
+        CatBuyText.text = catPrice.ToString("");
+        //ウサギ
+        RabbitBuyText.text = rabbitPrice.ToString("");
 
         //タイトル広告解除
         TitleAdvertisingBuyText.text = titleAdvertisingPrice.ToString("");
@@ -196,6 +230,12 @@ public class UnlockUI : MonoBehaviour
         //虎
         if (PlayerPrefs.GetInt("Unlock_Tiger") == 1) TigerBuyDonePanel.SetActive(true);
         else { TigerBuyDonePanel.SetActive(false); }
+        //猫
+        if (PlayerPrefs.GetInt("Unlock_Cat") == 1) CatBuyDonePanel.SetActive(true);
+        else { CatBuyDonePanel.SetActive(false); }
+        //ウサギ
+        if (PlayerPrefs.GetInt("Unlock_Rabbit") == 1) RabbitBuyDonePanel.SetActive(true);
+        else { RabbitBuyDonePanel.SetActive(false); }
 
         //タイトル広告解除
         if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 1) TitleAdvertisingBuyDonePanel.SetActive(true);
@@ -286,6 +326,28 @@ public class UnlockUI : MonoBehaviour
         BuyPanel.SetActive(true);
     }
 
+    //CatBuyButtonボタンを押した際の挙動
+    public void OnClick_CatBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //猫を指定する
+        unlockName = "Cat";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
+    //RabbitBuyButtonボタンを押した際の挙動
+    public void OnClick_RabbitBuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //猫を指定する
+        unlockName = "Rabbit";
+        //BuyPanelを表示
+        BuyPanel.SetActive(true);
+    }
+
     //TitleAdvertisingBuyButtonを押した際の挙動
     public void OnClick_TitleAdvertisingBuyButton()
     {
@@ -344,6 +406,16 @@ public class UnlockUI : MonoBehaviour
             case "Tiger":
                 PlayerPrefs.SetInt("Unlock_Tiger", 1);
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - tigerPrice);
+                break;
+            //猫
+            case "Cat":
+                PlayerPrefs.SetInt("Unlock_Cat", 1);
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - catPrice);
+                break;
+            //猫
+            case "Rabbit":
+                PlayerPrefs.SetInt("Unlock_Rabbit", 1);
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - rabbitPrice);
                 break;
             //タイトル広告解除
             case "TitleAdvertising":

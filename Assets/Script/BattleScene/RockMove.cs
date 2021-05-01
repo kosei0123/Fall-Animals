@@ -15,6 +15,9 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
     //時間計測
     private float rockTime;
 
+    //速度を保持する
+    private float rbRockVelocityX_Retention;
+
     //メッセージの送信に使用される
     PhotonView rockPhotonView;
 
@@ -104,6 +107,9 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
             }
         }
 
+        //岩の速度を保持する
+        if (rbRock.velocity.x != 0) rbRockVelocityX_Retention = rbRock.velocity.x;
+
         //岩が作られてからの時間計測
         rockTime += Time.deltaTime;
     }
@@ -115,6 +121,12 @@ public class RockMove : MonoBehaviourPunCallbacks,IPunObservable
         {
             //SEの使用
             soundManager.SEManager("Rock_sound1");
+        }
+
+        if (other.gameObject.tag == "Ground_Reflection")
+        {
+            //x方向のベクトルを反転させる
+            rbRock.velocity = new Vector3(rbRockVelocityX_Retention * (-1), rbRock.velocity.y, 0);
         }
 
         if (other.gameObject.tag != "Obstacle_Rock")

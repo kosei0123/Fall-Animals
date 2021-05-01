@@ -45,7 +45,7 @@ public class UnlockStageUI : MonoBehaviour
     //ステージ4
     private int stage4Price = 500;
     //ステージ5
-    private int stage5Price = 500;
+    private int stage5Price = 300;
 
     // Start is called before the first frame update
     void Start()

@@ -139,10 +139,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             updateWaitingPlayerCount = 0;
             foreach (var p in PhotonNetwork.PlayerList)
             {
-                //if ((string)p.CustomProperties["NoKick"] == "true")
-                //{
-                //}
-
                 //人数を取得
                 updateWaitingPlayerCount++;
 
@@ -162,36 +158,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                             //photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
                         }
                     }
-
-                    //if (updateWaitingPlayerCount == 1)
-                    //{
-                    //    ////ニックネーム消去を共有する
-                    //    //PhotonView photonView = PhotonView.Get(this);
-                    //    //photonView.RPC("WaitingPlayerDeleteNickNameValue", RpcTarget.All);
-                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                    //    p.SetCustomProperties(p.CustomProperties);
-                    //    //ニックネームを取得
-                    //    //photonView.RPC("WaitingPlayerNickNameValue", RpcTarget.All, p.NickName);
-                    //}
-                    //else if (updateWaitingPlayerCount == 2)
-                    //{
-                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                    //    p.SetCustomProperties(p.CustomProperties);
-                    //    //photonView.RPC("WaitingPlayer2NickNameValue", RpcTarget.All, p.NickName);
-                    //}
-                    //else if (updateWaitingPlayerCount == 3)
-                    //{
-                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                    //    p.SetCustomProperties(p.CustomProperties);
-                    //    //photonView.RPC("WaitingPlayer3NickNameValue", RpcTarget.All, p.NickName);
-                    //}
-                    //else if (updateWaitingPlayerCount == 4)
-                    //{
-                    //    p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-                    //    p.SetCustomProperties(p.CustomProperties);
-                    //    //photonView.RPC("WaitingPlayer4NickNameValue", RpcTarget.All, p.NickName);
-
-                    //}
                 }
             }
 
@@ -201,44 +167,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = updateWaitingPlayerCount;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
             }
-            
-            ////プレイヤー番号の再取得
-            //foreach (var p in PhotonNetwork.PlayerList)
-            //{
-            //    //if ((string)p.CustomProperties["NoKick"] == "true")
-            //    //{
-            //        //それぞれに番号をいれる
-            //        if (p.NickName == WaitingPlayerNickName)
-            //        {
-            //            p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-            //            p.SetCustomProperties(p.CustomProperties);
-            //            //次のプレイヤーはプレイヤー番号を1つ減らす
-            //            updateWaitingPlayerCount--;
-            //        }
-            //        else if (p.NickName == WaitingPlayer2NickName)
-            //        {
-            //            p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-            //            p.SetCustomProperties(p.CustomProperties);
-            //            //次のプレイヤーはプレイヤー番号を1つ減らす
-            //            updateWaitingPlayerCount--;
-            //        }
-            //        else if (p.NickName == WaitingPlayer3NickName)
-            //        {
-            //            p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-            //            p.SetCustomProperties(p.CustomProperties);
-            //            //次のプレイヤーはプレイヤー番号を1つ減らす
-            //            updateWaitingPlayerCount--;
-            //        }
-            //        else if (p.NickName == WaitingPlayer4NickName)
-            //        {
-            //            p.CustomProperties["playerCreatedNumber"] = updateWaitingPlayerCount;
-            //            p.SetCustomProperties(p.CustomProperties);
-            //            //次のプレイヤーはプレイヤー番号を1つ減らす
-            //            updateWaitingPlayerCount--;
-            //        }
-
-            //    //}
-            //}
         }
 
         //時間が2秒より大きいとき
@@ -316,6 +244,17 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
                 photonView.RPC("WaitingRoomMaxPlayerFlagValue", RpcTarget.All, true);
             }
         }
+
+        //ルームマスターが退出した時
+        if (RoomMasterLeftFlag == true)
+        {
+            //広告解除していない場合
+            if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
+            {
+                adMobWaitingRoomAdvertising.bannerView.Hide();
+                adMobWaitingRoomAdvertising.bannerView.Destroy();
+            }
+        }
     }
 
     [PunRPC]
@@ -390,7 +329,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         stageList.Add(2);
         stageList.Add(3);
         //追加ステージ
-        if (PlayerPrefs.GetInt("Unlock_Stage4") == 1) stageList.Add(4);
+        //if (PlayerPrefs.GetInt("Unlock_Stage4") == 1) stageList.Add(4);
         if (PlayerPrefs.GetInt("Unlock_Stage5") == 1) stageList.Add(5);
 
     }
@@ -408,7 +347,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
         //広告解除していない場合
-        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
         {
             adMobWaitingRoomAdvertising.bannerView.Hide();
             adMobWaitingRoomAdvertising.bannerView.Destroy();

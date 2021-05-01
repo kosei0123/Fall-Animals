@@ -310,6 +310,36 @@ public class CharacterMainMove_offline : MonoBehaviour
                 runSpeed = 8.0f;
             }
         }
+        //猫
+        else if (SelectCharacterUI.animalName == "Cat")
+        {
+            //ジャンプ力
+            jumpPower = 13.5f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 11.0f;
+            }
+            else
+            {
+                runSpeed = 8.0f;
+            }
+        }
+        //ウサギ
+        else if (SelectCharacterUI.animalName == "Rabbit")
+        {
+            //ジャンプ力
+            jumpPower = 15.0f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 5.0f;
+            }
+            else
+            {
+                runSpeed = 6.0f;
+            }
+        }
     }
 
 

@@ -16,6 +16,14 @@ public class MenuSkins : MonoBehaviour
     [SerializeField]
     private GameObject Cloud;
     private bool CloudFlag = false;
+    //Mappin
+    [SerializeField]
+    private GameObject Mappin;
+    private bool MappinFlag = false;
+    //Crystal
+    [SerializeField]
+    private GameObject Crystal;
+    private bool CrystalFlag = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +32,10 @@ public class MenuSkins : MonoBehaviour
         if (SelectSkins.skinsName == null)
         {
             Candy.SetActive(false);
+            Crown.SetActive(false);
+            Cloud.SetActive(false);
+            Mappin.SetActive(false);
+            Crystal.SetActive(false);
             return;
         }
 
@@ -36,6 +48,12 @@ public class MenuSkins : MonoBehaviour
         //Cloud
         CloudFlag = (SelectSkins.skinsName == "Cloud") ? true : false;
         Cloud.SetActive(CloudFlag);
+        //Mappin
+        MappinFlag = (SelectSkins.skinsName == "Mappin") ? true : false;
+        Mappin.SetActive(MappinFlag);
+        //Crystal
+        CrystalFlag = (SelectSkins.skinsName == "Crystal") ? true : false;
+        Crystal.SetActive(CrystalFlag);
 
     }
 

@@ -12,7 +12,6 @@ public class SelectSkins : MonoBehaviour
     [SerializeField]
     private GameObject NoneFlame;
     private bool NoneFlameFlag = false;
-
     //Candy
     //フレーム
     [SerializeField]
@@ -22,7 +21,6 @@ public class SelectSkins : MonoBehaviour
     [SerializeField]
     private GameObject CandyPanel;
     private bool CandyPanelFlag = false;
-
     //Crown
     //フレーム
     [SerializeField]
@@ -32,7 +30,6 @@ public class SelectSkins : MonoBehaviour
     [SerializeField]
     private GameObject CrownPanel;
     private bool CrownPanelFlag = false;
-
     //Cloud
     //フレーム
     [SerializeField]
@@ -42,6 +39,24 @@ public class SelectSkins : MonoBehaviour
     [SerializeField]
     private GameObject CloudPanel;
     private bool CloudPanelFlag = false;
+    //Mappin
+    //フレーム
+    [SerializeField]
+    private GameObject MappinFlame;
+    private bool MappinFlameFlag = false;
+    //パネル
+    [SerializeField]
+    private GameObject MappinPanel;
+    private bool MappinPanelFlag = false;
+    //Crystal
+    //フレーム
+    [SerializeField]
+    private GameObject CrystalFlame;
+    private bool CrystalFlameFlag = false;
+    //パネル
+    [SerializeField]
+    private GameObject CrystalPanel;
+    private bool CrystalPanelFlag = false;
 
     //スキンの名前取得
     public static string skinsName;
@@ -77,6 +92,12 @@ public class SelectSkins : MonoBehaviour
         //Cloud
         CloudFlameFlag = (skinsName_Temporary == "Cloud") ? true : false;
         CloudFlame.SetActive(CloudFlameFlag);
+        //Mappin
+        MappinFlameFlag = (skinsName_Temporary == "Mappin") ? true : false;
+        MappinFlame.SetActive(MappinFlameFlag);
+        //Crystal
+        CrystalFlameFlag = (skinsName_Temporary == "Crystal") ? true : false;
+        CrystalFlame.SetActive(CrystalFlameFlag);
     }
 
     //アンロックされたスキンを表示する
@@ -91,6 +112,12 @@ public class SelectSkins : MonoBehaviour
         //Cloud
         CloudPanelFlag = (PlayerPrefs.GetInt("Unlock_Cloud") == 1) ? true : false;
         CloudPanel.SetActive(CloudPanelFlag);
+        //Mappin
+        MappinPanelFlag = (PlayerPrefs.GetInt("Unlock_Mappin") == 1) ? true : false;
+        MappinPanel.SetActive(MappinPanelFlag);
+        //Crystal
+        CrystalPanelFlag = (PlayerPrefs.GetInt("Unlock_Crystal") == 1) ? true : false;
+        CrystalPanel.SetActive(CrystalPanelFlag);
     }
 
     //None
@@ -123,5 +150,21 @@ public class SelectSkins : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         skinsName_Temporary = "Cloud";
+    }
+
+    //Mappin
+    public void OnClick_MappinButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        skinsName_Temporary = "Mappin";
+    }
+
+    //Crystal
+    public void OnClick_CrystalButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        skinsName_Temporary = "Crystal";
     }
 }

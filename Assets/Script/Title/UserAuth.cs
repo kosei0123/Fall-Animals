@@ -93,6 +93,7 @@ public class UserAuth : MonoBehaviour
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Giraffe", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Giraffe", 0);
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Giraffe" + "Time"] = 0;
                     
@@ -102,6 +103,7 @@ public class UserAuth : MonoBehaviour
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Elephant", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Elephant", 0);
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Elephant" + "Time"] = 0;
                 }
@@ -110,6 +112,7 @@ public class UserAuth : MonoBehaviour
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Dog", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Dog", 0);
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Dog" + "Time"] = 0;
                 }
@@ -118,8 +121,27 @@ public class UserAuth : MonoBehaviour
                 {
                     //端末内にデータ保存
                     PlayerPrefs.SetInt("BestTime_Tiger", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Tiger", 0);
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Tiger" + "Time"] = 0;
+                }
+                //猫
+                if (!PlayerPrefs.HasKey("BestTime_Cat") || deleteFlag == true)
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Cat", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Cat", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Cat" + "Time"] = 0;
+                }
+                //ウサギ
+                if (!PlayerPrefs.HasKey("BestTime_Rabbit") || deleteFlag == true)
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Rabbit", 0);
+                    PlayerPrefs.SetInt("bestTimeRecode_Rabbit", 0);
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Rabbit" + "Time"] = 0;
                 }
                 //スコア(データ消去時のみ)
                 if (deleteFlag == true)
@@ -261,33 +283,6 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
-                //for (int i = 0; i < objList.Count; i++)
-                //{
-                //    //ランキング名前の表示
-                //    topRankingName[i] = (i + 1).ToString("") + "位 : " + objList[i]["Name"];
-                    
-                //    //ランキング番号の表示
-                //    topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒\n";
-                    
-
-                //    //ランキング名前とベストタイムの表示
-                //    switch (animal)
-                //    {
-                //        case "Giraffe":
-                //            menuUI.OfflineRankingGiraffeNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
-                //            break;
-                //        case "Elephant":
-                //            menuUI.OfflineRankingElephantNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
-                //            break;
-                //        case "Dog":
-                //            menuUI.OfflineRankingDogNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
-                //            break;
-                //        case "Tiger":
-                //            menuUI.OfflineRankingTigerNameText.text += (topRankingName[i].PadRight(25)) + topRankingNumber[i];
-                //            break;
-                //    }
-
-                //}
 
                 for (int i = 0; i < objList.Count; i++)
                 {

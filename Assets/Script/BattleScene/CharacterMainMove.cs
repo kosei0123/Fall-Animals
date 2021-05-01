@@ -317,6 +317,36 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
                 runSpeed = 8.0f;
             }
         }
+        //猫
+        else if (SelectCharacterUI.animalName == "Cat")
+        {
+            //ジャンプ力
+            jumpPower = 13.5f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 11.0f;
+            }
+            else
+            {
+                runSpeed = 8.0f;
+            }
+        }
+        //ウサギ
+        else if (SelectCharacterUI.animalName == "Rabbit")
+        {
+            //ジャンプ力
+            jumpPower = 15.0f;
+            //スピード
+            if (isGround)
+            {
+                runSpeed = 5.0f;
+            }
+            else
+            {
+                runSpeed = 6.0f;
+            }
+        }
     }
 
     //同期
@@ -405,28 +435,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().NickName.Substring(0, pun2Script.GetAnimal4Information().NickName.LastIndexOf("("));
             animal4NickNameFlag = true;
         }
-
-        //動画用
-        //if (gameObject.name == "animal1" && pun2Script.GetAnimalInformation() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimalInformation().CustomProperties["playerCreatedNumber"] + "P";
-        //    animal1NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal2" && pun2Script.GetAnimal2Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal2Information().CustomProperties["playerCreatedNumber"] + "P";
-        //    animal2NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal3" && pun2Script.GetAnimal3Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal3Information().CustomProperties["playerCreatedNumber"] + "P";
-        //    animal3NickNameFlag = true;
-        //}
-        //if (gameObject.name == "animal4" && pun2Script.GetAnimal4Information() != null)
-        //{
-        //    gameObject.transform.GetChild(3).gameObject.transform.GetChild(0).gameObject.GetComponent<Text>().text = pun2Script.GetAnimal4Information().CustomProperties["playerCreatedNumber"] + "P";
-        //    animal4NickNameFlag = true;
-        //}
 
     }
 

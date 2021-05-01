@@ -32,6 +32,12 @@ public class SelectCharacterUI : MonoBehaviour
     //虎パネルの表示
     [SerializeField]
     private GameObject TigerPanel;
+    //猫パネルの表示
+    [SerializeField]
+    private GameObject CatPanel;
+    //ウサギのパネル表示
+    [SerializeField]
+    private GameObject RabbitPanel;
 
     //プレイキャラの名前取得
     public static string animalName;
@@ -95,6 +101,16 @@ public class SelectCharacterUI : MonoBehaviour
         {
             TigerPanel.SetActive(true);
         }
+        //猫パネル
+        if (PlayerPrefs.GetInt("Unlock_Cat") == 1)
+        {
+            CatPanel.SetActive(true);
+        }
+        //猫パネル
+        if (PlayerPrefs.GetInt("Unlock_Rabbit") == 1)
+        {
+            RabbitPanel.SetActive(true);
+        }
     }
 
     //Giraffeボタン押下した際の処理
@@ -133,14 +149,23 @@ public class SelectCharacterUI : MonoBehaviour
         animalName_Temporary = "Tiger";
     }
 
-    //Unityちゃんボタン押下した際の処理
-    //public void OnClick_UnityChanButton()
-    //{
-    //    //SEの使用
-    //    soundManager.SEManager("CharacterSelect_sound1");
-    //    //プレイキャラの名前取得
-    //    animalName = "animal1";
-    //}
+    //Catボタン押下した際の処理
+    public void OnClick_CatButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName_Temporary = "Cat";
+    }
+
+    //Rabbitボタン押下した際の処理
+    public void OnClick_RabbitButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //プレイキャラの名前取得
+        animalName_Temporary = "Rabbit";
+    }
 
     //キャラ選択後に画面遷移を行う
     public void OnClick_SelectCharacterOKButton()

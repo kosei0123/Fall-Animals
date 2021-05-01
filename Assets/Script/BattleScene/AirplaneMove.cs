@@ -124,6 +124,7 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
             soundManager.SEManager("Airplane_sound1");
         }
 
+
         if (other.gameObject.tag != "Obstacle_Airplane")
         {
             return;

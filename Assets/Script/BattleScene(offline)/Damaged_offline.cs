@@ -141,6 +141,12 @@ public class Damaged_offline : MonoBehaviour
                     case "Tiger":
                         PlayerPrefs.SetInt("bestTimeRecode_Tiger", 1);
                         break;
+                    case "Cat":
+                        PlayerPrefs.SetInt("bestTimeRecode_Cat", 1);
+                        break;
+                    case "Rabbit":
+                        PlayerPrefs.SetInt("bestTimeRecode_Rabbit", 1);
+                        break;
                     default:
                         break;
                 }
