@@ -29,6 +29,16 @@ public class UnlockStageUI : MonoBehaviour
     //購入完了パネル
     [SerializeField]
     private GameObject Stage5BuyDonePanel;
+    //ステージ6
+    //購入ボタン
+    [SerializeField]
+    private Button Stage6BuyButton;
+    //値段テキスト
+    [SerializeField]
+    private Text Stage6BuyText;
+    //購入完了パネル
+    [SerializeField]
+    private GameObject Stage6BuyDonePanel;
 
     //BuyStagePanel
     [SerializeField]
@@ -46,6 +56,8 @@ public class UnlockStageUI : MonoBehaviour
     private int stage4Price = 500;
     //ステージ5
     private int stage5Price = 300;
+    //ステージ6
+    private int stage6Price = 500;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +86,9 @@ public class UnlockStageUI : MonoBehaviour
         //ステージ5
         if (PlayerPrefs.GetInt("myCoin") >= stage5Price && PlayerPrefs.GetInt("Unlock_Stage5") == 0) Stage5BuyButton.interactable = true;
         else { Stage5BuyButton.interactable = false; }
+        //ステージ6
+        if (PlayerPrefs.GetInt("myCoin") >= stage6Price && PlayerPrefs.GetInt("Unlock_Stage6") == 0) Stage6BuyButton.interactable = true;
+        else { Stage6BuyButton.interactable = false; }
     }
 
     //表示値段の取得
@@ -83,6 +98,8 @@ public class UnlockStageUI : MonoBehaviour
         Stage4BuyText.text = stage4Price.ToString("");
         //ステージ5
         Stage5BuyText.text = stage5Price.ToString("");
+        //ステージ6
+        Stage6BuyText.text = stage6Price.ToString("");
     }
 
     //動物購入済みかを確認
@@ -94,6 +111,9 @@ public class UnlockStageUI : MonoBehaviour
         //ステージ5
         if (PlayerPrefs.GetInt("Unlock_Stage5") == 1) Stage5BuyDonePanel.SetActive(true);
         else { Stage5BuyDonePanel.SetActive(false); }
+        //ステージ6
+        if (PlayerPrefs.GetInt("Unlock_Stage6") == 1) Stage6BuyDonePanel.SetActive(true);
+        else { Stage6BuyDonePanel.SetActive(false); }
     }
 
     //Stage4のプレビュー確認
@@ -107,6 +127,13 @@ public class UnlockStageUI : MonoBehaviour
     public void OnClick_Stage5CheckButton()
     {
         unlockStageName = "Stage5";
+        SceneManager.LoadScene("Preview");
+    }
+
+    //Stage6のプレビュー確認
+    public void OnClick_Stage6CheckButton()
+    {
+        unlockStageName = "Stage6";
         SceneManager.LoadScene("Preview");
     }
 
@@ -128,6 +155,17 @@ public class UnlockStageUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //Stage5を指定する
         unlockStageName = "Stage5";
+        //BuyPanelを表示
+        BuyStagePanel.SetActive(true);
+    }
+
+    //Stage6BuyButtonボタンを押した際の挙動
+    public void OnClick_Stage6BuyButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //Stage5を指定する
+        unlockStageName = "Stage6";
         //BuyPanelを表示
         BuyStagePanel.SetActive(true);
     }
@@ -155,6 +193,12 @@ public class UnlockStageUI : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_Stage5", 1);
                 PlayerPrefs.SetString("Unlock_Stage5_ON", "true");
                 PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - stage5Price);
+                break;
+            //ステージ6
+            case "Stage6":
+                PlayerPrefs.SetInt("Unlock_Stage6", 1);
+                PlayerPrefs.SetString("Unlock_Stage6_ON", "true");
+                PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") - stage6Price);
                 break;
             default:
                 break;

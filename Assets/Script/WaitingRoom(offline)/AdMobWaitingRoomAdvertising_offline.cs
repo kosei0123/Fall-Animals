@@ -30,8 +30,8 @@ public class AdMobWaitingRoomAdvertising_offline : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テストID
-            //adUnitId = "ca-app-pub-3940256099942544/2934735716";
-            adUnitId = "ca-app-pub-8452025378548231/4247966035";
+            adUnitId = "ca-app-pub-3940256099942544/2934735716";
+            //adUnitId = "ca-app-pub-8452025378548231/4247966035";
         }
         //Androidでの動作
         else if (Application.platform == RuntimePlatform.Android)

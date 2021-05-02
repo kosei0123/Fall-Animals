@@ -19,6 +19,9 @@ public class SelectStage_offline : MonoBehaviour
     //ステージ5
     [SerializeField]
     private GameObject Stage5;
+    //ステージ6
+    [SerializeField]
+    private GameObject Stage6;
 
     //ステージリストの初期化
     private List<int> stageList = new List<int>();
@@ -48,6 +51,9 @@ public class SelectStage_offline : MonoBehaviour
             case 5:
                 Stage5.SetActive(true);
                 break;
+            case 6:
+                Stage6.SetActive(true);
+                break;
             default:
                 break;
         }
@@ -68,6 +74,7 @@ public class SelectStage_offline : MonoBehaviour
         //追加ステージ
         if(PlayerPrefs.GetInt("Unlock_Stage4") == 1) stageList.Add(4);
         if(PlayerPrefs.GetInt("Unlock_Stage5") == 1) stageList.Add(5);
+        if(PlayerPrefs.GetInt("Unlock_Stage6") == 1) stageList.Add(6);
 
     }
 }

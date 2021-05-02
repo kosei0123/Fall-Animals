@@ -143,6 +143,15 @@ public class UserAuth : MonoBehaviour
                     //mobile backendサーバにデータ保存
                     objList[0]["Offline" + "Rabbit" + "Time"] = 0;
                 }
+                //総合
+                if (!PlayerPrefs.HasKey("BestTime_Total") || deleteFlag == true)
+                {
+                    //端末内にデータ保存
+                    PlayerPrefs.SetInt("BestTime_Total", PlayerPrefs.GetInt("BestTime_Giraffe") + PlayerPrefs.GetInt("BestTime_Elephant") + PlayerPrefs.GetInt("BestTime_Dog") +
+                PlayerPrefs.GetInt("BestTime_Tiger") + PlayerPrefs.GetInt("BestTime_Cat") + PlayerPrefs.GetInt("BestTime_Rabbit"));
+                    //mobile backendサーバにデータ保存
+                    objList[0]["Offline" + "Total" + "Time"] = PlayerPrefs.GetInt("BestTime_Total");
+                }
                 //スコア(データ消去時のみ)
                 if (deleteFlag == true)
                 {
@@ -188,7 +197,7 @@ public class UserAuth : MonoBehaviour
             //検索成功したら
             if (e == null)
             {
-                objList[0]["Offline" + animal + "Time"] = PlayerPrefs.GetInt("BestTime_" + SelectCharacterUI.animalName);
+                objList[0]["Offline" + animal + "Time"] = PlayerPrefs.GetInt("BestTime_" + animal);
                 objList[0].SaveAsync();
             }
         });
@@ -263,6 +272,7 @@ public class UserAuth : MonoBehaviour
     /// </summary>
     public void TopOfflineRankers(string animal)
     {
+
         //ニックネームのID削除用
         string nickName;
         int bkIndex;
@@ -286,6 +296,23 @@ public class UserAuth : MonoBehaviour
 
                 for (int i = 0; i < objList.Count; i++)
                 {
+                    //1位〜3位の文字変更
+                    if (i == 0)
+                    {
+                        topRankingName[i] = "<color=#FFD700>";
+                        topRankingNumber[i] = "<color=#FFD700>";
+                    }
+                    else if (i == 1)
+                    {
+                        topRankingName[i] = "<color=#f4f4f4>";
+                        topRankingNumber[i] = "<color=#f4f4f4>";
+                    }
+                    else if (i == 2)
+                    {
+                        topRankingName[i] = "<color=#BA6E40>";
+                        topRankingNumber[i] = "<color=#BA6E40>";
+                    }
+
                     //ランキング追跡中の名前からIDを抜き取る
                     nickName = (string)objList[i]["Name"];
                     bkIndex = nickName.LastIndexOf("(");
@@ -294,16 +321,23 @@ public class UserAuth : MonoBehaviour
                     if (bkIndex != -1)
                     {
                         //ランキング名前変換
-                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
                     }
                     else
                     {
                         //ランキング名前そのまま
-                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName;
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName;
                     }
 
                     //ランキング番号
                     topRankingNumber[i] += objList[i]["Offline" + animal + "Time"] + "秒";
+
+                    //1位〜3位の文字変更
+                    if(i <= 2)
+                    {
+                        topRankingName[i] += "</color>";
+                        topRankingNumber[i] += "</color>";
+                    }
 
                     //ランキング名前とベストタイムの取得
                     menuUI.SetOfflineRankingInfo(animal, topRankingName[i], topRankingNumber[i]);

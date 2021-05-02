@@ -24,7 +24,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
     private Vector3 networkPosition;
 
     //メッシュコライダ
-    private Collider meshCol;
+    private Collider[] meshboxCol;
     //ボックスコライダ
     private Collider boxCol;
 
@@ -95,7 +95,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
         //コライダの設定
         //メッシュコライダーの設定
-        meshCol = this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>();
+        meshboxCol = this.transform.GetChild(0).gameObject.GetComponents<BoxCollider>();
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
@@ -181,7 +181,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         {
             anim.SetBool("Sit", true);
             //コライダーの設定
-            meshCol.enabled = false;
+            for (int i = 0; i < meshboxCol.Length; i++)
+            {
+                meshboxCol[i].enabled = false;
+            }
             boxCol.enabled = true;
             
         }
@@ -189,7 +192,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         {
             anim.SetBool("Sit", false);
             //コライダーの設定
-            meshCol.enabled = true;
+            for (int i = 0; i < meshboxCol.Length; i++)
+            {
+                meshboxCol[i].enabled = true;
+            }
             boxCol.enabled = false;
         }
 
@@ -358,7 +364,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
 
         //コライダの設定
         //メッシュコライダーの設定
-        meshCol = this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>();
+        meshboxCol = this.transform.GetChild(0).gameObject.GetComponents<BoxCollider>();
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
@@ -378,7 +384,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(this.transform.GetChild(2).gameObject.layer);
             stream.SendNext(this.transform.GetChild(3).gameObject.layer);
             //コライダー
-            stream.SendNext(meshCol.enabled);
+            for (int i = 0; i < meshboxCol.Length; i++)
+            {
+                stream.SendNext(meshboxCol[i].enabled);
+            }
             stream.SendNext(boxCol.enabled);
             //位置と加速度
             stream.SendNext(rb.velocity);
@@ -399,7 +408,10 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
             transform.GetChild(2).gameObject.layer = (int)stream.ReceiveNext();
             transform.GetChild(3).gameObject.layer = (int)stream.ReceiveNext();
             //コライダー
-            this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>().enabled = (bool)stream.ReceiveNext();
+            for (int i = 0; i < meshboxCol.Length; i++)
+            {
+                this.transform.GetChild(0).gameObject.GetComponents<BoxCollider>()[i].enabled = (bool)stream.ReceiveNext();
+            }
             this.gameObject.GetComponent <BoxCollider>().enabled = (bool)stream.ReceiveNext();
             //位置と加速度
             GetComponent<Rigidbody>().velocity = (Vector3)stream.ReceiveNext();

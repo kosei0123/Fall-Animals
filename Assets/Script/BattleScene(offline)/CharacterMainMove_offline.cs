@@ -21,7 +21,7 @@ public class CharacterMainMove_offline : MonoBehaviour
     private Vector3 playerWorldPosition;
 
     //メッシュコライダ
-    private Collider meshCol;
+    private Collider[] meshboxCol;
     //ボックスコライダ
     private Collider boxCol;
 
@@ -90,7 +90,7 @@ public class CharacterMainMove_offline : MonoBehaviour
 
         //コライダの設定
         //メッシュコライダーの設定
-        meshCol = this.transform.GetChild(0).gameObject.GetComponent<MeshCollider>();
+        meshboxCol = this.transform.GetChild(0).gameObject.GetComponents<BoxCollider>();
         //ボックスコライダーの設定
         boxCol = this.GetComponent<BoxCollider>();
 
@@ -174,7 +174,10 @@ public class CharacterMainMove_offline : MonoBehaviour
         {
             anim.SetBool("Sit", true);
             //コライダーの設定
-            meshCol.enabled = false;
+            for(int i=0; i<meshboxCol.Length; i++)
+            {
+                meshboxCol[i].enabled = false;
+            }
             boxCol.enabled = true;
 
         }
@@ -182,7 +185,10 @@ public class CharacterMainMove_offline : MonoBehaviour
         {
             anim.SetBool("Sit", false);
             //コライダーの設定
-            meshCol.enabled = true;
+            for (int i = 0; i < meshboxCol.Length; i++)
+            {
+                meshboxCol[i].enabled = true;
+            }
             boxCol.enabled = false;
         }
 

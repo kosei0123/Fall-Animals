@@ -13,7 +13,7 @@ public class DeleteData : MonoBehaviour
     [SerializeField]
     private GameObject DeleteDataCheckPanel;
 
-    //
+    //何を削除するか
     private string deleteName;
 
     // Start is called before the first frame update
@@ -79,10 +79,21 @@ public class DeleteData : MonoBehaviour
                 PlayerPrefs.SetInt("Unlock_Giraffe", 0);
                 PlayerPrefs.SetInt("Unlock_Elephant", 0);
                 PlayerPrefs.SetInt("Unlock_Tiger", 0);
+                PlayerPrefs.SetInt("Unlock_Cat", 0);
+                PlayerPrefs.SetInt("Unlock_Rabbit", 0);
                 //スキン
                 PlayerPrefs.SetInt("Unlock_Candy", 0);
                 PlayerPrefs.SetInt("Unlock_Crown", 0);
                 PlayerPrefs.SetInt("Unlock_Cloud", 0);
+                PlayerPrefs.SetInt("Unlock_Mappin", 0);
+                PlayerPrefs.SetInt("Unlock_Crystal", 0);
+                //ステージ
+                PlayerPrefs.SetInt("Unlock_Stage4", 0);
+                PlayerPrefs.SetInt("Unlock_Stage4_ON", 0);
+                PlayerPrefs.SetInt("Unlock_Stage5", 0);
+                PlayerPrefs.SetInt("Unlock_Stage5_ON", 0);
+                PlayerPrefs.SetInt("Unlock_Stage6", 0);
+                PlayerPrefs.SetInt("Unlock_Stage6_ON", 0);
                 //広告
                 PlayerPrefs.SetInt("Unlock_TitleAdvertising", 0);
                 PlayerPrefs.SetInt("Unlock_WaitingRoomAdvertising", 0);

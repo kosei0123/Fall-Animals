@@ -11,6 +11,9 @@ public class PreviewUI : MonoBehaviour
     //ステージ5
     [SerializeField]
     private GameObject Stage5;
+    //ステージ6
+    [SerializeField]
+    private GameObject Stage6;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +25,9 @@ public class PreviewUI : MonoBehaviour
                 break;
             case "Stage5":
                 Stage5.SetActive(true);
+                break;
+            case "Stage6":
+                Stage6.SetActive(true);
                 break;
             default:
                 break;

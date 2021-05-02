@@ -11,6 +11,8 @@ public class Damaged : MonoBehaviour
     Pun2Script pun2Script;
     //EndDialogの関数等を使う
     EndDialog endDialog;
+    //Timerのpublic定数を使う
+    Timer timer;
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +23,16 @@ public class Damaged : MonoBehaviour
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
         //EndDialogの関数等を使う
         endDialog = GameObject.Find("DialogCanvas").GetComponent<EndDialog>();
+        //Timerのpublic定数を使う
+        timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //4秒経っていなければ処理を行わない
+        if (timer.elapsedTime <= 4.0f) return;
+
         //一定距離落下後にオブジェクトの削除
         if (this.transform.position.y < -50)
         {
@@ -67,6 +74,9 @@ public class Damaged : MonoBehaviour
         {
             return;
         }
+
+        //4秒経っていなければ処理を行わない
+        if (timer.elapsedTime <= 4.0f) return;
 
         //岩や紙飛行機にあたり落下する
         if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && (other.gameObject.tag == "Obstacle_Rock" || other.gameObject.tag == "Obstacle_Airplane"))

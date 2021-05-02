@@ -27,11 +27,11 @@ public class BattleScene_offlineManager : MonoBehaviour
 
 
     //紙飛行機の生成時間(初期値設定)
-    private float airplaneCreateTime = 3;
+    private float airplaneCreateTime = 3.0f;
     //岩の生成時間(初期値設定)
-    private float rockCreateTime = 3;
+    private float rockCreateTime = 3.0f;
     //岩の生成時間(コイン設定)
-    private float coinCreateTime = 3;
+    private float coinCreateTime = 3.0f;
 
     //バトル中に取得したコイン
     public int getBattleCoin = 0;
@@ -108,7 +108,7 @@ public class BattleScene_offlineManager : MonoBehaviour
     private void CreateCharacter()
     {
         //プレイキャラのオブジェクトを生成
-        animal = (GameObject)Instantiate(Resources.Load("Offline/" + SelectCharacterUI.animalName), new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
+        animal = (GameObject)Instantiate(Resources.Load("Offline/" + SelectCharacterUI.animalName), new Vector3(-4.5f, 10.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
         animal.name = "animal1";
 
         //Scriptを設定し、フラグを指定する。

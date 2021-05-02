@@ -31,11 +31,11 @@ public class Pun2Script : MonoBehaviourPunCallbacks
     private Player[] animalInformation = { null, null, null, null };
 
     //紙飛行機の生成時間(初期値設定)
-    private float airplaneCreateTime = 3;
+    private float airplaneCreateTime = 4.0f;
     //岩の生成時間(初期値設定)
-    private float rockCreateTime = 3;
+    private float rockCreateTime = 4.0f;
     //岩の生成時間(コイン設定)
-    private float coinCreateTime = 3;
+    private float coinCreateTime = 4.0f;
 
     //バトル中に取得したコイン
     public int getBattleCoin = 0;
@@ -216,7 +216,18 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 1)
         {
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            switch (PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"])
+            {
+                case 5:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-21.0f, 2.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                case 6:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-22.0f, 2.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                default:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-20.0f, 10.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+            }
             animal.name = "animal1";
             //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -246,7 +257,18 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 2)
         {
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            switch (PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"])
+            {
+                case 5:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(5.0f, -5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                case 6:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-18.0f, 2.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                default:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(-10.0f, 10.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+            }
             animal.name = "animal2";
             //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -269,7 +291,18 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 3)
         {
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(1.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            switch (PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"])
+            {
+                case 5:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(10.0f, -5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                case 6:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(18.0f, 2.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                default:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(10.0f, 10.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+            }
             animal.name = "animal3";
             //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;
@@ -292,7 +325,18 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         if ((int)PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] == 4)
         {
             //プレイキャラのオブジェクトを生成
-            animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(4.5f, 1.1f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+            switch (PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"])
+            {
+                case 5:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(15.0f, -5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                case 6:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(22.0f, 2.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+                default:
+                    animal = PhotonNetwork.Instantiate(SelectCharacterUI.animalName, new Vector3(20.0f, 10.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f), 0);
+                    break;
+            }
             animal.name = "animal4";
             //自分の名前や接続状況を設定する
             var prps = PhotonNetwork.LocalPlayer.CustomProperties;

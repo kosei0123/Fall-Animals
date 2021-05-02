@@ -68,6 +68,17 @@ public class CoinMove : MonoBehaviour
         //テキストの位置
         CoinText.rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
 
+        //一定距離画面から離れたら消去する
+        if (this.transform.position.y < -50.0f)
+        {
+            //マスタークライアントが削除する
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+        }
+
+        //削除まで時間をおく
         if (coinDestroyFlag == true)
         {
             coinDestroyTime += Time.deltaTime;

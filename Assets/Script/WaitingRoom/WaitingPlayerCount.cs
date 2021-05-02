@@ -331,6 +331,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //追加ステージ
         //if (PlayerPrefs.GetInt("Unlock_Stage4") == 1) stageList.Add(4);
         if (PlayerPrefs.GetInt("Unlock_Stage5") == 1) stageList.Add(5);
+        if (PlayerPrefs.GetInt("Unlock_Stage6") == 1) stageList.Add(6);
 
     }
 

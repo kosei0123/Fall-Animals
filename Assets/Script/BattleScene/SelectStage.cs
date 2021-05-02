@@ -20,6 +20,9 @@ public class SelectStage : MonoBehaviour
     //ステージ5
     [SerializeField]
     private GameObject Stage5;
+    //ステージ6
+    [SerializeField]
+    private GameObject Stage6;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +43,9 @@ public class SelectStage : MonoBehaviour
                 break;
             case 5:
                 Stage5.SetActive(true);
+                break;
+            case 6:
+                Stage6.SetActive(true);
                 break;
             default:
                 break;
