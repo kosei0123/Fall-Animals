@@ -10,6 +10,14 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
     //Timerのpublic定数を使う
     Timer timer;
 
+    //割り当てるマテリアル
+    [SerializeField]
+    private Material AirplaneMaterial_White;
+    [SerializeField]
+    private Material AirplaneMaterial_Blue;
+    [SerializeField]
+    private Material AirplaneMaterial_Red;
+
     //紙飛行機にかかる重力や摩擦
     private Rigidbody rbAirplane;
     //時間計測
@@ -55,21 +63,27 @@ public class AirplaneMove : MonoBehaviourPunCallbacks, IPunObservable
         {
             case "Airplane0":
                 rbAirplane.velocity = new Vector3(-3.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_White;
                 break;
             case "Airplane1":
                 rbAirplane.velocity = new Vector3(-6.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_Blue;
                 break;
             case "Airplane2":
                 rbAirplane.velocity = new Vector3(-9.0f - (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_Red;
                 break;
             case "Airplane3":
                 rbAirplane.velocity = new Vector3(3.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_White;
                 break;
             case "Airplane4":
                 rbAirplane.velocity = new Vector3(6.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_Blue;
                 break;
             case "Airplane5":
                 rbAirplane.velocity = new Vector3(9.0f + (timer.elapsedTime / 10), randomAirplaneVelocity_Y, 0);
+                this.GetComponent<Renderer>().material = AirplaneMaterial_Red;
                 break;
             default:
                 break;

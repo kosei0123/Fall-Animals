@@ -70,7 +70,7 @@ public class Pun2Script : MonoBehaviourPunCallbacks
         //イベントを受け取るように設定
         PhotonNetwork.IsMessageQueueRunning = true;
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
-        PhotonNetwork.AutomaticallySyncScene = false;
+        //PhotonNetwork.AutomaticallySyncScene = false;
 
         //TitleTapのScriptを使う
         screenTouch = GameObject.Find("ScreenTouch").GetComponent<ScreenTouch>();

@@ -18,7 +18,12 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //メニューボタンのゲームオブジェクト
     [SerializeField]
     private GameObject MenuButton;
-
+    //オンライン待機ボタンのゲームオブジェクトとボタン設定
+    [SerializeField]
+    private GameObject MenuWaitingOnlineButtonGameObject;
+    [SerializeField]
+    private Button MenuWaitingOnlineButton;
+    
     //ルームマスター退出時のフラグ
     public static bool RoomMasterLeftFlag = false;
 
@@ -64,6 +69,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         photonView = PhotonView.Get(this);
         startTimePhotonView = PhotonView.Get(this);
 
+        //プレイヤーが入っていた時にバトルスタート時間を設定する
+        waitingBattleStartTime = 10.0f;
+        waitingBattleStartStackTime = 10.0f;
+
+        //オンライン待機中だった場合はここで抜ける
+        if (MenuWaitingOnline.menuWaitingOnlineFlag == true) return;
+
+
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
@@ -77,8 +90,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
 
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"]);
-
         //プレイヤー番号の決定
         PhotonNetwork.LocalPlayer.CustomProperties["playerCreatedNumber"] = (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"];
         PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties);
@@ -88,12 +99,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //prps["NoKick"] = "true";
         //PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
-        //プレイヤーが入っていた時にバトルスタート時間を設定する
-        waitingBattleStartTime = 10.0f;
-        waitingBattleStartStackTime = 10.0f;
-
         //ルーム内のクライアントがMasterClientと同じシーンをロードするように設定
-        PhotonNetwork.AutomaticallySyncScene = true;
+        //PhotonNetwork.AutomaticallySyncScene = true;
 
 
     }
@@ -103,7 +110,15 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //待機人数の表示
         WaitingPlayerCountText.text = "待機プレイヤー : " + PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"]  + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
-        
+
+        //オンライン待機ボタンの押下設定
+        if ((int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] >= 2)
+        {
+            MenuWaitingOnlineButton.interactable = false;
+            MenuWaitingOnline.menuWaitingOnlineFlag = false;
+        }
+        else { MenuWaitingOnlineButton.interactable = true; }
+
         //バトルスタート時間を減らしていく
         if (PhotonNetwork.IsMasterClient && waitingBattleStartStackTime > 0 && (int)PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] >= 2)
         {
@@ -176,6 +191,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             LobbyManager.UpdateRoomOptions(true);
             //メニューボタンを表示する
             MenuButton.SetActive(true);
+            //オンライン待機ボタンを表示する
+            MenuWaitingOnlineButtonGameObject.SetActive(true);
         }
         
 
@@ -183,7 +200,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         if (waitingBattleStartTime <= 2.0f)
         {
             //広告解除していない場合
-            if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
+            if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
             {
                 adMobWaitingRoomAdvertising.bannerView.Hide();
                 adMobWaitingRoomAdvertising.bannerView.Destroy();
@@ -193,6 +210,8 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             LobbyManager.UpdateRoomOptions(false);
             //メニューボタンを非表示にする
             MenuButton.SetActive(false);
+            //オンライン待機ボタンを非表示にする
+            MenuWaitingOnlineButtonGameObject.SetActive(false);
 
             //if (PhotonNetwork.IsMasterClient)
             //{
@@ -360,6 +379,23 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             photonView.RPC("RoomMasterLeftFlagValue", RpcTarget.All, true);
         }
 
+        //画面遷移等(0.5秒後)
+        Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
+    }
+
+    //オンライン待機ボタンを押した時
+    public void OnClick_MenuWaitingOnlineButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //広告解除していない場合
+        if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
+        {
+            adMobWaitingRoomAdvertising.bannerView.Hide();
+            adMobWaitingRoomAdvertising.bannerView.Destroy();
+        }
+        //オンライン待機フラグを立てる
+        MenuWaitingOnline.menuWaitingOnlineFlag = true;
         //画面遷移等(0.5秒後)
         Invoke("WaitingPlayerCount_PhotonOff", 0.5f);
     }

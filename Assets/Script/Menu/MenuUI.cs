@@ -23,6 +23,10 @@ public class MenuUI : MonoBehaviour
     [SerializeField]
     private Text PlayCountText;
 
+    //オンラインのボタン設定
+    [SerializeField]
+    private Button OnlineButton;
+
     //WinCountRankingPanelの表示
     [SerializeField]
     private GameObject WinCountRankingPanel;
@@ -104,7 +108,7 @@ public class MenuUI : MonoBehaviour
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
 
         //Photonに接続を解除する
-        if (PhotonNetwork.IsConnected == true)
+        if (PhotonNetwork.IsConnected == true && MenuWaitingOnline.menuWaitingOnlineFlag == false)
         {
             PhotonNetwork.Disconnect();
         }
@@ -122,6 +126,7 @@ public class MenuUI : MonoBehaviour
         if (SelectCharacterUI.animalName == null)
         {
             SelectCharacterUI.animalName = "Dog";
+            SelectCharacterUI.animalName_Color = "Dog(N)";
         }
 
         //選択された動物の表示
@@ -228,6 +233,9 @@ public class MenuUI : MonoBehaviour
         if (!PlayerPrefs.HasKey("Unlock_Stage6")) PlayerPrefs.SetInt("Unlock_Stage6", 0);
         if (!PlayerPrefs.HasKey("Unlock_Stage6_ON")) PlayerPrefs.SetString("Unlock_Stage6_ON", "false");
 
+        //オンライン待機中にボタン押せないようにする
+        if (MenuWaitingOnline.menuWaitingOnlineFlag == true) OnlineButton.interactable = false;
+        else { OnlineButton.interactable = true; }
     }
 
     //日付の確認

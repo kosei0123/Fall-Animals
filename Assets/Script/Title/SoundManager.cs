@@ -94,6 +94,13 @@ public class SoundManager : MonoBehaviour
             BGM_Menu.Play();
         }
 
+        //WaitingRoomへの遷移
+        if (beforeScene == "BattleScene(offline)" && currentScene.name == "WaitingRoom")
+        {
+            BGM_Battle.Stop();
+            BGM_Menu.Play();
+        }
+
         //遷移後の現在のシーンを一つ前のシーンとして保持
         beforeScene = currentScene.name;
     }
