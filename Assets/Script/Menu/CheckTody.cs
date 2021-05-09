@@ -100,15 +100,15 @@ public class CheckTody : MonoBehaviour
         //配列にて取得する
         //ウサギスタンプ
         MoveAnimalImage[0] = MoveAnimalImage1;
-        MoveAnimalImage[0] = MoveAnimalImage2;
-        MoveAnimalImage[0] = MoveAnimalImage3;
-        MoveAnimalImage[0] = MoveAnimalImage4;
-        MoveAnimalImage[0] = MoveAnimalImage5;
-        MoveAnimalImage[0] = MoveAnimalImage6;
-        MoveAnimalImage[0] = MoveAnimalImage7;
-        MoveAnimalImage[0] = MoveAnimalImage8;
-        MoveAnimalImage[0] = MoveAnimalImage9;
-        MoveAnimalImage[0] = MoveAnimalImage10;
+        MoveAnimalImage[1] = MoveAnimalImage2;
+        MoveAnimalImage[2] = MoveAnimalImage3;
+        MoveAnimalImage[3] = MoveAnimalImage4;
+        MoveAnimalImage[4] = MoveAnimalImage5;
+        MoveAnimalImage[5] = MoveAnimalImage6;
+        MoveAnimalImage[6] = MoveAnimalImage7;
+        MoveAnimalImage[7] = MoveAnimalImage8;
+        MoveAnimalImage[8] = MoveAnimalImage9;
+        MoveAnimalImage[9] = MoveAnimalImage10;
 
         //連続ログイン日数から日にちのみを切り出す
         bkIndex = PlayerPrefs.GetInt("Date").ToString("");
@@ -220,7 +220,7 @@ public class CheckTody : MonoBehaviour
         //その他は50コイン
         if (PlayerPrefs.GetInt("ConsecutiveLoginDays") % 10 == 0) getLoginBounusCoin = 500;
         else if(PlayerPrefs.GetInt("ConsecutiveLoginDays") % 5 == 0) getLoginBounusCoin = 100;
-        else { getLoginBounusCoin = 500; }
+        else { getLoginBounusCoin = 50; }
     }
 
     //本日獲得分の表示
