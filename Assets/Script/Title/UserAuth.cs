@@ -241,6 +241,23 @@ public class UserAuth : MonoBehaviour
 
                 for (int i = 0; i < objList.Count; i++)
                 {
+                    //1位〜3位の文字変更
+                    if (i == 0)
+                    {
+                        topRankingName[i] = "<color=#FFD700>";
+                        topRankingNumber[i] = "<color=#FFD700>";
+                    }
+                    else if (i == 1)
+                    {
+                        topRankingName[i] = "<color=#f4f4f4>";
+                        topRankingNumber[i] = "<color=#f4f4f4>";
+                    }
+                    else if (i == 2)
+                    {
+                        topRankingName[i] = "<color=#BA6E40>";
+                        topRankingNumber[i] = "<color=#BA6E40>";
+                    }
+
                     //ランキング追跡中の名前からIDを抜き取る
                     nickName = (string)objList[i]["Name"];
                     bkIndex = nickName.LastIndexOf("(");
@@ -249,15 +266,22 @@ public class UserAuth : MonoBehaviour
                     if (bkIndex != -1)
                     {
                         //ランキング名前の表示
-                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
                     }
                     else
                     {
                         //ランキング名前の表示
-                        topRankingName[i] = (i + 1).ToString("") + "位 : " + nickName;
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName;
                     }
                     //ランキング番号の表示
                     topRankingNumber[i] += objList[i]["Score"] + "ポイント";
+
+                    //1位〜3位の文字変更
+                    if (i <= 2)
+                    {
+                        topRankingName[i] += "</color>";
+                        topRankingNumber[i] += "</color>";
+                    }
 
                     //ランキング名前と番号の取得
                     menuUI.SetOnlineRankingInfo(topRankingName[i], topRankingNumber[i]);

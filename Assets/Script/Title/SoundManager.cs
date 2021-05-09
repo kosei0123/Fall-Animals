@@ -18,6 +18,12 @@ public class SoundManager : MonoBehaviour
     //バトルBGMのAudioSource
     [SerializeField]
     private AudioSource BGM_Battle;
+    //バトルBGM(洞窟)のAudioSource
+    [SerializeField]
+    private AudioSource BGM_Battle_Cave;
+    //バトルBGM(夜道)のAudioSource
+    [SerializeField]
+    private AudioSource BGM_Battle_NightStreet;
 
     //SE使用
     AudioSource audioSource;
@@ -33,7 +39,6 @@ public class SoundManager : MonoBehaviour
     private AudioClip Rock_sound1;
     [SerializeField]
     private AudioClip Airplane_sound1;
-
 
     //1つ前のシーン
     private string beforeScene = "Title";
@@ -51,6 +56,7 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(BGM_Title);
             DontDestroyOnLoad(BGM_Menu);
             DontDestroyOnLoad(BGM_Battle);
+            DontDestroyOnLoad(BGM_Battle_Cave);
         }
         else
         {
@@ -58,6 +64,7 @@ public class SoundManager : MonoBehaviour
             Destroy(BGM_Title);
             Destroy(BGM_Menu);
             Destroy(BGM_Battle);
+            Destroy(BGM_Battle_Cave);
         }
     }
 
@@ -83,7 +90,6 @@ public class SoundManager : MonoBehaviour
             || (beforeScene == "WaitingRoom(offline)" && currentScene.name == "BattleScene(offline)"))
         {
             BGM_Menu.Stop();
-            BGM_Battle.Play();
         }
 
         //メニューへの遷移
@@ -91,6 +97,8 @@ public class SoundManager : MonoBehaviour
             || (beforeScene == "BattleScene(offline)" && currentScene.name == "Menu"))
         {
             BGM_Battle.Stop();
+            BGM_Battle_Cave.Stop();
+            BGM_Battle_NightStreet.Stop();
             BGM_Menu.Play();
         }
 
@@ -98,6 +106,8 @@ public class SoundManager : MonoBehaviour
         if (beforeScene == "BattleScene(offline)" && currentScene.name == "WaitingRoom")
         {
             BGM_Battle.Stop();
+            BGM_Battle_Cave.Stop();
+            BGM_Battle_NightStreet.Stop();
             BGM_Menu.Play();
         }
 
@@ -133,6 +143,24 @@ public class SoundManager : MonoBehaviour
                 break;
             case "Airplane_sound1":
                 audioSource.PlayOneShot(Airplane_sound1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void BGMManager(string i)
+    {
+        switch (i)
+        {
+            case "BGM_Battle":
+                BGM_Battle.Play();
+                break;
+            case "BGM_Battle_Cave":
+                BGM_Battle_Cave.Play();
+                break;
+            case "BGM_Battle_NightStreet":
+                BGM_Battle_NightStreet.Play();
                 break;
             default:
                 break;

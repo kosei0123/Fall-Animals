@@ -9,8 +9,10 @@ public class TitleTap : MonoBehaviour
 {
     //TitleManagerのpublic定数を取得
     TitleManager titleManager;
+#if UNITY_IOS
     //AdMobTitleAdvertinsingのpublic定数を取得
     AdMobTitleAdvertising adMobTitleAdvertinsing;
+#endif
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
     //UserAuthのスクリプトの関数使用
@@ -44,8 +46,10 @@ public class TitleTap : MonoBehaviour
     {
         //TitleManagerのpublic定数を取得
         titleManager = GameObject.Find("TitleManager").GetComponent<TitleManager>();
+#if UNITY_IOS
         //AdMobTitleAdvertinsingのpublic定数を取得
         adMobTitleAdvertinsing = GameObject.Find("TitleAdvertising").GetComponent<AdMobTitleAdvertising>();
+#endif
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //UserAuthのスクリプトの関数使用
@@ -100,12 +104,14 @@ public class TitleTap : MonoBehaviour
         //Destroy(titleManager.titleAnimal);
         //Destroy(titleManager.titleRock);
 
+#if UNITY_IOS
         //広告解除していない場合(オンライン)
         if (PlayerPrefs.GetInt("Unlock_TitleAdvertising") == 0 && adMobTitleAdvertinsing.bannerView != null)
         {
             adMobTitleAdvertinsing.bannerView.Hide();
             adMobTitleAdvertinsing.bannerView.Destroy();
         }
+#endif
 
 
         //SEの使用

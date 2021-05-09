@@ -8,8 +8,10 @@ public class WaitingRoom_offline : MonoBehaviour
 {
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
+#if UNITY_IOS
     //AdMobWaitingRoomAdvertising_offlineのpublic定数を取得
     AdMobWaitingRoomAdvertising_offline adMobWaitingRoomAdvertising_Offline;
+#endif
 
     //ランダム値の取得(ステージ)
     //private int randomStage;
@@ -24,8 +26,10 @@ public class WaitingRoom_offline : MonoBehaviour
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+#if UNITY_IOS
         //AdMobWaitingRoomAdvertisingのpublic定数を取得
         adMobWaitingRoomAdvertising_Offline = GameObject.Find("WaitingRoomAdvertising").GetComponent<AdMobWaitingRoomAdvertising_offline>();
+#endif
 
 
         //ステージを確定する
@@ -48,12 +52,14 @@ public class WaitingRoom_offline : MonoBehaviour
         //時間が0になったとき
         if (waitingBattleStartTime <= 0)
         {
+#if UNITY_IOS
             //広告解除していない場合
             if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 0 && adMobWaitingRoomAdvertising_Offline.bannerView != null)
             {
                 adMobWaitingRoomAdvertising_Offline.bannerView.Hide();
                 adMobWaitingRoomAdvertising_Offline.bannerView.Destroy();
             }
+#endif
 
             //画面遷移
             SceneManager.LoadScene("BattleScene(offline)");
@@ -66,12 +72,14 @@ public class WaitingRoom_offline : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
 
+#if UNITY_IOS
         //広告解除していない場合
         if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising_offline") == 0 && adMobWaitingRoomAdvertising_Offline.bannerView != null)
         {
             adMobWaitingRoomAdvertising_Offline.bannerView.Hide();
             adMobWaitingRoomAdvertising_Offline.bannerView.Destroy();
         }
+#endif
 
         //画面遷移
         SceneManager.LoadScene("Menu");

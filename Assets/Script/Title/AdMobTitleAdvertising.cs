@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_IOS
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
@@ -79,3 +80,7 @@ public class AdMobTitleAdvertising : MonoBehaviour
     {
     }
 }
+
+#elif UNITY_ANDROID
+
+#endif

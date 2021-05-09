@@ -12,6 +12,8 @@ public class MenuUI : MonoBehaviour
     SoundManager soundManager;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
+    //CheckTodayスクリプトの関数使用
+    CheckTody checkTody;
 
     //動物の表示用
     private GameObject menuAnimal;
@@ -59,17 +61,6 @@ public class MenuUI : MonoBehaviour
     //コインの枚数を表示
     [SerializeField]
     private Text MyCoinText;
-    //ログインボーナスパネルの表示
-    [SerializeField]
-    private GameObject LoginBounusPanel;
-    //ログインボーナステキストの表示
-    [SerializeField]
-    private Text LoginBounusText;
-    //ログインボーナスコインテキストの表示
-    [SerializeField]
-    private Text LoginBounusCoinText;
-    //取得ログインボーナスコイン
-    private int getLoginBounusCoin = 50;
 
     //ロビーマネジャーのゲームオブジェクト
     [SerializeField]
@@ -98,7 +89,6 @@ public class MenuUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         //回転可能にする
         Screen.orientation = ScreenOrientation.AutoRotation;
 
@@ -106,6 +96,8 @@ public class MenuUI : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
+        //CheckTodayスクリプトの関数使用
+        checkTody = this.gameObject.GetComponent<CheckTody>();
 
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true && MenuWaitingOnline.menuWaitingOnlineFlag == false)
@@ -162,6 +154,15 @@ public class MenuUI : MonoBehaviour
             //再度falseに戻しておく
             WaitingPlayerCount.RoomMasterLeftFlag = false;
         }
+
+        //メッセージの表示と日付の確認
+        if (!PlayerPrefs.HasKey("MessageVersion")) PlayerPrefs.SetInt("MessageVersion", 0);
+        if (PlayerPrefs.GetInt("MessageVersion") <= 0)
+        {
+            if (PlayerPrefs.GetString("NickName") == "SINVINO@chimolove(6177)") MessagePanel.SetActive(true);
+            else { Message2Panel.SetActive(true); }
+        }
+        checkTody.CheckToday();
     }
 
     // Update is called once per frame
@@ -183,17 +184,7 @@ public class MenuUI : MonoBehaviour
         else { PlayCountText.text = PlayerPrefs.GetInt("PlayCount").ToString(""); }
 
 
-        //メッセージの表示と日付の確認
-        if (!PlayerPrefs.HasKey("MessageVersion")) PlayerPrefs.SetInt("MessageVersion", 0);
-        if (PlayerPrefs.GetInt("MessageVersion") <= 0)
-        {
-            if (PlayerPrefs.GetString("NickName") == "SINVINO@chimolove(6177)") MessagePanel.SetActive(true);
-            else { Message2Panel.SetActive(true); }
-        }
-        else
-        {
-            CheckToday();
-        }
+        
         
 
         //デバイスに保持されているWin数情報を取得
@@ -238,40 +229,7 @@ public class MenuUI : MonoBehaviour
         else { OnlineButton.interactable = true; }
     }
 
-    //日付の確認
-    private void CheckToday()
-    {
-        //本日の日付を取得
-        DateTime now = DateTime.Now;
-        //日付を連続数値で取得
-        int todayInt = 0;
-        todayInt = now.Year * 10000 + now.Month * 100 + now.Day;
-
-        //デバイスに日付が保持されているか確認
-        if (!PlayerPrefs.HasKey("Date"))
-        {
-            PlayerPrefs.SetInt("Date", 0);
-        }
-        else
-        {
-            //次の日か確認
-            if(todayInt - PlayerPrefs.GetInt("Date") > 0)
-            {
-                //次の日であった場合の処理
-                PlayerPrefs.SetInt("Date", todayInt);
-
-                //ログインボーナステキストを表示する
-                LoginBounusText.text = "ログインボーナスを獲得しました";
-                //ログインボーナスコインテキストを表示する
-                LoginBounusCoinText.text = getLoginBounusCoin.ToString("") + "コイン";
-                //ログインボーナスパネルを表示する
-                LoginBounusPanel.SetActive(true);
-            }
-            else
-            {
-            }
-        }
-    }
+    
 
     //ベストタイムスコアを取得
     private void SelectCharacterBestTimeGet()
@@ -367,9 +325,9 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
 
         //50コイン獲得する
-        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + getLoginBounusCoin);
+        PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + checkTody.getLoginBounusCoin);
         //ログインボーナスパネルを非表示にする
-        LoginBounusPanel.SetActive(false);
+        checkTody.LoginBounusPanel.SetActive(false);
 
         //オンラインtop30
         userAuth.TopRankers();

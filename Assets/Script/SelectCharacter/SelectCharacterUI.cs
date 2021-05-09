@@ -12,8 +12,6 @@ public class SelectCharacterUI : MonoBehaviour
     UserAuth userAuth;
     //SelectSkinsのスクリプトの関数使用
     SelectSkins selectSkins;
-    //SelectColorsのスクリプトの関数使用
-    SelectColors selectColors;
 
     //Buttonのコンポーネントを取得
     [SerializeField]
@@ -59,8 +57,6 @@ public class SelectCharacterUI : MonoBehaviour
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
         //SelectSkinsのスクリプトの関数使用
         selectSkins = this.gameObject.GetComponent<SelectSkins>();
-        //SelectColorsのスクリプトの関数使用
-        selectColors = this.gameObject.GetComponent<SelectColors>();
 
         //仮の名前を初期化
         animalName_Temporary = animalName;
@@ -94,7 +90,6 @@ public class SelectCharacterUI : MonoBehaviour
     }
 
     
-
     //アンロックされたキャラクターを表示する
     private void CheckUnlock()
     {
@@ -125,14 +120,38 @@ public class SelectCharacterUI : MonoBehaviour
         }
     }
 
+    //キャラクターカラーの表示
+    private void SelectColors_Display(string animalName, bool normal)
+    {
+        //初期値
+        if (normal == true)
+        {
+            animalName_Color_Temporary = animalName + "(N)";
+            return;
+        }
+        //カラーを変更する
+        if (animalName_Color_Temporary == animalName + "(N)")
+        {
+            animalName_Color_Temporary = animalName + "(W)";
+        }
+        else if (animalName_Color_Temporary == animalName + "(W)")
+        {
+            animalName_Color_Temporary = animalName + "(G)";
+        }
+        else if (animalName_Color_Temporary == animalName + "(G)")
+        {
+            animalName_Color_Temporary = animalName + "(N)";
+        }
+    }
+
     //Giraffeボタン押下した際の処理
     public void OnClick_GiraffeButton()
     {
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if(animalName_Temporary != "Giraffe") selectColors.SelectColors_Display("Giraffe", true);
-        else { selectColors.SelectColors_Display("Giraffe", false); }
+        if(animalName_Temporary != "Giraffe") SelectColors_Display("Giraffe", true);
+        else { SelectColors_Display("Giraffe", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Giraffe";
         
@@ -144,8 +163,8 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if (animalName_Temporary != "Elephant") selectColors.SelectColors_Display("Elephant", true);
-        else { selectColors.SelectColors_Display("Elephant", false); }
+        if (animalName_Temporary != "Elephant") SelectColors_Display("Elephant", true);
+        else { SelectColors_Display("Elephant", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Elephant";
     }
@@ -156,8 +175,8 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if (animalName_Temporary != "Dog") selectColors.SelectColors_Display("Dog", true);
-        else { selectColors.SelectColors_Display("Dog", false); }
+        if (animalName_Temporary != "Dog") SelectColors_Display("Dog", true);
+        else { SelectColors_Display("Dog", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Dog";
     }
@@ -168,8 +187,8 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if (animalName_Temporary != "Tiger") selectColors.SelectColors_Display("Tiger", true);
-        else { selectColors.SelectColors_Display("Tiger", false); }
+        if (animalName_Temporary != "Tiger") SelectColors_Display("Tiger", true);
+        else { SelectColors_Display("Tiger", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Tiger";
     }
@@ -180,8 +199,8 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if (animalName_Temporary != "Cat") selectColors.SelectColors_Display("Cat", true);
-        else { selectColors.SelectColors_Display("Cat", false); }
+        if (animalName_Temporary != "Cat") SelectColors_Display("Cat", true);
+        else { SelectColors_Display("Cat", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Cat";
     }
@@ -192,8 +211,8 @@ public class SelectCharacterUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("CharacterSelect_sound1");
         //カラー変更
-        if (animalName_Temporary != "Rabbit") selectColors.SelectColors_Display("Rabbit", true);
-        else { selectColors.SelectColors_Display("Rabbit", false); }
+        if (animalName_Temporary != "Rabbit") SelectColors_Display("Rabbit", true);
+        else { SelectColors_Display("Rabbit", false); }
         //プレイキャラの名前取得
         animalName_Temporary = "Rabbit";
     }
@@ -209,7 +228,6 @@ public class SelectCharacterUI : MonoBehaviour
         SelectSkins.skinsName = selectSkins.skinsName_Temporary;
         //仮で入れていた動物のカラーを正式に入力する
         animalName_Color = animalName_Color_Temporary;
-        selectColors.SelectColors_Decision();
         //画面遷移
         SceneManager.LoadScene("Menu");
     }

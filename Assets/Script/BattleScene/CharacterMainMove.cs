@@ -105,7 +105,7 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //Transformをキャッシュする
         transformCache = transform;
 
-        
+
     }
 
     // Update is called once per frame

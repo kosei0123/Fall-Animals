@@ -47,7 +47,11 @@ public class EndDialog : MonoBehaviourPunCallbacks
         //横画面時のみボタンを押下できる
         if (Screen.width > Screen.height)
         {
+#if UNITY_IOS
             RewardAdvertisingButton.interactable = true;
+#elif UNITY_ANDROID
+            RewardAdvertisingButton.interactable = false;
+#endif
         }
         else
         {

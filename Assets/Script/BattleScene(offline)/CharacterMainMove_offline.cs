@@ -101,6 +101,7 @@ public class CharacterMainMove_offline : MonoBehaviour
         transformCache = transform;
 
 
+
     }
 
     // Update is called once per frame

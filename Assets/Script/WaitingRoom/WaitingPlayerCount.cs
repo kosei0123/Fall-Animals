@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +10,10 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 {
     //SoundManagerスクリプトの関数使用
     SoundManager soundManager;
+#if UNITY_IOS
     //AdMobWaitingRoomAdvertisingのpublic定数を取得
     AdMobWaitingRoomAdvertising adMobWaitingRoomAdvertising;
+#endif
 
     //待機人数の表示
     [SerializeField]
@@ -30,10 +33,12 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     //毎Updateによる取得人数
     private int updateWaitingPlayerCount = 0;
 
-    //ランダム値の取得(ステージ)
+    //ランダム値の取得(ステージ、背景)
     private int randomStage;
-    //ステージリストの初期化
+    private int randomBackground;
+    //ステージ、背景リストの初期化
     private List<int> stageList = new List<int>();
+    private List<int> backgroundList = new List<int>();
 
     //ニックネームを所持する
     private string WaitingPlayerNickName = "0";
@@ -59,8 +64,10 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
+#if UNITY_IOS
         //AdMobWaitingRoomAdvertisingのpublic定数を取得
         adMobWaitingRoomAdvertising = GameObject.Find("WaitingRoomAdvertising").GetComponent<AdMobWaitingRoomAdvertising>();
+#endif
 
         //FPSを60に設定
         Application.targetFrameRate = 60;
@@ -80,12 +87,17 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //同じルーム内のWaitingRoomにいるプレイヤーの数を数える
         var n = PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] is int value ? value : 0;
         PhotonNetwork.CurrentRoom.CustomProperties["WaitingRoomPlayerCount"] = n + 1;
-        //ステージを確定する
+        //ステージ、背景を確定する
         StageList();
+        BackgroundList();
         if (PhotonNetwork.IsMasterClient)
         {
-            randomStage = Random.Range(0, stageList.Count);
+            //ステージ
+            randomStage = UnityEngine.Random.Range(0, stageList.Count);
             PhotonNetwork.CurrentRoom.CustomProperties["DefinedStage"] = stageList[randomStage];
+            //背景
+            randomBackground = UnityEngine.Random.Range(0, backgroundList.Count);
+            PhotonNetwork.CurrentRoom.CustomProperties["DefinedBackground"] = backgroundList[randomBackground];
         }
         //反映
         PhotonNetwork.CurrentRoom.SetCustomProperties(PhotonNetwork.CurrentRoom.CustomProperties);
@@ -199,12 +211,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //時間が2以下になったとき
         if (waitingBattleStartTime <= 2.0f)
         {
+#if UNITY_IOS
             //広告解除していない場合
             if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
             {
                 adMobWaitingRoomAdvertising.bannerView.Hide();
                 adMobWaitingRoomAdvertising.bannerView.Destroy();
             }
+#endif
 
             //入室できないようにする
             LobbyManager.UpdateRoomOptions(false);
@@ -267,12 +281,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         //ルームマスターが退出した時
         if (RoomMasterLeftFlag == true)
         {
+#if UNITY_IOS
             //広告解除していない場合
             if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
             {
                 adMobWaitingRoomAdvertising.bannerView.Hide();
                 adMobWaitingRoomAdvertising.bannerView.Destroy();
             }
+#endif
         }
     }
 
@@ -354,6 +370,16 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
 
     }
 
+    //背景リスト
+    private void BackgroundList()
+    {
+        DateTime now = DateTime.Now;
+
+        backgroundList.Add(1);
+        backgroundList.Add(2);
+        if ((now.Hour >= 0 && now.Hour <= 6) || (now.Hour >= 18 && now.Hour <= 24)) backgroundList.Add(3);
+    }
+
     //メニューボタンを押下した際の挙動
     public void OnClick_MenuButton()
     {
@@ -366,12 +392,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
+#if UNITY_IOS
         //広告解除していない場合
         if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
         {
             adMobWaitingRoomAdvertising.bannerView.Hide();
             adMobWaitingRoomAdvertising.bannerView.Destroy();
         }
+#endif
 
         //ルームマスターが退出したことを確認する
         if (PhotonNetwork.IsMasterClient)
@@ -388,12 +416,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
+#if UNITY_IOS
         //広告解除していない場合
         if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0 && adMobWaitingRoomAdvertising.bannerView != null)
         {
             adMobWaitingRoomAdvertising.bannerView.Hide();
             adMobWaitingRoomAdvertising.bannerView.Destroy();
         }
+#endif
         //オンライン待機フラグを立てる
         MenuWaitingOnline.menuWaitingOnlineFlag = true;
         //画面遷移等(0.5秒後)
@@ -411,12 +441,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
             prps["playerCreatedNumber"] = null;
             PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
+#if UNITY_IOS
             //広告解除していない場合
             if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
             {
                 adMobWaitingRoomAdvertising.bannerView.Hide();
                 adMobWaitingRoomAdvertising.bannerView.Destroy();
             }
+#endif
 
             //Photonに接続を解除する
             if (PhotonNetwork.IsConnected == true)
@@ -438,12 +470,14 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         prps["playerCreatedNumber"] = null;
         PhotonNetwork.LocalPlayer.SetCustomProperties(prps);
 
+#if UNITY_IOS
         //広告解除していない場合
         if (PlayerPrefs.GetInt("Unlock_WaitingRoomAdvertising") == 0)
         {
             adMobWaitingRoomAdvertising.bannerView.Hide();
             adMobWaitingRoomAdvertising.bannerView.Destroy();
         }
+#endif
 
         //Photonに接続を解除する
         if (PhotonNetwork.IsConnected == true)
