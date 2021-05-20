@@ -105,7 +105,7 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //シーン移動可能
         moveScreenTimer.moveScreenFlag = true;
         //横向き固定にする
-        //Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
     }
@@ -116,7 +116,7 @@ public class AdMobBattleAdvertising : MonoBehaviour
         //再度コインを獲得する
         endDialog.DialogPanelActive(pun2Script.battleRanking);
         //横向き固定にする
-        //Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame

@@ -13,10 +13,10 @@ public class StableAspect : MonoBehaviour
 
     // 固定したい表示サイズ
     private bool aspectScreenCheckFlag = false;
-    private static int aspectScreenWidth = 1334;
-    private static int aspectScreenHeight = 750;
-    //private static int aspectScreenWidth = 2688;
-    //private static int aspectScreenHeight = 1242;
+    //private static int aspectScreenWidth = 1334;
+    //private static int aspectScreenHeight = 750;
+    private static int aspectScreenWidth = 1650;
+    private static int aspectScreenHeight = 927;
 
     // 画像のPixel Per Unit
     private float pixelPerUnit = 100f;

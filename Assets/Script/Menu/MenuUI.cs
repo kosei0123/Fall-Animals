@@ -66,6 +66,15 @@ public class MenuUI : MonoBehaviour
     [SerializeField]
     private GameObject LobbyManager;
 
+    //タイムモード用ボタン
+    [SerializeField]
+    private Button OfflineTimeButton;
+    //テッペンモード用ボタン
+    [SerializeField]
+    private Button OfflineTeppenButton;
+    //モード初期値
+    private static string offlineMode = "Time";
+
     //ダイアログ表示
     //ネットワークパネルを表示する
     [SerializeField]
@@ -82,15 +91,30 @@ public class MenuUI : MonoBehaviour
     [SerializeField]
     private GameObject Message2Panel;
 
+    //ドキュメントの表示
+    //オフラインモードの説明
+    [SerializeField]
+    private GameObject OfflineExplainPanel;
+    [SerializeField]
+    private Text OfflineExplainText;
+    [SerializeField]
+    private TextAsset OfflineExplainTextAsset;
+
     //全動物のタイム合計
     private int bestTime_Total;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+
         //回転可能にする
         Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.autorotateToPortrait = true;
+        Screen.autorotateToPortraitUpsideDown = false;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.autorotateToLandscapeLeft = true;
 
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
@@ -108,11 +132,24 @@ public class MenuUI : MonoBehaviour
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
         PhotonNetwork.AutomaticallySyncScene = false;
 
+        //テッペンの階数をデバイスに保存
+        if (!PlayerPrefs.HasKey("TeppenFloor")) PlayerPrefs.SetInt("TeppenFloor", 1);
+        if (!PlayerPrefs.HasKey("BestTeppenFloor")) PlayerPrefs.SetInt("BestTeppenFloor", 1);
+
         //ベストタイムスコアを取得
         SelectCharacterBestTimeGet();
 
         //オフラインで記録できなかったベストタイムをオンライン時にいれる
         SelectCharacterBestTimeSet();
+
+        //オフラインで記録できなかったベストテッペンフロアをいれる
+        BestTeppenFloorSet();
+
+        //モード初期値
+        if (offlineMode == "Time") OfflineTimeButton.interactable = false;
+        else if(offlineMode == "Teppen") OfflineTeppenButton.interactable = false;
+
+       
 
         //アニマルの初期設定を入れる
         if (SelectCharacterUI.animalName == null)
@@ -170,22 +207,12 @@ public class MenuUI : MonoBehaviour
     {
 
         //デバイスに保持されているコインの枚数を表示
-        if (!PlayerPrefs.HasKey("myCoin"))
-        {
-            PlayerPrefs.SetInt("myCoin", 0);
-        }
-        else
-        {
-            MyCoinText.text = PlayerPrefs.GetInt("myCoin").ToString("");
-        }
+        if (!PlayerPrefs.HasKey("myCoin")) PlayerPrefs.SetInt("myCoin", 0);
+        else { MyCoinText.text = PlayerPrefs.GetInt("myCoin").ToString(""); }
 
         //デバイスに保持されているプレイ数の表示
         if (!PlayerPrefs.HasKey("PlayCount")) PlayerPrefs.SetInt("PlayCount", 0);
         else { PlayCountText.text = PlayerPrefs.GetInt("PlayCount").ToString(""); }
-
-
-        
-        
 
         //デバイスに保持されているWin数情報を取得
         if (!PlayerPrefs.HasKey("WinCount")) PlayerPrefs.SetInt("WinCount", 0);
@@ -316,6 +343,20 @@ public class MenuUI : MonoBehaviour
 
             PlayerPrefs.Save();
         }
+    }
+
+    private void BestTeppenFloorSet()
+    {
+        //ネットワーク接続確認
+        //インターネット接続なし
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+        }
+        //インターネット接続あり
+        else
+        {
+        }
+
     }
 
     //LoginBounusYesButtonボタンを押した時の挙動
@@ -474,8 +515,62 @@ public class MenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
 
+        //画面回転の制御
+        if(Screen.width > Screen.height) Screen.autorotateToPortrait = false;
+        else
+        {
+            Screen.autorotateToLandscapeRight = false;
+            Screen.autorotateToLandscapeLeft = false;
+        }
+
         //画面遷移
-        SceneManager.LoadScene("WaitingRoom(offline)");
+        if (offlineMode == "Time") SceneManager.LoadScene("WaitingRoom(offline)");
+        else if(offlineMode == "Teppen") SceneManager.LoadScene("TeppenMenu");
+
+    }
+
+    //オフライン(タイム)ボタンを押した時
+    public void OnClick_OfflineTimeButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //モード変更
+        offlineMode = "Time";
+        //色の変更
+        OfflineTimeButton.interactable = false;
+        OfflineTeppenButton.interactable = true;
+    }
+
+    //オフライン(テッペン)ボタンを押した時
+    public void OnClick_OfflineTeppenButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //モード変更
+        offlineMode = "Teppen";
+        //色の変更
+        OfflineTimeButton.interactable = true;
+        OfflineTeppenButton.interactable = false;
+    }
+
+    //オフラインのモード説明ボタンを押した時
+    public void OnClick_OfflineInformationButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //パネル表示
+        OfflineExplainPanel.SetActive(true);
+        //ドキュメント取得
+        OfflineExplainText.text = OfflineExplainTextAsset.text;
+    }
+
+    //オフラインのモード説明ボタンをクローズした時
+    public void OnClick_OfflineExplainCloseButton()
+    {
+        //SEの使用
+        soundManager.SEManager("CharacterSelect_sound1");
+        //パネル非表示
+        OfflineExplainPanel.SetActive(false);
     }
 
     //オンラインボタンを押した際の挙動
@@ -493,6 +588,14 @@ public class MenuUI : MonoBehaviour
         //インターネット接続あり
         else
         {
+            //画面回転の制御
+            if (Screen.width > Screen.height) Screen.autorotateToPortrait = false;
+            else
+            {
+                Screen.autorotateToLandscapeRight = false;
+                Screen.autorotateToLandscapeLeft = false;
+            }
+
             //ロビーマネジャーのゲームオブジェクトをオンにする
             LobbyManager.SetActive(true);
         }

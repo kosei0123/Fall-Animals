@@ -8,6 +8,8 @@ public class RockMove_offline : MonoBehaviour
     SoundManager soundManager;
     //Timer_offlineのpublic定数を使う
     Timer_offline timer_offline;
+    //EndDialog_offlineの定数を使う
+    EndDialog_offline endDialog_Offline;
 
     //岩にかかる重力や摩擦
     private Rigidbody rbRock;
@@ -70,6 +72,7 @@ public class RockMove_offline : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
 
         //岩の速度を保持する
         if (rbRock.velocity.x != 0) rbRockVelocityX_Retention = rbRock.velocity.x;

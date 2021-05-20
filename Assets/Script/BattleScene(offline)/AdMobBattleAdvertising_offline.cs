@@ -49,8 +49,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             //テスト
-            //adUnitId = "ca-app-pub-3940256099942544/5224354917";
-            adUnitId = "ca-app-pub-8452025378548231/9250095442";
+            adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            //adUnitId = "ca-app-pub-8452025378548231/9250095442";
         }
         //Androidでの動作
         else if (Application.platform == RuntimePlatform.Android)
@@ -125,7 +125,8 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         //シーン移動可能
         moveScreenTimer_offline.moveScreenFlag = true;
         //横向き固定にする
-        //Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
     }

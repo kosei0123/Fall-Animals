@@ -10,10 +10,15 @@ public class EndDialog_offline : MonoBehaviour
     SoundManager soundManager;
     //BattleScene_offlineManagerのpublic定数を使う
     BattleScene_offlineManager battleScene_offlineManager;
+    //Replayの関数を使う
+    Replay.ReplayManager replayManager;
 
     //バトル終了時のダイアログ
     [SerializeField]
     private GameObject DialogPanel;
+    //リプレイボタン
+    [SerializeField]
+    private GameObject ReplayButton;
 
     //広告表示ボタン
     [SerializeField]
@@ -38,6 +43,8 @@ public class EndDialog_offline : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //BattleScene_offlineManagerのpublic定数を使う
         battleScene_offlineManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_offlineManager>();
+        //Replayの関数を使う
+        replayManager = GameObject.Find("REPLAY").GetComponent<Replay.ReplayManager>();
     }
 
     // Update is called once per frame
@@ -63,6 +70,8 @@ public class EndDialog_offline : MonoBehaviour
     {
         //バトル終了時ダイアログ表示
         DialogPanel.SetActive(true);
+        //リプレイボタン
+        ReplayButton.SetActive(true);
 
         //タイムを表示する
         if (bestTimeFlag == true)
@@ -80,6 +89,19 @@ public class EndDialog_offline : MonoBehaviour
         GetCoinText.text = getTotalCoin.ToString() + "コインGET!!";
         //デバイスの保持する
         PlayerPrefs.SetInt("myCoin", PlayerPrefs.GetInt("myCoin") + battleScene_offlineManager.getBattleCoin);
+    }
+
+    //リプレイボタンを押した時
+    public void OnClick_ReplayButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+
+        //バトル終了時ダイアログ表示
+        DialogPanel.SetActive(false);
+
+        //リプレイ
+        replayManager.StartReplay();
     }
 
     //ダイアログの「もどる」選択

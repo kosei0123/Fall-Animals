@@ -26,6 +26,13 @@ public class BattleScene_offlineManager : MonoBehaviour
     private GameObject coin;
 
 
+    //紙飛行機の親オブジェクト
+    [SerializeField]
+    private GameObject AirplaneParent;
+    //岩の親オブジェクト
+    [SerializeField]
+    private GameObject RockParent;
+
     //紙飛行機の生成時間(初期値設定)
     private float airplaneCreateTime = 3.0f;
     //岩の生成時間(初期値設定)
@@ -130,18 +137,22 @@ public class BattleScene_offlineManager : MonoBehaviour
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane0";
+            //子オブジェクトに指定する
+            airplane.transform.parent = AirplaneParent.transform;
         }
         //普通
         else if (randomAirplane >= 100 && randomAirplane < 200)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane1";
+            airplane.transform.parent = AirplaneParent.transform;
         }
         ////高速
         else if (randomAirplane >= 200 && randomAirplane < 300 && timer_offline.elapsedTime > 100)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane2";
+            airplane.transform.parent = AirplaneParent.transform;
         }
         //左に出現
         //ゆっくり
@@ -149,18 +160,21 @@ public class BattleScene_offlineManager : MonoBehaviour
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane3";
+            airplane.transform.parent = AirplaneParent.transform;
         }
         //普通
         else if (randomAirplane >= 400 && randomAirplane < 500)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 4.5f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane4";
+            airplane.transform.parent = AirplaneParent.transform;
         }
         ////高速
         else if (randomAirplane >= 500 && randomAirplane < 600 && timer_offline.elapsedTime > 200)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Offline/Airplane"), new Vector3(-30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane5";
+            airplane.transform.parent = AirplaneParent.transform;
         }
     }
 
@@ -176,18 +190,22 @@ public class BattleScene_offlineManager : MonoBehaviour
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 2.5f, 0), Quaternion.identity);
             rock.name = "Rock0";
+            //子オブジェクトに指定する
+            rock.transform.parent = RockParent.transform;
         }
         ////普通
         else if (randomrock >= 100 && randomrock < 200 && timer_offline.elapsedTime > 300)
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock1";
+            rock.transform.parent = RockParent.transform;
         }
         //高速
         else if (randomrock >= 200 && randomrock < 300)
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock2";
+            rock.transform.parent = RockParent.transform;
         }
         //左に出現
         //ゆっくり
@@ -195,18 +213,21 @@ public class BattleScene_offlineManager : MonoBehaviour
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 2.5f, 0), Quaternion.identity);
             rock.name = "Rock3";
+            rock.transform.parent = RockParent.transform;
         }
         ////普通
         else if (randomrock >= 400 && randomrock < 500 && timer_offline.elapsedTime > 400)
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock4";
+            rock.transform.parent = RockParent.transform;
         }
         //高速
         else if (randomrock >= 500 && randomrock < 600)
         {
             rock = (GameObject)Instantiate(Resources.Load("Offline/Rock"), new Vector3(-25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock5";
+            rock.transform.parent = RockParent.transform;
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterMainMove_offline : MonoBehaviour
 {
@@ -264,7 +265,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 4.5f;
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 9.5f;
+                else if(TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 14.5f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 19.5f;
+                else { runSpeed = 4.5f; }
             }
             else
             {
@@ -280,7 +284,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 6.5f;
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 11.5f;
+                else if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 16.5f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 21.5f;
+                else { runSpeed = 6.5f; }
             }
             else
             {
@@ -295,7 +302,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 12.0f;
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 17.0f;
+                else if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 22.0f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 27.0f;
+                else { runSpeed = 12.0f; }
             }
             else
             {
@@ -310,7 +320,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 15.0f;
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 20.0f;
+                if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 25.0f;
+                if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 30.0f;
+                else { runSpeed = 15.0f; }
             }
             else
             {
@@ -325,7 +338,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 11.0f;
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 16.0f;
+                else if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 21.0f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 26.0f;
+                else { runSpeed = 11.0f; }
             }
             else
             {
@@ -340,7 +356,11 @@ public class CharacterMainMove_offline : MonoBehaviour
             //スピード
             if (isGround)
             {
-                runSpeed = 5.0f;
+                
+                if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 10.0f;
+                else if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 15.0f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 20.0f;
+                else { runSpeed = 5.0f; }
             }
             else
             {

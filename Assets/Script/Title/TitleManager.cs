@@ -47,7 +47,7 @@ public class TitleManager : MonoBehaviour
         {
             //画面の回転可能にする
             Screen.orientation = ScreenOrientation.AutoRotation;
-            Screen.autorotateToPortrait = false;
+            Screen.autorotateToPortrait = true;
             Screen.autorotateToPortraitUpsideDown = false;
             Screen.autorotateToLandscapeRight = true;
             Screen.autorotateToLandscapeLeft = true;

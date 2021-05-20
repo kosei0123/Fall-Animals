@@ -24,6 +24,12 @@ public class SoundManager : MonoBehaviour
     //バトルBGM(夜道)のAudioSource
     [SerializeField]
     private AudioSource BGM_Battle_NightStreet;
+    //テッペンメニューのAudioSource
+    [SerializeField]
+    private AudioSource BGM_TeppenMenu;
+    //テッペンショップのAudioSource
+    [SerializeField]
+    private AudioSource BGM_TeppenShop;
 
     //SE使用
     AudioSource audioSource;
@@ -39,6 +45,8 @@ public class SoundManager : MonoBehaviour
     private AudioClip Rock_sound1;
     [SerializeField]
     private AudioClip Airplane_sound1;
+    [SerializeField]
+    private AudioClip CatNakigoe_sound1;
 
     //1つ前のシーン
     private string beforeScene = "Title";
@@ -57,6 +65,8 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(BGM_Menu);
             DontDestroyOnLoad(BGM_Battle);
             DontDestroyOnLoad(BGM_Battle_Cave);
+            DontDestroyOnLoad(BGM_TeppenMenu);
+            DontDestroyOnLoad(BGM_TeppenShop);
         }
         else
         {
@@ -65,6 +75,8 @@ public class SoundManager : MonoBehaviour
             Destroy(BGM_Menu);
             Destroy(BGM_Battle);
             Destroy(BGM_Battle_Cave);
+            Destroy(BGM_TeppenMenu);
+            Destroy(BGM_TeppenShop);
         }
     }
 
@@ -92,9 +104,44 @@ public class SoundManager : MonoBehaviour
             BGM_Menu.Stop();
         }
 
-        //メニューへの遷移
-        if ((beforeScene == "BattleScene" && currentScene.name == "Menu")
-            || (beforeScene == "BattleScene(offline)" && currentScene.name == "Menu"))
+        //メニューからテッペンメニューへの遷移
+        if (beforeScene == "Menu" && currentScene.name == "TeppenMenu")
+        {
+            BGM_Menu.Stop();
+            BGM_TeppenMenu.Play();
+        }
+
+        //テッペンメニューからテッペンショップへの遷移
+        if (beforeScene == "TeppenMenu" && currentScene.name == "TeppenShop")
+        {
+            BGM_TeppenMenu.Stop();
+            BGM_TeppenShop.Play();
+        }
+
+        //テッペンショップからテッペンバトルシーンへの遷移
+        if (beforeScene == "TeppenShop" && currentScene.name == "TeppenBattleScene")
+        {
+            BGM_TeppenShop.Stop();
+        }
+
+        //テッペンバトルシーンからテッペンメニューへの遷移
+        if (beforeScene == "TeppenBattleScene" && currentScene.name == "TeppenMenu")
+        {
+            BGM_Battle.Stop();
+            BGM_Battle_Cave.Stop();
+            BGM_Battle_NightStreet.Stop();
+            BGM_TeppenMenu.Play();
+        }
+
+        //テッペンメニューからメニューへの遷移
+        if ((beforeScene == "TeppenMenu" || beforeScene == "TeppenRecord") && currentScene.name == "Menu")
+        {
+            BGM_TeppenMenu.Stop();
+            BGM_Menu.Play();
+        }
+
+        //バトルシーンからメニューへの遷移
+        if ((beforeScene == "BattleScene" || beforeScene == "BattleScene(offline)") && currentScene.name == "Menu")
         {
             BGM_Battle.Stop();
             BGM_Battle_Cave.Stop();
@@ -102,12 +149,24 @@ public class SoundManager : MonoBehaviour
             BGM_Menu.Play();
         }
 
+
+
         //WaitingRoomへの遷移
-        if (beforeScene == "BattleScene(offline)" && currentScene.name == "WaitingRoom")
+        if ((beforeScene == "BattleScene(offline)" || beforeScene == "TeppenBattleScene") && currentScene.name == "WaitingRoom")
         {
             BGM_Battle.Stop();
             BGM_Battle_Cave.Stop();
             BGM_Battle_NightStreet.Stop();
+            BGM_Menu.Play();
+        }
+        else if((beforeScene == "TeppenMenu" || beforeScene == "TeppenRecord") && currentScene.name == "WaitingRoom")
+        {
+            BGM_TeppenMenu.Stop();
+            BGM_Menu.Play();
+        }
+        else if (beforeScene == "TeppenShop" && currentScene.name == "WaitingRoom")
+        {
+            BGM_TeppenShop.Stop();
             BGM_Menu.Play();
         }
 
@@ -143,6 +202,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case "Airplane_sound1":
                 audioSource.PlayOneShot(Airplane_sound1);
+                break;
+            case "CatNakigoe_sound1":
+                audioSource.PlayOneShot(CatNakigoe_sound1);
                 break;
             default:
                 break;
