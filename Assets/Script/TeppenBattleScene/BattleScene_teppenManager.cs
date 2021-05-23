@@ -147,7 +147,7 @@ public class BattleScene_teppenManager : MonoBehaviour
             airplane.transform.parent = AirplaneParent.transform;
         }
         ////高速
-        else if (randomAirplane >= 200 && randomAirplane < 300 && timer_teppen.elapsedTime > 100)
+        else if (randomAirplane >= 200 && randomAirplane < 300 && PlayerPrefs.GetInt("TeppenFloor") >= 30)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Teppen/Airplane"), new Vector3(30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane2";
@@ -169,7 +169,7 @@ public class BattleScene_teppenManager : MonoBehaviour
             airplane.transform.parent = AirplaneParent.transform;
         }
         ////高速
-        else if (randomAirplane >= 500 && randomAirplane < 600 && timer_teppen.elapsedTime > 200)
+        else if (randomAirplane >= 500 && randomAirplane < 600 && PlayerPrefs.GetInt("TeppenFloor") >= 30)
         {
             airplane = (GameObject)Instantiate(Resources.Load("Teppen/Airplane"), new Vector3(-30.0f, 5.0f, 0), Quaternion.Euler(0.0f, 90.0f, 0.0f));
             airplane.name = "Airplane5";
@@ -193,7 +193,7 @@ public class BattleScene_teppenManager : MonoBehaviour
             rock.transform.parent = RockParent.transform;
         }
         ////普通
-        else if (randomrock >= 100 && randomrock < 200 && timer_teppen.elapsedTime > 300)
+        else if (randomrock >= 100 && randomrock < 200 && PlayerPrefs.GetInt("TeppenFloor") >= 30)
         {
             rock = (GameObject)Instantiate(Resources.Load("Teppen/Rock"), new Vector3(25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock1";
@@ -215,7 +215,7 @@ public class BattleScene_teppenManager : MonoBehaviour
             rock.transform.parent = RockParent.transform;
         }
         ////普通
-        else if (randomrock >= 400 && randomrock < 500 && timer_teppen.elapsedTime > 400)
+        else if (randomrock >= 400 && randomrock < 500 && PlayerPrefs.GetInt("TeppenFloor") >= 30)
         {
             rock = (GameObject)Instantiate(Resources.Load("Teppen/Rock"), new Vector3(-25.0f, 3.0f, 0), Quaternion.identity);
             rock.name = "Rock4";

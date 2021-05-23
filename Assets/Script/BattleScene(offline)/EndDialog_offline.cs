@@ -19,6 +19,14 @@ public class EndDialog_offline : MonoBehaviour
     //リプレイボタン
     [SerializeField]
     private GameObject ReplayButton;
+    public bool replayFlag = false;
+
+    //紙飛行機の親オブジェクト
+    [SerializeField]
+    private GameObject AirplaneParent;
+    //岩の親オブジェクト
+    [SerializeField]
+    private GameObject RockParent;
 
     //広告表示ボタン
     [SerializeField]
@@ -63,6 +71,21 @@ public class EndDialog_offline : MonoBehaviour
         {
             //RewardAdvertisingButton.interactable = false;
         }
+
+        //再リプレイ時
+        if (replayManager._slide.value == 0 && replayFlag == true)
+        {
+            //紙飛行機
+            foreach (Transform childTransform in AirplaneParent.transform)
+            {
+                childTransform.gameObject.SetActive(true);
+            }
+            //岩
+            foreach (Transform childTransform in RockParent.transform)
+            {
+                childTransform.gameObject.SetActive(true);
+            }
+        }
     }
 
     //バトル終了時のダイアログ表示
@@ -97,11 +120,30 @@ public class EndDialog_offline : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
 
-        //バトル終了時ダイアログ表示
-        DialogPanel.SetActive(false);
+        if(replayFlag == false)
+        {
+            //バトル終了時ダイアログ非表示
+            DialogPanel.SetActive(false);
 
-        //リプレイ
-        replayManager.StartReplay();
+            //リプレイ
+            replayManager.StartReplay();
+            replayManager._slide.value = 0;
+
+            replayFlag = true;
+
+        }
+        else
+        {
+            //バトル終了時ダイアログ表示
+            DialogPanel.SetActive(true);
+
+            //リプレイの中断+非表示
+            replayManager.Pause();
+            replayManager._replayCanvas.SetActive(false);
+
+            replayFlag = false;
+        }
+        
     }
 
     //ダイアログの「もどる」選択

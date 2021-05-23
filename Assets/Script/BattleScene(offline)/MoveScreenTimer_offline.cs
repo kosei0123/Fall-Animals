@@ -31,8 +31,8 @@ public class MoveScreenTimer_offline : MonoBehaviour
         //Pun2Scriptのpublic定数を使う
         battleScene_offlineManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_offlineManager>();
 
-        //時間の設定(60秒)
-        moveScreenTime = 60;
+        //時間の設定(600秒=10分)
+        moveScreenTime = 600;
         //シーン移動可能
         moveScreenFlag = true;
     }

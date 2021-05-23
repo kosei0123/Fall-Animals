@@ -8,6 +8,10 @@ public class AirplaneMove_teppen : MonoBehaviour
     SoundManager soundManager;
     //Timer_teppenのpublic定数を使う
     Timer_teppen timer_teppen;
+    //BattleScene_teppenManagerの定数を使う
+    BattleScene_teppenManager battleScene_teppenManager;
+    //Replayの関数を使う
+    Replay.ReplayManager replayManager;
 
     //割り当てるマテリアル
     [SerializeField]
@@ -22,6 +26,11 @@ public class AirplaneMove_teppen : MonoBehaviour
     //時間計測
     private float airplaneTime;
 
+    //プレイ開始から岩が消えるまでの時間
+    private float airplaneElapsedTime;
+    //リプレイ押下時にまだアクティプ状態の岩を非表示にするためのもの
+    private bool battleFinishReplayFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +38,10 @@ public class AirplaneMove_teppen : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //Timer_teppenのpublic定数を使う
         timer_teppen = GameObject.Find("TimerCanvas").GetComponent<Timer_teppen>();
+        //BattleScene_teppenManagerの定数を使う
+        battleScene_teppenManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_teppenManager>();
+        //Replayの関数を使う
+        replayManager = GameObject.Find("REPLAY").GetComponent<Replay.ReplayManager>();
 
         //重力や摩擦
         rbAirplane = this.GetComponent<Rigidbody>();
@@ -42,27 +55,27 @@ public class AirplaneMove_teppen : MonoBehaviour
 
 
             case "Airplane0":
-                rbAirplane.velocity = new Vector3(-3.0f - (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-3.0f - (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_White;
                 break;
             case "Airplane1":
-                rbAirplane.velocity = new Vector3(-6.0f - (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-6.0f - (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_Blue;
                 break;
             case "Airplane2":
-                rbAirplane.velocity = new Vector3(-9.0f - (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(-9.0f - (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_Red;
                 break;
             case "Airplane3":
-                rbAirplane.velocity = new Vector3(3.0f + (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(3.0f + (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_White;
                 break;
             case "Airplane4":
-                rbAirplane.velocity = new Vector3(6.0f + (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(6.0f + (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_Blue;
                 break;
             case "Airplane5":
-                rbAirplane.velocity = new Vector3(9.0f + (timer_teppen.elapsedTime / 20), randomAirplaneVelocity_Y, 0);
+                rbAirplane.velocity = new Vector3(9.0f + (float)PlayerPrefs.GetInt("TeppenFloor"), randomAirplaneVelocity_Y, 0);
                 this.GetComponent<Renderer>().material = AirplaneMaterial_Red;
                 break;
             default:
@@ -84,9 +97,18 @@ public class AirplaneMove_teppen : MonoBehaviour
         }
 
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f || airplaneTime >= 15.0f)
+        if (((this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f ||
+            airplaneTime >= 15.0f) && battleScene_teppenManager.battleFinishFlag == false) ||
+            (battleScene_teppenManager.battleFinishFlag == true && battleFinishReplayFlag == false))
         {
-            Destroy(this.gameObject);
+            airplaneElapsedTime = timer_teppen.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
+        }
+        else if ((this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f ||
+            replayManager._slide.value >= airplaneElapsedTime) && battleScene_teppenManager.battleFinishFlag == true)
+        {
+            this.gameObject.SetActive(false);
         }
 
 
@@ -109,9 +131,12 @@ public class AirplaneMove_teppen : MonoBehaviour
         }
 
         //ぶつかって止まってしまった際は消去する
-        if (rbAirplane.velocity.x >= -0.3f && rbAirplane.velocity.x <= 0.3f)
+        if ((rbAirplane.velocity.x >= -0.3f && rbAirplane.velocity.x <= 0.3f) && battleScene_teppenManager.battleFinishFlag == false)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            airplaneElapsedTime = timer_teppen.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
         }
     }
 }

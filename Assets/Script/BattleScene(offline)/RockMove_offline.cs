@@ -8,16 +8,25 @@ public class RockMove_offline : MonoBehaviour
     SoundManager soundManager;
     //Timer_offlineのpublic定数を使う
     Timer_offline timer_offline;
-    //EndDialog_offlineの定数を使う
-    EndDialog_offline endDialog_Offline;
+    //BattleScene_offlineManagerの定数を使う
+    BattleScene_offlineManager battleScene_offlineManager;
+    //Replayの関数を使う
+    Replay.ReplayManager replayManager;
 
     //岩にかかる重力や摩擦
     private Rigidbody rbRock;
     //時間計測
     private float rockTime;
 
+    //プレイ開始から岩が消えるまでの時間
+    private float rockElapsedTime;
+    //リプレイ押下時にまだアクティプ状態の岩を非表示にするためのもの
+    private bool battleFinishReplayFlag = false;
+
     //速度を保持する
     private float rbRockVelocityX_Retention;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +35,11 @@ public class RockMove_offline : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //Timer_offlineのpublic定数を使う
         timer_offline = GameObject.Find("TimerCanvas").GetComponent<Timer_offline>();
+        //BattleScene_offlineManagerの定数を使う
+        battleScene_offlineManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_offlineManager>();
+        //Replayの関数を使う
+        replayManager = GameObject.Find("REPLAY").GetComponent<Replay.ReplayManager>();
+
 
         //重力や摩擦
         rbRock = this.GetComponent<Rigidbody>();
@@ -65,14 +79,20 @@ public class RockMove_offline : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 30.0f || this.transform.position.x <= -30.0f ||
-            this.transform.position.y < -50.0f || rockTime >= 15.0f)
+        if (((this.transform.position.x >= 30.0f || this.transform.position.x <= -30.0f ||
+            this.transform.position.y < -50.0f || rockTime >= 15.0f) && battleScene_offlineManager.battleFinishFlag == false) ||
+            (battleScene_offlineManager.battleFinishFlag == true && battleFinishReplayFlag == false))
         {
-            Destroy(this.gameObject);
+            rockElapsedTime = timer_offline.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
         }
-
+        else if ((this.transform.position.x >= 30.0f || this.transform.position.x <= -30.0f ||
+            this.transform.position.y < -50.0f || replayManager._slide.value >= rockElapsedTime ) && battleScene_offlineManager.battleFinishFlag == true)
+        {
+            this.gameObject.SetActive(false);
+        }
 
         //岩の速度を保持する
         if (rbRock.velocity.x != 0) rbRockVelocityX_Retention = rbRock.velocity.x;
@@ -102,9 +122,12 @@ public class RockMove_offline : MonoBehaviour
         }
 
         //ぶつかって止まってしまった際は消去する
-        if (rbRock.velocity.x >= -0.3f && rbRock.velocity.x <= 0.3f)
+        if ((rbRock.velocity.x >= -0.3f && rbRock.velocity.x <= 0.3f) && battleScene_offlineManager.battleFinishFlag == false)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            rockElapsedTime = timer_offline.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
         }
     }
 }

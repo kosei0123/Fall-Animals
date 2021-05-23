@@ -64,7 +64,7 @@ namespace Replay
 
 		public void StartReplay ()
 		{
-			_endTime = Time.time;
+			if(_endTime == 0)_endTime = Time.time;
 			_replayCanvas.SetActive (true);
 			isPlaying = false;
 			_replayCanvas.GetComponent<CanvasGroup> ().alpha = 1;

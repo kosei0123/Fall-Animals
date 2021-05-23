@@ -22,7 +22,7 @@ public class Timer_teppen : MonoBehaviour
         //初期値は0
         elapsedTime = 0;
         //残り時間初期値
-        remainingTime = 5.0f + (float)PlayerPrefs.GetInt("TeppenFloor");
+        remainingTime = 5.0f + (float)PlayerPrefs.GetInt("TeppenFloor") - TeppenShopUI.MinusTimeRealTotal;
 
     }
 
@@ -36,12 +36,6 @@ public class Timer_teppen : MonoBehaviour
 
 
         //残り時間の表示
-        //if (elapsedTime >= 3.0f)
-        //{
-        //    TimerText.text = ((int)elapsedTime / 60).ToString("D2") + ":" + ((int)elapsedTime % 60).ToString("D2");
-        //}
-
-        //残り時間の表示
-        TimerText.text = ((int)remainingTime / 60).ToString("D2") + ":" + ((int)remainingTime % 60).ToString("D2");
+        if(remainingTime >= 0) TimerText.text = ((int)remainingTime / 60).ToString("D2") + ":" + ((int)remainingTime % 60).ToString("D2");
     }
 }

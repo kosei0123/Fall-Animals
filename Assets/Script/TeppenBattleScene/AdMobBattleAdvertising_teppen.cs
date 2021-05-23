@@ -115,6 +115,7 @@ public class AdMobBattleAdvertising_teppen : MonoBehaviour
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
         //横向き固定にする
+        Screen.autorotateToLandscapeLeft = true;
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
@@ -123,8 +124,6 @@ public class AdMobBattleAdvertising_teppen : MonoBehaviour
     {
         //再度コインを獲得する
         endDialog_teppen.DialogPanelActive(PlayerPrefs.GetInt("TeppenFloor"));
-        //横向き固定にする
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     // Update is called once per frame

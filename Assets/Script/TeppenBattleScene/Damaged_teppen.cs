@@ -37,7 +37,7 @@ public class Damaged_teppen : MonoBehaviour
         //一定距離落下後にオブジェクトの削除
         if (this.transform.position.y < -50)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
         }
 
         //衝突後回転する

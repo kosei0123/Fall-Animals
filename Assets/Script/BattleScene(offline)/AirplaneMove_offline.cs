@@ -8,6 +8,10 @@ public class AirplaneMove_offline : MonoBehaviour
     SoundManager soundManager;
     //Timer_offlineのpublic定数を使う
     Timer_offline timer_offline;
+    //BattleScene_offlineManagerの定数を使う
+    BattleScene_offlineManager battleScene_offlineManager;
+    //Replayの関数を使う
+    Replay.ReplayManager replayManager;
 
     //割り当てるマテリアル
     [SerializeField]
@@ -22,6 +26,11 @@ public class AirplaneMove_offline : MonoBehaviour
     //時間計測
     private float airplaneTime;
 
+    //プレイ開始から岩が消えるまでの時間
+    private float airplaneElapsedTime;
+    //リプレイ押下時にまだアクティプ状態の岩を非表示にするためのもの
+    private bool battleFinishReplayFlag = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +38,10 @@ public class AirplaneMove_offline : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //Timer_offlineのpublic定数を使う
         timer_offline = GameObject.Find("TimerCanvas").GetComponent<Timer_offline>();
+        //BattleScene_offlineManagerの定数を使う
+        battleScene_offlineManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_offlineManager>();
+        //Replayの関数を使う
+        replayManager = GameObject.Find("REPLAY").GetComponent<Replay.ReplayManager>();
 
         //重力や摩擦
         rbAirplane = this.GetComponent<Rigidbody>();
@@ -84,9 +97,18 @@ public class AirplaneMove_offline : MonoBehaviour
         }
 
         //一定距離画面から離れたら消去する
-        if (this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f || airplaneTime >= 15.0f)
+        if (((this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f ||
+            airplaneTime >= 15.0f) && battleScene_offlineManager.battleFinishFlag == false) ||
+            (battleScene_offlineManager.battleFinishFlag == true && battleFinishReplayFlag == false))
         {
-            Destroy(this.gameObject);
+            airplaneElapsedTime = timer_offline.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
+        }
+        else if ((this.transform.position.x >= 35.0f || this.transform.position.x <= -35.0f ||
+            replayManager._slide.value >= airplaneElapsedTime ) && battleScene_offlineManager.battleFinishFlag == true)
+        {
+            this.gameObject.SetActive(false);
         }
 
 
@@ -109,9 +131,12 @@ public class AirplaneMove_offline : MonoBehaviour
         }
 
         //ぶつかって止まってしまった際は消去する
-        if (rbAirplane.velocity.x >= -0.3f && rbAirplane.velocity.x <= 0.3f)
+        if ((rbAirplane.velocity.x >= -0.3f && rbAirplane.velocity.x <= 0.3f) && battleScene_offlineManager.battleFinishFlag == false)
         {
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            airplaneElapsedTime = timer_offline.elapsedTime;
+            battleFinishReplayFlag = true;
+            this.gameObject.SetActive(false);
         }
     }
 
