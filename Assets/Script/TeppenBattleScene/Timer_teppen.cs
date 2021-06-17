@@ -22,7 +22,7 @@ public class Timer_teppen : MonoBehaviour
         //初期値は0
         elapsedTime = 0;
         //残り時間初期値
-        remainingTime = 5.0f + (float)PlayerPrefs.GetInt("TeppenFloor") - TeppenShopUI.MinusTimeRealTotal;
+        remainingTime = 10.0f + (float)PlayerPrefs.GetInt("TeppenFloor") - TeppenShopUI.MinusTimeRealTotal;
 
     }
 

@@ -83,9 +83,6 @@ public class CharacterMainMove : MonoBehaviourPunCallbacks,IPunObservable
         //Pun2Scriptのpublic定数を使う
         pun2Script = GameObject.Find("Pun2").GetComponent<Pun2Script>();
 
-        //FPSを60に設定
-        Application.targetFrameRate = 60;
-
         //重力や摩擦
         rb = this.GetComponent<Rigidbody>();
         // Animatorコンポーネントを取得する

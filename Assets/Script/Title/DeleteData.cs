@@ -104,6 +104,7 @@ public class DeleteData : MonoBehaviour
                 break;
             case "DeleteBestTime":
                 userAuth.firstSetBestTime(true);
+                userAuth.firstSetTeppenScore();
                 break;
             default:
                 break;

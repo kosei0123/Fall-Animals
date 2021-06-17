@@ -10,16 +10,10 @@ public class EndDialog_teppen : MonoBehaviour
     SoundManager soundManager;
     //BattleScene_teppenManagerのpublic定数を使う
     BattleScene_teppenManager battleScene_teppenManager;
-    //Replayの関数を使う
-    Replay.ReplayManager replayManager;
 
     //バトル終了時のダイアログ
     [SerializeField]
     private GameObject DialogPanel;
-    //リプレイボタン
-    [SerializeField]
-    private GameObject ReplayButton;
-    private bool replayFlag = false;
 
     //紙飛行機の親オブジェクト
     [SerializeField]
@@ -32,6 +26,9 @@ public class EndDialog_teppen : MonoBehaviour
     [SerializeField]
     private Button RewardAdvertisingButton;
 
+    //ミッションクリアパネル
+    [SerializeField]
+    private GameObject MissionSuccessPanel;
     //フロアテキスト表示
     [SerializeField]
     private Text FloorText;
@@ -40,6 +37,8 @@ public class EndDialog_teppen : MonoBehaviour
     private Text GetCoinText;
     private int getTotalCoin;
 
+    //テッペンメニューへの非同期シーン遷移用
+    private AsyncOperation async_TeppenMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -48,8 +47,8 @@ public class EndDialog_teppen : MonoBehaviour
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
         //BattleScene_teppenManagerのpublic定数を使う
         battleScene_teppenManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_teppenManager>();
-        //Replayの関数を使う
-        replayManager = GameObject.Find("REPLAY").GetComponent<Replay.ReplayManager>();
+
+        
 
     }
 
@@ -69,30 +68,25 @@ public class EndDialog_teppen : MonoBehaviour
         {
             //RewardAdvertisingButton.interactable = false;
         }
-
-        //再リプレイ時
-        if (replayManager._slide.value == 0 && replayFlag == true)
-        {
-            //紙飛行機
-            foreach (Transform childTransform in AirplaneParent.transform)
-            {
-                childTransform.gameObject.SetActive(true);
-            }
-            //岩
-            foreach (Transform childTransform in RockParent.transform)
-            {
-                childTransform.gameObject.SetActive(true);
-            }
-        }
     }
 
     //バトル終了時のダイアログ表示
     public void DialogPanelActive(int floor)
     {
+        //メモリ解放
+        Resources.UnloadUnusedAssets();
+
+        //画面遷移
+        if(async_TeppenMenu == null) async_TeppenMenu = SceneManager.LoadSceneAsync("TeppenMenu");
+        async_TeppenMenu.allowSceneActivation = false;
+
+        //挑戦回数の更新
+        PlayerPrefs.SetInt("TeppenDairyChallenge", PlayerPrefs.GetInt("TeppenDairyChallenge") + 1);
+
         //バトル終了時ダイアログ表示
         DialogPanel.SetActive(true);
         //リプレイボタン
-        ReplayButton.SetActive(true);
+        //ReplayButton.SetActive(true);
 
         //購入商品の使用終了
         ShopListItemUseFinish();
@@ -122,16 +116,24 @@ public class EndDialog_teppen : MonoBehaviour
             getTotalCoin += battleScene_teppenManager.getBattleCoin + PlayerPrefs.GetInt("TeppenFloor") * 5;
             GetCoinText.text = getTotalCoin.ToString() + "コインGET!!";
 
+            //ミッションクリア状況
+            MissonSuccessPanelDisplay();
+
             //コイン&フロアボーナスの獲得(上に行けば行くほど高くなる)
             PlayerPrefs.SetInt("getScheduledCoin", PlayerPrefs.GetInt("getScheduledCoin") + battleScene_teppenManager.getBattleCoin + PlayerPrefs.GetInt("TeppenFloor") * 5);
         }
-        
+        PlayerPrefs.Save();
     }
 
     //購入商品の使用終了
     private void ShopListItemUseFinish()
     {
-        //シューズ
+        //ショップリストのランダム値
+        PlayerPrefs.SetInt("TeppenRandomShopList1", -1);
+        PlayerPrefs.SetInt("TeppenRandomShopList2", -1);
+        PlayerPrefs.SetInt("TeppenRandomShopList3", -1);
+
+        //Dシューズ
         if (TeppenMenuShopList.DShoesUseFlag == true)
         {
             PlayerPrefs.SetInt("DShoesFlag", 0);
@@ -147,42 +149,83 @@ public class EndDialog_teppen : MonoBehaviour
             PlayerPrefs.SetInt("DShoes3Flag", 0);
             TeppenMenuShopList.DShoes3UseFlag = false;
         }
+        //Jシューズ
+        if (TeppenMenuShopList.JShoesUseFlag == true)
+        {
+            PlayerPrefs.SetInt("JShoesFlag", 0);
+            TeppenMenuShopList.JShoesUseFlag = false;
+        }
+        if (TeppenMenuShopList.JShoes2UseFlag == true)
+        {
+            PlayerPrefs.SetInt("JShoes2Flag", 0);
+            TeppenMenuShopList.JShoes2UseFlag = false;
+        }
+        if (TeppenMenuShopList.JShoes3UseFlag == true)
+        {
+            PlayerPrefs.SetInt("JShoes3Flag", 0);
+            TeppenMenuShopList.JShoes3UseFlag = false;
+        }
+        //Aシューズ
+        if (TeppenMenuShopList.AShoesUseFlag == true)
+        {
+            PlayerPrefs.SetInt("AShoesFlag", 0);
+            TeppenMenuShopList.AShoesUseFlag = false;
+        }
+        if (TeppenMenuShopList.AShoes2UseFlag == true)
+        {
+            PlayerPrefs.SetInt("AShoes2Flag", 0);
+            TeppenMenuShopList.AShoes2UseFlag = false;
+        }
+        if (TeppenMenuShopList.AShoes3UseFlag == true)
+        {
+            PlayerPrefs.SetInt("AShoes3Flag", 0);
+            TeppenMenuShopList.AShoes3UseFlag = false;
+        }
+        //スーパーハンド
+        if (TeppenMenuShopList.SuperHandUseFlag == true)
+        {
+            PlayerPrefs.SetInt("SuperHandFlag", 0);
+            TeppenMenuShopList.SuperHandUseFlag = false;
+        }
+        //Jウィング
+        if (TeppenMenuShopList.JWingUseFlag == true)
+        {
+            PlayerPrefs.SetInt("JWingFlag", 0);
+            TeppenMenuShopList.JWingUseFlag = false;
+        }
 
         //マイナスタイム
         if (TeppenShopUI.MinusTimeRealTotal > 0) TeppenShopUI.MinusTimeRealTotal = 0;
+        //ロックスロー
+        if (TeppenShopUI.RockSlowRealTotal > 0) TeppenShopUI.RockSlowRealTotal = 0;
+        //ヒコーキスロー
+        if (TeppenShopUI.AirplaneSlowRealTotal > 0) TeppenShopUI.AirplaneSlowRealTotal = 0;
+        //ステージ指定
+        TeppenShopUI.stageAssignmentNumber = 0;
+        //トランポリンの使用
+        TeppenShopUI.TrampolineRealFlag = false;
     }
 
-    //リプレイボタンを押した時
-    public void OnClick_ReplayButton()
+    //ミッションクリアパネルの表示
+    private void MissonSuccessPanelDisplay()
     {
-        //SEの使用
-        soundManager.SEManager("Button_sound1");
-
-        if(replayFlag == false)
+        if(TeppenShopUI.MissionASuccessFlag == true)
         {
-            //バトル終了時ダイアログ非表示
-            DialogPanel.SetActive(false);
-
-            //リプレイ
-            replayManager.StartReplay();
-            replayManager._slide.value = 0;
-
-            replayFlag = true;
+            MissionSuccessPanel.SetActive(true);
+            PlayerPrefs.SetInt("getScheduledCoin", PlayerPrefs.GetInt("getScheduledCoin") + 200);
+            TeppenShopUI.MissionASuccessFlag = false;
         }
-        else
+        if (TeppenShopUI.MissionBSuccessFlag == true)
         {
-            //バトル終了時ダイアログ表示
-            DialogPanel.SetActive(true);
-
-            //リプレイの中断+非表示
-            replayManager.Pause();
-            replayManager._replayCanvas.SetActive(false);
-
-            replayFlag = false;
+            MissionSuccessPanel.SetActive(true);
+            PlayerPrefs.SetInt("getScheduledCoin", PlayerPrefs.GetInt("getScheduledCoin") + 150);
+            TeppenShopUI.MissionBSuccessFlag = false;
         }
-        
+
+        PlayerPrefs.Save();
     }
 
+    
     //ダイアログの「もどる」選択
     public void OnClick_AgainButton()
     {
@@ -191,6 +234,7 @@ public class EndDialog_teppen : MonoBehaviour
 
         //画面遷移
         SceneManager.LoadScene("TeppenMenu");
+        //async_TeppenMenu.allowSceneActivation = true;
 
     }
 }

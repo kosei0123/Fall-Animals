@@ -19,9 +19,6 @@ public class UnityIAPUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //FPSを60に設定
-        Application.targetFrameRate = 60;
-
         //SoundManagerのスクリプトの関数使用
         soundManager = GameObject.Find("Sound").GetComponent<SoundManager>();
 
@@ -35,7 +32,7 @@ public class UnityIAPUI : MonoBehaviour
         //スクロールパネルを動的に動かす(10倍速)
         if (rectHeight < 500.0f)
         {
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 60; i++)
             {
                 if (rectHeight < 500.0f) rectHeight++;
             }

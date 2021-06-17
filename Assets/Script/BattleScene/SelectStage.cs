@@ -37,6 +37,11 @@ public class SelectStage : MonoBehaviour
     [SerializeField]
     private GameObject Background3;
 
+    //パーティクル
+    //背景2のパーティクル
+    private GameObject CaveParticle;
+    //生成サイクル
+    private float Background2_ParticleTime = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +97,19 @@ public class SelectStage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //背景2パーティクルの発生
+        if (Background2.activeSelf == true && Background2_ParticleTime <= 0)
+        {
+            //パーティクルの発生
+            CaveParticle = PhotonNetwork.Instantiate("CaveParticle", new Vector3(0.0f, 0.0f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
+            CaveParticle.transform.parent = Background2.transform;
+            CaveParticle.transform.localPosition = new Vector3(Random.Range(-0.2f, 0.0f), Random.Range(-0.6f, -0.4f), Random.Range(-0.1f, 0.1f));
+            CaveParticle.transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+            CaveParticle.transform.localScale = new Vector3(1, 1, 1);
+            Background2_ParticleTime = Random.Range(10, 30);
+        }
+
+        //背景2のパーティクル生成時間を減らす
+        Background2_ParticleTime -= Time.deltaTime;
     }
 }

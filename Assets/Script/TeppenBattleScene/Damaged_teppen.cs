@@ -10,6 +10,10 @@ public class Damaged_teppen : MonoBehaviour
     BattleScene_teppenManager battleScene_teppenManager;
     //EndDialog_teppenの関数等を使う
     EndDialog_teppen endDialog_teppen;
+    //Timer_teppenのpublic定数を使う
+    Timer_teppen timer_teppen;
+    //CameraShakeのスクリプトの関数使用
+    CameraShake cameraShake;
 
     //オフライン時はレコードtrueにしておく
     public static bool bestTimeRecode_Giraffe = false;
@@ -26,6 +30,10 @@ public class Damaged_teppen : MonoBehaviour
         battleScene_teppenManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_teppenManager>();
         //EndDialog_teppenの関数等を使う
         endDialog_teppen = GameObject.Find("DialogCanvas").GetComponent<EndDialog_teppen>();
+        //Timer_teppenのpublic定数を使う
+        timer_teppen = GameObject.Find("TimerCanvas").GetComponent<Timer_teppen>();
+        //CameraShakeのスクリプトの関数使用
+        cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
 
     }
 
@@ -37,7 +45,7 @@ public class Damaged_teppen : MonoBehaviour
         //一定距離落下後にオブジェクトの削除
         if (this.transform.position.y < -50)
         {
-            //Destroy(this.gameObject);
+            Destroy(this.gameObject);
         }
 
         //衝突後回転する
@@ -72,9 +80,40 @@ public class Damaged_teppen : MonoBehaviour
             return;
         }
 
+        //スーパーハンド有効であれば抜ける
+        if (TeppenMenuShopList.SuperHandUseFlag == true && timer_teppen.elapsedTime <= 10)
+        {
+            return;
+        }
+
         //岩や紙飛行機にあたり落下する
         if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && (other.gameObject.tag == "Obstacle_Rock" || other.gameObject.tag == "Obstacle_Airplane"))
         {
+            //メインキャラでなければ交代のみ行う
+            if (SelectCharacterUI.animalName != PlayerPrefs.GetString("TeppenAnimalName"))
+            {
+                //リストから削除
+                PlayerPrefs.SetInt("Teppen" + SelectCharacterUI.animalName + "CanUse", 0);
+                TeppenShopUI.characterList.Clear();
+                TeppenShopUI.CharacterList();
+
+                //キャラクターの変更
+                //削除前ポジション取得
+                battleScene_teppenManager.characterChangePosition = new Vector3(-4.5f, 10.0f, 0);
+                //アニマルの削除
+                foreach (Transform childTransform in battleScene_teppenManager.AnimalParent.transform) Destroy(childTransform.gameObject);
+                //キャラクター変更
+                if (battleScene_teppenManager.characterListNumber < TeppenShopUI.characterList.Count - 1) battleScene_teppenManager.characterListNumber++;
+                else { battleScene_teppenManager.characterListNumber = 0; }
+                SelectCharacterUI.animalName = TeppenShopUI.characterList[battleScene_teppenManager.characterListNumber];
+                //キャラクターカラー
+                SelectCharacterUI.animalName_Color = SelectCharacterUI.animalName + PlayerPrefs.GetString("TeppenAnimalColor").Substring(PlayerPrefs.GetString("TeppenAnimalColor").IndexOf("("));
+                //キャラクター作成
+                battleScene_teppenManager.CreateCharacter();
+
+                return;
+            }
+
             GameFinish();
         }
 
@@ -82,6 +121,14 @@ public class Damaged_teppen : MonoBehaviour
         if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Coin")
         {
             battleScene_teppenManager.getBattleCoin += 5;
+        }
+
+        //トランポリンにあたる
+        if ((this.gameObject.layer == 10 || this.gameObject.layer == 13) && other.gameObject.tag == "Installation_Trampoline")
+        {
+            //接触時ジャンプ力アップしてジャンプする
+            characterMainMove_offline.trampolineJumpPower = 2.0f;
+            characterMainMove_offline.jumpFlag = true;
         }
     }
 
@@ -93,6 +140,8 @@ public class Damaged_teppen : MonoBehaviour
         characterMainMove_offline.rb.velocity = new Vector3(0, characterMainMove_offline.rb.velocity.y, 0);
         //パーティクルの発生
         Instantiate(Resources.Load("Offline/Particle"), new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity);
+        //画面を揺らす
+        cameraShake.Shake(0.25f, 1.0f);
 
         //バトル終了フラグをtrueにする
         battleScene_teppenManager.battleFinishFlag = true;

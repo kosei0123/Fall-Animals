@@ -36,6 +36,10 @@ public class TitleTap : MonoBehaviour
     [SerializeField]
     private GameObject DeleteDataPanel;
 
+    //初回起動時にネットワークに接続するように警告ダイアログ
+    [SerializeField]
+    private GameObject FirstNotNetworkPanel;
+
     //ボタンを押した後のインターバル
     private float TitleNextInterval = 0;
     //タイトル画面のオンライン状態確認
@@ -128,8 +132,18 @@ public class TitleTap : MonoBehaviour
         else
         {
             //ニックネームが登録されている場合
-            //画面遷移
-            SceneManager.LoadScene("Menu");
+            //初回+ネットワークに接続されていない時
+            if (!PlayerPrefs.HasKey("TeppenFloor") && Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                //ダイアログを出す
+                FirstNotNetworkPanel.SetActive(true);
+            }
+            else
+            {
+                //画面遷移
+                SceneManager.LoadScene("Menu");
+            }
+            
         }
     }
 
@@ -209,6 +223,15 @@ public class TitleTap : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //DeleteDataPanelを非表示にする
         DeleteDataPanel.SetActive(false);
+    }
+
+    //初回ネットワーク未接続時の警告ダイアログ閉じる時
+    public void OnClick_FirstNotNetworkYesButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        //ダイアログを非表示にする
+        FirstNotNetworkPanel.SetActive(false);
     }
 
 }

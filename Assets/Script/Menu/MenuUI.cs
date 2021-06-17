@@ -35,6 +35,9 @@ public class MenuUI : MonoBehaviour
     //OfflineRankingChildPanelの表示
     [SerializeField]
     private GameObject OfflineRankingChildPanel;
+    //OfflineTeppenRankingChildPanelの表示
+    [SerializeField]
+    private GameObject OfflineTeppenRankingChildPanel;
     //WinCountRankingChildPanelの表示
     [SerializeField]
     private GameObject WinCountRankingChildPanel;
@@ -51,6 +54,12 @@ public class MenuUI : MonoBehaviour
     //オフラインランキングハイスコア表示
     [SerializeField]
     public Text OfflineRankingHighScoreText;
+    //オフラインテッペンランキングユーザー名表示
+    [SerializeField]
+    public Text OfflineTeppenRankingUsernameText;
+    //オフラインテッペンランキングハイスコア表示
+    [SerializeField]
+    public Text OfflineTeppenRankingHighScoreText;
     //オンラインタイムランキングユーザー名表示
     [SerializeField]
     public Text OnlineRankingUsernameText;
@@ -108,7 +117,6 @@ public class MenuUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         //回転可能にする
         Screen.orientation = ScreenOrientation.AutoRotation;
         Screen.autorotateToPortrait = true;
@@ -132,18 +140,23 @@ public class MenuUI : MonoBehaviour
         //ルーム内のクライアントがMasterClientと同じシーンをロードしないように設定
         PhotonNetwork.AutomaticallySyncScene = false;
 
-        //テッペンの階数をデバイスに保存
-        if (!PlayerPrefs.HasKey("TeppenFloor")) PlayerPrefs.SetInt("TeppenFloor", 1);
-        if (!PlayerPrefs.HasKey("BestTeppenFloor")) PlayerPrefs.SetInt("BestTeppenFloor", 1);
-
         //ベストタイムスコアを取得
         SelectCharacterBestTimeGet();
 
-        //オフラインで記録できなかったベストタイムをオンライン時にいれる
-        SelectCharacterBestTimeSet();
+        //ネットワーク接続確認
+        //インターネット接続なし
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+        }
+        //インターネット接続あり
+        else
+        {
+            //オフラインで記録できなかったベストタイムをオンライン時にいれる
+            SelectCharacterBestTimeSet();
 
-        //オフラインで記録できなかったベストテッペンフロアをいれる
-        BestTeppenFloorSet();
+            //オフラインで記録できなかったベストテッペンフロアをいれる
+            BestTeppenFloorSet();
+        }
 
         //モード初期値
         if (offlineMode == "Time") OfflineTimeButton.interactable = false;
@@ -273,90 +286,80 @@ public class MenuUI : MonoBehaviour
     //オフラインで記録できなかったベストタイムをオンライン時にいれる
     private void SelectCharacterBestTimeSet()
     {
-        //ネットワーク接続確認
-        //インターネット接続なし
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        //キリン
+        if (PlayerPrefs.GetInt("bestTimeRecode_Giraffe") == 1)
         {
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Giraffe");
+            //ランキングに登録完了したら0にする
+            PlayerPrefs.SetInt("bestTimeRecode_Giraffe", 0);
         }
-        //インターネット接続あり
-        else
+        //ゾウ
+        if (PlayerPrefs.GetInt("bestTimeRecode_Elephant") == 1)
         {
-            //キリン
-            if (PlayerPrefs.GetInt("bestTimeRecode_Giraffe") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Giraffe");
-                //ランキングに登録完了したら0にする
-                PlayerPrefs.SetInt("bestTimeRecode_Giraffe", 0);
-            }
-            //ゾウ
-            if (PlayerPrefs.GetInt("bestTimeRecode_Elephant") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Elephant");
-                //ランキングに登録完了したらfalseにする
-                PlayerPrefs.SetInt("bestTimeRecode_Elephant", 0);
-            }
-            //犬
-            if (PlayerPrefs.GetInt("bestTimeRecode_Dog") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Dog");
-                //ランキングに登録完了したらfalseにする
-                PlayerPrefs.SetInt("bestTimeRecode_Dog", 0);
-            }
-            //虎
-            if (PlayerPrefs.GetInt("bestTimeRecode_Tiger") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Tiger");
-                //ランキングに登録完了したらfalseにする
-                PlayerPrefs.SetInt("bestTimeRecode_Tiger", 0);
-            }
-            //猫
-            if (PlayerPrefs.GetInt("bestTimeRecode_Cat") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Cat");
-                //ランキングに登録完了したらfalseにする
-                PlayerPrefs.SetInt("bestTimeRecode_Cat", 0);
-            }
-            //ウサギ
-            if (PlayerPrefs.GetInt("bestTimeRecode_Rabbit") == 1)
-            {
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Rabbit");
-                //ランキングに登録完了したらfalseにする
-                PlayerPrefs.SetInt("bestTimeRecode_Rabbit", 0);
-            }
-
-            //総合
-            bestTime_Total = PlayerPrefs.GetInt("BestTime_Giraffe") + PlayerPrefs.GetInt("BestTime_Elephant") + PlayerPrefs.GetInt("BestTime_Dog") +
-                PlayerPrefs.GetInt("BestTime_Tiger") + PlayerPrefs.GetInt("BestTime_Cat") + PlayerPrefs.GetInt("BestTime_Rabbit");
-            if (PlayerPrefs.GetInt("BestTime_Total") < bestTime_Total)
-            {
-                //トータルの時間更新
-                PlayerPrefs.SetInt("BestTime_Total", bestTime_Total);
-                //サーバにオフラインハイスコアを保存
-                userAuth.save_Offline("Total");
-            }
-
-            PlayerPrefs.Save();
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Elephant");
+            //ランキングに登録完了したらfalseにする
+            PlayerPrefs.SetInt("bestTimeRecode_Elephant", 0);
         }
+        //犬
+        if (PlayerPrefs.GetInt("bestTimeRecode_Dog") == 1)
+        {
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Dog");
+            //ランキングに登録完了したらfalseにする
+            PlayerPrefs.SetInt("bestTimeRecode_Dog", 0);
+        }
+        //虎
+        if (PlayerPrefs.GetInt("bestTimeRecode_Tiger") == 1)
+        {
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Tiger");
+            //ランキングに登録完了したらfalseにする
+            PlayerPrefs.SetInt("bestTimeRecode_Tiger", 0);
+        }
+        //猫
+        if (PlayerPrefs.GetInt("bestTimeRecode_Cat") == 1)
+        {
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Cat");
+            //ランキングに登録完了したらfalseにする
+            PlayerPrefs.SetInt("bestTimeRecode_Cat", 0);
+        }
+        //ウサギ
+        if (PlayerPrefs.GetInt("bestTimeRecode_Rabbit") == 1)
+        {
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Rabbit");
+            //ランキングに登録完了したらfalseにする
+            PlayerPrefs.SetInt("bestTimeRecode_Rabbit", 0);
+        }
+
+        //総合
+        bestTime_Total = PlayerPrefs.GetInt("BestTime_Giraffe") + PlayerPrefs.GetInt("BestTime_Elephant") + PlayerPrefs.GetInt("BestTime_Dog") +
+            PlayerPrefs.GetInt("BestTime_Tiger") + PlayerPrefs.GetInt("BestTime_Cat") + PlayerPrefs.GetInt("BestTime_Rabbit");
+        if (PlayerPrefs.GetInt("BestTime_Total") < bestTime_Total)
+        {
+            //トータルの時間更新
+            PlayerPrefs.SetInt("BestTime_Total", bestTime_Total);
+            //サーバにオフラインハイスコアを保存
+            userAuth.save_Offline("Total");
+        }
+
+        PlayerPrefs.Save();
     }
 
+    //オンライン時にテッペンスコアをサーバーに保存
     private void BestTeppenFloorSet()
     {
-        //ネットワーク接続確認
-        //インターネット接続なし
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        if(PlayerPrefs.GetInt("bestTeppenRecord") == 1)
         {
+            //サーバにハイスコアを保存
+            userAuth.save_OfflineTeppen();
+            //登録完了後にfalseにする
+            PlayerPrefs.SetInt("bestTeppenRecord", 0);
         }
-        //インターネット接続あり
-        else
-        {
-        }
-
+        PlayerPrefs.Save();
     }
 
     //LoginBounusYesButtonボタンを押した時の挙動
@@ -381,6 +384,8 @@ public class MenuUI : MonoBehaviour
         userAuth.TopOfflineRankers("Tiger");
         userAuth.TopOfflineRankers("Cat");
         userAuth.TopOfflineRankers("Rabbit");
+        //オフラインテッペンtop15
+        userAuth.TopOfflineTeppenRankers();
 
         //非同期処理呼び出し(ランキング情報表示準備)
         StartCoroutine(prepareRankingData());
@@ -475,6 +480,20 @@ public class MenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //パネルの表示非表示
         OfflineRankingChildPanel.SetActive(true);
+        OfflineTeppenRankingChildPanel.SetActive(false);
+        WinCountRankingChildPanel.SetActive(false);
+    }
+
+    //ランキングのRankingOfflineTeppenButton押下時
+    public void OnClick_RankingOfflineTeppenButton()
+    {
+        //SEの使用
+        soundManager.SEManager("Button_sound1");
+        displayOfflineTeppenRankingData();
+
+        //パネルの表示非表示
+        OfflineRankingChildPanel.SetActive(false);
+        OfflineTeppenRankingChildPanel.SetActive(true);
         WinCountRankingChildPanel.SetActive(false);
     }
 
@@ -487,6 +506,7 @@ public class MenuUI : MonoBehaviour
 
         //パネルの表示非表示
         OfflineRankingChildPanel.SetActive(false);
+        OfflineTeppenRankingChildPanel.SetActive(false);
         WinCountRankingChildPanel.SetActive(true);
     }
 
@@ -633,6 +653,7 @@ public class MenuUI : MonoBehaviour
         if (rankingData.offlineRankingData["Tiger"] != null) rankingData.offlineRankingData["Tiger"].Clear();
         if (rankingData.offlineRankingData["Cat"] != null) rankingData.offlineRankingData["Cat"].Clear();
         if (rankingData.offlineRankingData["Rabbit"] != null) rankingData.offlineRankingData["Rabbit"].Clear();
+        if (rankingData.offlineTeppenRankingData != null) rankingData.offlineTeppenRankingData.Clear();
         if (rankingData.onlineRankingData != null) rankingData.onlineRankingData.Clear();
 
         //オンラインtop30
@@ -646,6 +667,8 @@ public class MenuUI : MonoBehaviour
         userAuth.TopOfflineRankers("Tiger");
         userAuth.TopOfflineRankers("Cat");
         userAuth.TopOfflineRankers("Rabbit");
+        //オフラインテッペンtop15
+        userAuth.TopOfflineTeppenRankers();
 
         //非同期処理呼び出し(ランキング情報表示準備)
         StartCoroutine(prepareRankingData());
@@ -699,6 +722,17 @@ public class MenuUI : MonoBehaviour
         rankingData.offlineRankingData[animal].Add(data);
     }
 
+    //オフラインテッペン用ランキングデータに情報を突っ込む
+    public void SetOfflineTeppenRankingInfo(string userName, string bestFloor)
+    {
+        OfflineTeppenRankingElement data = new OfflineTeppenRankingElement();
+
+        data.UserName = userName;
+        data.HighScore = bestFloor;
+
+        rankingData.offlineTeppenRankingData.Add(data);
+    }
+
     //オンライン用ランキングデータに情報を突っ込む
     public void SetOnlineRankingInfo(string userName, string winCount)
     {
@@ -733,6 +767,21 @@ public class MenuUI : MonoBehaviour
         }
     }
 
+    //オフラインテッペン用ランキングデータを表示する
+    private void displayOfflineTeppenRankingData()
+    {
+        //ランキングデータ初期化
+        OfflineTeppenRankingUsernameText.text = "";
+        OfflineTeppenRankingHighScoreText.text = "";
+
+        //データ更新
+        foreach (OfflineTeppenRankingElement data in rankingData.offlineTeppenRankingData)
+        {
+            OfflineTeppenRankingUsernameText.text += data.UserName + "\n";
+            OfflineTeppenRankingHighScoreText.text += data.HighScore + "\n";
+        }
+    }
+
     //オンライン用ランキングデータを表示する
     private void displayOnlineRankingData()
     {
@@ -753,6 +802,8 @@ public class MenuUI : MonoBehaviour
     {
         public Dictionary<string, List<OfflineRankingElement>> offlineRankingData
             = new Dictionary<string, List<OfflineRankingElement>>();
+        public List<OfflineTeppenRankingElement> offlineTeppenRankingData
+            = new List<OfflineTeppenRankingElement>();
         public List<OnlineRankingElement> onlineRankingData
             = new List<OnlineRankingElement>();
 
@@ -784,6 +835,13 @@ public class MenuUI : MonoBehaviour
 
     //オフラインランキング要素
     public class OfflineRankingElement
+    {
+        public string UserName;
+        public string HighScore;
+    }
+
+    //オフラインテッペンランキング要素
+    public class OfflineTeppenRankingElement
     {
         public string UserName;
         public string HighScore;

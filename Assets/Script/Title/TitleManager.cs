@@ -23,13 +23,15 @@ public class TitleManager : MonoBehaviour
     [SerializeField]
     private Button DeleteDataButton;
 
+    private void Awake()
+    {
+        //FPSを60に設定
+        Application.targetFrameRate = 30;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //FPSを60に設定
-        Application.targetFrameRate = 60;
-
         newsText.text = newsDocument.text;
         policyText.text = policyDocument.text;
         creditText.text = creditDocument.text;

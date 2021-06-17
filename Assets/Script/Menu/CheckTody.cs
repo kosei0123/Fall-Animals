@@ -120,6 +120,9 @@ public class CheckTody : MonoBehaviour
         //本日獲得分の表示
         GetToday();
 
+        //テッペンデイリー挑戦回数をリセットする
+        PlayerPrefs.SetInt("TeppenDairyChallenge", 0);
+
     }
 
     //次の日(連続)かを確認する
@@ -135,6 +138,7 @@ public class CheckTody : MonoBehaviour
 
             //連続ログイン日数の表示
             ConsecutiveLoginDaysText.text = "連続ログイン" + PlayerPrefs.GetInt("ConsecutiveLoginDays").ToString("") + "日目";
+
             //ログインボーナスコインテキストを表示する
             GetLoginBounusCoins();
             //ログインボーナスパネルを表示する

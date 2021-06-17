@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScreenTouch_offline : MonoBehaviour
 {
@@ -301,7 +302,14 @@ public class ScreenTouch_offline : MonoBehaviour
     //ジャンプ
     public void PointerDown_UpButton()
     {
-        if (characterMainMove_offline.sitFlag == false && characterMainMove_offline.jumpCount == 0)
+        //ミッションA(テッペン)
+        if (TeppenShopUI.MissionASuccessFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene")
+        {
+            TeppenShopUI.MissionASuccessFlag = false;
+        }
+
+        if (characterMainMove_offline.sitFlag == false &&
+            (characterMainMove_offline.jumpCount == 0 || characterMainMove_offline.jumpCount == 1 && TeppenMenuShopList.JWingUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene"))
         {
             characterMainMove_offline.jumpFlag = true;
             characterMainMove_offline.jumpCount++;
@@ -311,6 +319,12 @@ public class ScreenTouch_offline : MonoBehaviour
     //右移動(押下しっぱなし)
     public void PointerDown_RightButton()
     {
+        //ミッションB(テッペン)
+        if (TeppenShopUI.MissionBSuccessFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene")
+        {
+            TeppenShopUI.MissionBSuccessFlag = false;
+        }
+
         //しゃがみ時
         if (characterMainMove_offline.sitFlag == true)
         {
@@ -336,6 +350,12 @@ public class ScreenTouch_offline : MonoBehaviour
     //左移動(押下しっぱなし)
     public void PointerDown_LeftButton()
     {
+        //ミッションB(テッペン)
+        if (TeppenShopUI.MissionBSuccessFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene")
+        {
+            TeppenShopUI.MissionBSuccessFlag = false;
+        }
+
         //しゃがみ時
         if (characterMainMove_offline.sitFlag == true)
         {

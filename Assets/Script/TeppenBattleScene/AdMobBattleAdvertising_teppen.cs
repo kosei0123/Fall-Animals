@@ -115,8 +115,11 @@ public class AdMobBattleAdvertising_teppen : MonoBehaviour
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
         //横向き固定にする
-        Screen.autorotateToLandscapeLeft = true;
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        if (Screen.width < Screen.height)
+        {
+            Screen.autorotateToLandscapeLeft = true;
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        }
     }
 
     //動画の視聴が完了したら実行される

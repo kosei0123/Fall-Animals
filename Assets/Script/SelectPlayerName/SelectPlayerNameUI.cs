@@ -74,6 +74,8 @@ public class SelectPlayerNameUI : MonoBehaviour
             userAuth.signUp(PlayerPrefs.GetString("NickName"));
             //mobile backendに接続し名前とスコアを初期登録する
             userAuth.firstSetNameScore();
+            //mobile backendに接続しテッペンスコアを初期登録する
+            userAuth.firstSetTeppenScore();
 
             //SEの使用
             soundManager.SEManager("Button_sound1");

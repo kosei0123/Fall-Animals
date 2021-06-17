@@ -13,6 +13,8 @@ public class Damaged : MonoBehaviour
     EndDialog endDialog;
     //Timerのpublic定数を使う
     Timer timer;
+    //CameraShakeのスクリプトの関数使用
+    CameraShake cameraShake;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,8 @@ public class Damaged : MonoBehaviour
         endDialog = GameObject.Find("DialogCanvas").GetComponent<EndDialog>();
         //Timerのpublic定数を使う
         timer = GameObject.Find("TimerCanvas").GetComponent<Timer>();
+        //CameraShakeのスクリプトの関数使用
+        cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
     }
 
     // Update is called once per frame
@@ -99,6 +103,8 @@ public class Damaged : MonoBehaviour
         characterMainMove.rb.velocity = new Vector3(0, characterMainMove.rb.velocity.y, 0);
         //パーティクルの発生
         PhotonNetwork.Instantiate("Particle", new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity, 0);
+        //画面を揺らす
+        cameraShake.Shake(0.25f, 1.0f);
 
         //バトル終了フラグをtrueにする
         pun2Script.battleFinishFlag = true;

@@ -64,6 +64,8 @@ public class CharacterMainMove_offline : MonoBehaviour
     //地面チェックのコライダー
     public Collider groudCheck_Collider;
 
+    //トランポリンジャンプ
+    public float trampolineJumpPower = 1.0f;
 
     public void SetFlag(bool f)
     {
@@ -75,9 +77,6 @@ public class CharacterMainMove_offline : MonoBehaviour
     {
         //Pun2Scriptのpublic定数を使う
         battleScene_offlineManager = GameObject.Find("BattleScene_offlineManager").GetComponent<BattleScene_offlineManager>();
-
-        //FPSを60に設定
-        Application.targetFrameRate = 60;
 
         //障害物に当たった際にfalseをいれる
         offlineflag = true;
@@ -160,10 +159,13 @@ public class CharacterMainMove_offline : MonoBehaviour
         if (jumpFlag == true)
         {
             //上方向に力を加える
-            rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.up * jumpPower * trampolineJumpPower, ForceMode.VelocityChange);
+            //かかっている重力加速のリセット
+            this.rb.velocity = new Vector3(this.rb.velocity.x, 0, this.rb.velocity.z);
             //ジャンプアニメーション
             anim.SetBool("Jump", true);
             jumpFlag = false;
+            trampolineJumpPower = 1.0f;
         }
         else
         {
@@ -261,7 +263,10 @@ public class CharacterMainMove_offline : MonoBehaviour
         if (SelectCharacterUI.animalName == "Giraffe")
         {
             //ジャンプ力
-            jumpPower = 9.0f;
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 11.0f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 13.0f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 15.0f;
+            else { jumpPower = 9.0f; }
             //スピード
             if (isGround)
             {
@@ -272,7 +277,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             else
             {
-                runSpeed = 4.5f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 9.5f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 14.5f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 19.5f;
+                else { runSpeed = 4.5f; }
             }
 
         }
@@ -280,7 +288,11 @@ public class CharacterMainMove_offline : MonoBehaviour
         else if (SelectCharacterUI.animalName == "Elephant")
         {
             //ジャンプ力
-            jumpPower = 8.5f;
+            //ジャンプ力
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 10.5f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 12.5f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 14.5f;
+            else { jumpPower = 8.5f; }
             //スピード
             if (isGround)
             {
@@ -291,14 +303,21 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             else
             {
-                runSpeed = 6.0f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 11.0f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 16.0f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 21.0f;
+                else { runSpeed = 6.0f; }
             }
         }
         //犬
         else if (SelectCharacterUI.animalName == "Dog")
         {
             //ジャンプ力
-            jumpPower = 13.0f;
+            //ジャンプ力
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 15.0f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 17.0f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 19.0f;
+            else { jumpPower = 13.0f; }
             //スピード
             if (isGround)
             {
@@ -309,32 +328,46 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             else
             {
-                runSpeed = 7.0f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 12.0f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 17.0f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 22.0f;
+                else { runSpeed = 7.0f; }
             }
         }
         //虎
         else if (SelectCharacterUI.animalName == "Tiger")
         {
             //ジャンプ力
-            jumpPower = 12.5f;
+            //ジャンプ力
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 14.5f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 16.5f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 18.5f;
+            else { jumpPower = 12.5f; }
             //スピード
             if (isGround)
             {
                 if (TeppenMenuShopList.DShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 20.0f;
-                if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 25.0f;
-                if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 30.0f;
+                else if (TeppenMenuShopList.DShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 25.0f;
+                else if (TeppenMenuShopList.DShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 30.0f;
                 else { runSpeed = 15.0f; }
             }
             else
             {
-                runSpeed = 8.0f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 13.0f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 18.0f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 23.0f;
+                else { runSpeed = 8.0f; }
             }
         }
         //猫
         else if (SelectCharacterUI.animalName == "Cat")
         {
             //ジャンプ力
-            jumpPower = 13.5f;
+            //ジャンプ力
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 15.5f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 17.5f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 19.5f;
+            else { jumpPower = 13.5f; }
             //スピード
             if (isGround)
             {
@@ -345,14 +378,21 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             else
             {
-                runSpeed = 8.0f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 13.0f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 18.0f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 23.0f;
+                else { runSpeed = 8.0f; }
             }
         }
         //ウサギ
         else if (SelectCharacterUI.animalName == "Rabbit")
         {
             //ジャンプ力
-            jumpPower = 15.0f;
+            //ジャンプ力
+            if (TeppenMenuShopList.JShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 17.0f;
+            else if (TeppenMenuShopList.JShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 19.0f;
+            else if (TeppenMenuShopList.JShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") jumpPower = 21.0f;
+            else { jumpPower = 15.0f; }
             //スピード
             if (isGround)
             {
@@ -364,7 +404,10 @@ public class CharacterMainMove_offline : MonoBehaviour
             }
             else
             {
-                runSpeed = 6.0f;
+                if (TeppenMenuShopList.AShoesUseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 11.0f;
+                else if (TeppenMenuShopList.AShoes2UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 16.0f;
+                else if (TeppenMenuShopList.AShoes3UseFlag == true && SceneManager.GetActiveScene().name == "TeppenBattleScene") runSpeed = 21.0f;
+                else { runSpeed = 6.0f; }
             }
         }
     }

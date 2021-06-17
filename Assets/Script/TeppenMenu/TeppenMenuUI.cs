@@ -26,6 +26,13 @@ public class TeppenMenuUI : MonoBehaviour
     [SerializeField]
     private Text FloorText;
 
+    //挑戦ボタン
+    [SerializeField]
+    private Button ChallengeButton;
+    //本日の挑戦回数
+    [SerializeField]
+    private Text DairyCountText;
+
     //最初に表示される画面
     //パネル
     [SerializeField]
@@ -39,8 +46,52 @@ public class TeppenMenuUI : MonoBehaviour
     private Color StartFloorPanelAlphaColor;
     private Color StartFloorTextAlphaColor;
 
-    //挑戦ボタン押下の最初の1回目
-    private static bool ChallengePanelFirst = false;
+    //使用キャラクターのパネル
+    //メイン
+    [SerializeField]
+    private GameObject DogPanel;
+    [SerializeField]
+    private GameObject GiraffePanel;
+    [SerializeField]
+    private GameObject ElephantPanel;
+    [SerializeField]
+    private GameObject TigerPanel;
+    [SerializeField]
+    private GameObject CatPanel;
+    [SerializeField]
+    private GameObject RabbitPanel;
+    //サブ
+    [SerializeField]
+    private GameObject DogSubPanel;
+    [SerializeField]
+    private GameObject GiraffeSubPanel;
+    [SerializeField]
+    private GameObject ElephantSubPanel;
+    [SerializeField]
+    private GameObject TigerSubPanel;
+    [SerializeField]
+    private GameObject CatSubPanel;
+    [SerializeField]
+    private GameObject RabbitSubPanel;
+
+    //テッペンメニューゲームオブジェクト
+    [SerializeField]
+    private GameObject TeppenMenuCanvas;
+    //テッペンショップゲームオブジェクト
+    [SerializeField]
+    private GameObject TeppenShopCanvas;
+    //テッペンレコードオブジェクト
+    [SerializeField]
+    private GameObject TeppenRecordCanvas;
+
+    //テッペンバトルシーン非同期呼び出し用
+    public AsyncOperation async_TeppenBattleScene;
+
+    private void Awake()
+    {
+        //メモリ解放
+        Resources.UnloadUnusedAssets();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +134,8 @@ public class TeppenMenuUI : MonoBehaviour
                 //獲得予定コインを半分にする
                 PlayerPrefs.SetInt("getScheduledCoin", PlayerPrefs.GetInt("getScheduledCoin") / 2);
                 PlayerPrefs.Save();
-                SceneManager.LoadScene("TeppenRecord");
+                TeppenMenuCanvas.SetActive(false);
+                TeppenRecordCanvas.SetActive(true);
                 break;
             case "Retire":
                 /*リタイアボタン押下のところに記述*/
@@ -91,6 +143,32 @@ public class TeppenMenuUI : MonoBehaviour
             default:
                 break;
         }
+
+        //使用アニマルの名前と色の設定
+        if(PlayerPrefs.GetInt("TeppenFloor") == 1)
+        {
+            PlayerPrefs.SetString("TeppenAnimalName", SelectCharacterUI.animalName);
+            PlayerPrefs.SetString("TeppenAnimalColor", SelectCharacterUI.animalName_Color);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            SelectCharacterUI.animalName = PlayerPrefs.GetString("TeppenAnimalName");
+            SelectCharacterUI.animalName_Color = PlayerPrefs.GetString("TeppenAnimalColor");
+        }
+
+        //使用キャラクターの表示
+        PlayCharacterDisplay();
+
+        //挑戦回数の表示
+        DairyCountText.text = "本日の挑戦回数：" + PlayerPrefs.GetInt("TeppenDairyChallenge") + "/ 7";
+
+        //TeppenBattleSceneの非同期呼び出し
+        async_TeppenBattleScene = SceneManager.LoadSceneAsync("TeppenBattleScene");
+        async_TeppenBattleScene.allowSceneActivation = false;
+
+
+
     }
 
     // Update is called once per frame
@@ -99,8 +177,19 @@ public class TeppenMenuUI : MonoBehaviour
         //徐々に画面を薄くする
         if (StartFloorPanelAlphaColor.a > 0 || StartFloorTextAlphaColor.a > 0)
         {
-            StartFloorPanelAlphaColor.a -= 0.01f;
-            StartFloorTextAlphaColor.a -= 0.01f;
+            StartFloorPanelAlphaColor.a -= Time.deltaTime;
+            StartFloorTextAlphaColor.a -= Time.deltaTime;
+        }
+        else
+        {
+            if(PlayerPrefs.GetInt("TeppenDairyChallenge") < 7)
+            {
+                ChallengeButton.interactable = true;
+            }
+            else
+            {
+
+            }
         }
         //操作したα値を取得する
         StartFloorPanel.color = StartFloorPanelAlphaColor;
@@ -109,14 +198,54 @@ public class TeppenMenuUI : MonoBehaviour
         
     }
 
+    //使用キャラクターの表示
+    private void PlayCharacterDisplay()
+    {
+        //メイン
+        switch (SelectCharacterUI.animalName)
+        {
+            case "Dog":
+                DogPanel.SetActive(true);
+                break;
+            case "Giraffe":
+                GiraffePanel.SetActive(true);
+                break;
+            case "Elephant":
+                ElephantPanel.SetActive(true);
+                break;
+            case "Tiger":
+                TigerPanel.SetActive(true);
+                break;
+            case "Cat":
+                CatPanel.SetActive(true);
+                break;
+            case "Rabbit":
+                RabbitPanel.SetActive(true);
+                break;
+        }
+
+        //サブ
+        if (PlayerPrefs.GetInt("TeppenDogCanUse") == 1) DogSubPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("TeppenGiraffeCanUse") == 1) GiraffeSubPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("TeppenElephantCanUse") == 1) ElephantSubPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("TeppenTigerCanUse") == 1) TigerSubPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("TeppenCatCanUse") == 1) CatSubPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("TeppenRabbitCanUse") == 1) RabbitSubPanel.SetActive(true);
+    }
+
     //挑戦ボタン押下
     public void OnClick_ChallengeButton()
     {
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //パネル
-        if (ChallengePanelFirst == false) ChallengePanel.SetActive(true);
-        else { SceneManager.LoadScene("TeppenShop"); }
+        if (PlayerPrefs.GetInt("TeppenFloor") == 1) ChallengePanel.SetActive(true);
+        else
+        {
+            //TeppenMenuCanvas.SetActive(false);
+            TeppenShopCanvas.SetActive(true);
+            soundManager.BGMManager("BGM_TeppenShop");
+        }
         
     }
 
@@ -126,9 +255,10 @@ public class TeppenMenuUI : MonoBehaviour
         //SEの使用
         soundManager.SEManager("Button_sound1");
         //パネル
-        ChallengePanelFirst = true;
         ChallengePanel.SetActive(false);
-        SceneManager.LoadScene("TeppenShop");
+        //TeppenMenuCanvas.SetActive(false);
+        TeppenShopCanvas.SetActive(true);
+        soundManager.BGMManager("BGM_TeppenShop");
     }
 
     //リタイアボタン押下
@@ -147,7 +277,8 @@ public class TeppenMenuUI : MonoBehaviour
         soundManager.SEManager("Button_sound1");
         //パネル
         RetirePanel.SetActive(false);
-        SceneManager.LoadScene("TeppenRecord");
+        TeppenMenuCanvas.SetActive(false);
+        TeppenRecordCanvas.SetActive(true);
     }
 
     //リタイアボタン押下後に出るダイアログでのボタン押下時(No)

@@ -111,15 +111,8 @@ public class SoundManager : MonoBehaviour
             BGM_TeppenMenu.Play();
         }
 
-        //テッペンメニューからテッペンショップへの遷移
-        if (beforeScene == "TeppenMenu" && currentScene.name == "TeppenShop")
-        {
-            BGM_TeppenMenu.Stop();
-            BGM_TeppenShop.Play();
-        }
-
-        //テッペンショップからテッペンバトルシーンへの遷移
-        if (beforeScene == "TeppenShop" && currentScene.name == "TeppenBattleScene")
+        //テッペンメニューからテッペンバトルシーンへの遷移
+        if (beforeScene == "TeppenMenu" && currentScene.name == "TeppenBattleScene")
         {
             BGM_TeppenShop.Stop();
         }
@@ -134,9 +127,10 @@ public class SoundManager : MonoBehaviour
         }
 
         //テッペンメニューからメニューへの遷移
-        if ((beforeScene == "TeppenMenu" || beforeScene == "TeppenRecord") && currentScene.name == "Menu")
+        if ((beforeScene == "TeppenMenu" || beforeScene == "TeppenBattleScene") && currentScene.name == "Menu")
         {
             BGM_TeppenMenu.Stop();
+            BGM_TeppenShop.Stop();
             BGM_Menu.Play();
         }
 
@@ -152,21 +146,21 @@ public class SoundManager : MonoBehaviour
 
 
         //WaitingRoomへの遷移
-        if ((beforeScene == "BattleScene(offline)" || beforeScene == "TeppenBattleScene") && currentScene.name == "WaitingRoom")
+        if (beforeScene == "BattleScene(offline)" && currentScene.name == "WaitingRoom")
         {
             BGM_Battle.Stop();
             BGM_Battle_Cave.Stop();
             BGM_Battle_NightStreet.Stop();
             BGM_Menu.Play();
         }
-        else if((beforeScene == "TeppenMenu" || beforeScene == "TeppenRecord") && currentScene.name == "WaitingRoom")
+        else if((beforeScene == "TeppenMenu" || beforeScene == "TeppenBattleScene") && currentScene.name == "WaitingRoom")
         {
+
             BGM_TeppenMenu.Stop();
-            BGM_Menu.Play();
-        }
-        else if (beforeScene == "TeppenShop" && currentScene.name == "WaitingRoom")
-        {
             BGM_TeppenShop.Stop();
+            BGM_Battle.Stop();
+            BGM_Battle_Cave.Stop();
+            BGM_Battle_NightStreet.Stop();
             BGM_Menu.Play();
         }
 
@@ -215,6 +209,10 @@ public class SoundManager : MonoBehaviour
     {
         switch (i)
         {
+            case "BGM_TeppenShop":
+                BGM_TeppenMenu.Stop();
+                BGM_TeppenShop.Play();
+                break;
             case "BGM_Battle":
                 BGM_Battle.Play();
                 break;

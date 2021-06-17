@@ -69,8 +69,6 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
         adMobWaitingRoomAdvertising = GameObject.Find("WaitingRoomAdvertising").GetComponent<AdMobWaitingRoomAdvertising>();
 #endif
 
-        //FPSを60に設定
-        Application.targetFrameRate = 60;
 
         //メッセージの送信に使用される
         photonView = PhotonView.Get(this);
@@ -375,7 +373,7 @@ public class WaitingPlayerCount : MonoBehaviourPunCallbacks
     {
         DateTime now = DateTime.Now;
 
-        backgroundList.Add(1);
+        if (now.Hour > 6 && now.Hour < 18) backgroundList.Add(1);
         backgroundList.Add(2);
         if ((now.Hour >= 0 && now.Hour <= 6) || (now.Hour >= 18 && now.Hour <= 24)) backgroundList.Add(3);
     }

@@ -166,6 +166,29 @@ public class UserAuth : MonoBehaviour
     }
 
     /// <summary>
+    /// mobile backendに接続してテッペンフロアを初期登録する
+    /// </summary>
+    public void firstSetTeppenScore()
+    {
+        //データスコアの「HighScore」クラスから、Nameをキーにして検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.WhereEqualTo("Name", PlayerPrefs.GetString("NickName"));
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                //端末内にデータ保存
+                PlayerPrefs.SetInt("bestTeppenRecord", 0);
+                PlayerPrefs.SetInt("BestTeppenFloor", 0);
+                //mobile backendサーバにデータ保存
+                objList[0]["OfflineTeppenScore"] = 0;
+                objList[0].Save();
+            }
+        });
+    }
+
+    /// <summary>
     /// サーバにハイスコアを保存
     /// </summary>
     public void save()
@@ -198,6 +221,25 @@ public class UserAuth : MonoBehaviour
             if (e == null)
             {
                 objList[0]["Offline" + animal + "Time"] = PlayerPrefs.GetInt("BestTime_" + animal);
+                objList[0].SaveAsync();
+            }
+        });
+    }
+
+    /// <summary>
+    /// サーバにテッペンハイスコアを保存
+    /// </summary>
+    public void save_OfflineTeppen()
+    {
+        //データスコアの「HighScore」クラスから、Nameをキーにして検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.WhereEqualTo("Name", PlayerPrefs.GetString("NickName"));
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                objList[0]["OfflineTeppenScore"] = PlayerPrefs.GetInt("BestTeppenFloor");
                 objList[0].SaveAsync();
             }
         });
@@ -365,6 +407,83 @@ public class UserAuth : MonoBehaviour
 
                     //ランキング名前とベストタイムの取得
                     menuUI.SetOfflineRankingInfo(animal, topRankingName[i], topRankingNumber[i]);
+                }
+            }
+
+        });
+    }
+
+    /// <summary>
+    /// mobile backendに接続してtop15取得
+    /// </summary>
+    public void TopOfflineTeppenRankers()
+    {
+        //ニックネームのID削除用
+        string nickName;
+        int bkIndex;
+
+        //MenuUIスクリプトの関数使用
+        menuUI = GameObject.Find("Canvas").GetComponent<MenuUI>();
+
+        //ランキングの配列
+        string[] topRankingName = new string[50];
+        string[] topRankingNumber = new string[50];
+
+        //データスコアの「HighScore」クラスから検索
+        NCMBQuery<NCMBObject> query = new NCMBQuery<NCMBObject>("HighScore");
+        query.OrderByDescending("OfflineTeppenScore");
+        query.Limit = 15;
+        query.FindAsync((List<NCMBObject> objList, NCMBException e) =>
+        {
+            //検索成功したら
+            if (e == null)
+            {
+                for (int i = 0; i < objList.Count; i++)
+                {
+                    //1位〜3位の文字変更
+                    if (i == 0)
+                    {
+                        topRankingName[i] = "<color=#FFD700>";
+                        topRankingNumber[i] = "<color=#FFD700>";
+                    }
+                    else if (i == 1)
+                    {
+                        topRankingName[i] = "<color=#f4f4f4>";
+                        topRankingNumber[i] = "<color=#f4f4f4>";
+                    }
+                    else if (i == 2)
+                    {
+                        topRankingName[i] = "<color=#BA6E40>";
+                        topRankingNumber[i] = "<color=#BA6E40>";
+                    }
+
+                    //ランキング追跡中の名前からIDを抜き取る
+                    nickName = (string)objList[i]["Name"];
+                    bkIndex = nickName.LastIndexOf("(");
+
+                    /* 取得成功(名前の後ろに"("有り) */
+                    if (bkIndex != -1)
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName.Substring(0, bkIndex);
+                    }
+                    else
+                    {
+                        //ランキング名前の表示
+                        topRankingName[i] += (i + 1).ToString("") + "位 : " + nickName;
+                    }
+                    //ランキング番号の表示
+                    topRankingNumber[i] += objList[i]["OfflineTeppenScore"] + "階";
+
+                    //1位〜3位の文字変更
+                    if (i <= 2)
+                    {
+                        topRankingName[i] += "</color>";
+                        topRankingNumber[i] += "</color>";
+                    }
+
+                    //ランキング名前と番号の取得
+                    menuUI.SetOfflineTeppenRankingInfo(topRankingName[i], topRankingNumber[i]);
                 }
             }
 

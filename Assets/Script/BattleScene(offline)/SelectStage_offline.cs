@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SelectStage_offline : MonoBehaviour
 {
@@ -37,10 +38,20 @@ public class SelectStage_offline : MonoBehaviour
     [SerializeField]
     private GameObject Background3;
 
+    //パーティクル
+    //背景2のパーティクル
+    private GameObject CaveParticle;
+    //生成サイクル
+    private float Background2_ParticleTime = 5.0f;
+
     //ステージリストの初期化
     private List<int> stageList = new List<int>();
     //バックグラウンド初期化
     private List<int> backgroundList = new List<int>();
+
+    //ランダム値取得用
+    private int randomStage = 0;
+    private int randomBackground = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -53,8 +64,11 @@ public class SelectStage_offline : MonoBehaviour
         //選択可能なバックグラウンド取得
         BackgroundList();
 
-        int randomStage = UnityEngine.Random.Range(0, stageList.Count);
-        int randomBackground = UnityEngine.Random.Range(0, backgroundList.Count);
+        randomStage = UnityEngine.Random.Range(0, stageList.Count);
+        randomBackground = UnityEngine.Random.Range(0, backgroundList.Count);
+
+        //テッペンモード場合
+        if (SceneManager.GetActiveScene().name == "TeppenBattleScene") StageAssignmentNumber();
 
         //ステージ
         switch (stageList[randomStage])
@@ -106,7 +120,20 @@ public class SelectStage_offline : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //背景2パーティクルの発生
+        if(Background2.activeSelf == true && Background2_ParticleTime <= 0)
+        {
+            //パーティクルの発生
+            CaveParticle = (GameObject)Instantiate(Resources.Load("Offline/CaveParticle"), new Vector3(0.0f, 0.0f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
+            CaveParticle.transform.parent = Background2.transform;
+            CaveParticle.transform.localPosition = new Vector3(UnityEngine.Random.Range(-0.2f,0.0f), UnityEngine.Random.Range(-0.6f, -0.4f), UnityEngine.Random.Range(-0.1f, 0.1f));
+            CaveParticle.transform.localEulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+            CaveParticle.transform.localScale = new Vector3(1,1,1);
+            Background2_ParticleTime = UnityEngine.Random.Range(10,30);
+        }
 
+        //背景2のパーティクル生成時間を減らす
+        Background2_ParticleTime -= Time.deltaTime;
     }
 
     //ステージ
@@ -127,8 +154,19 @@ public class SelectStage_offline : MonoBehaviour
     {
         DateTime now = DateTime.Now;
 
-        backgroundList.Add(1);
+        if (now.Hour > 6 && now.Hour < 18) backgroundList.Add(1);
         backgroundList.Add(2);
-        if((now.Hour >= 0 && now.Hour <=6) || (now.Hour >= 18 && now.Hour <= 24)) backgroundList.Add(3);
+        if ((now.Hour >= 0 && now.Hour <= 6) || (now.Hour >= 18 && now.Hour <= 24)) backgroundList.Add(3);
+    }
+
+    //テッペンモードの場合に呼び出される関数
+    private void StageAssignmentNumber()
+    {
+        if (TeppenShopUI.stageAssignmentNumber == 1) randomStage = 0;
+        if (TeppenShopUI.stageAssignmentNumber == 2) randomStage = 1;
+        if (TeppenShopUI.stageAssignmentNumber == 3) randomStage = 2;
+        if (TeppenShopUI.stageAssignmentNumber == 4) randomStage = 3;
+        if (TeppenShopUI.stageAssignmentNumber == 5) randomStage = 4;
+        if (TeppenShopUI.stageAssignmentNumber == 6) randomStage = 5;
     }
 }

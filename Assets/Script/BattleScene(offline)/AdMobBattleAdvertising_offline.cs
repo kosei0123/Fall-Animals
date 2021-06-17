@@ -125,8 +125,11 @@ public class AdMobBattleAdvertising_offline : MonoBehaviour
         //シーン移動可能
         moveScreenTimer_offline.moveScreenFlag = true;
         //横向き固定にする
-        Screen.autorotateToLandscapeLeft = true;
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        if (Screen.width < Screen.height)
+        {
+            Screen.autorotateToLandscapeLeft = true;
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
+        }
         //ボタン押下不可にする
         RewardAdvertisingButton.interactable = false;
     }

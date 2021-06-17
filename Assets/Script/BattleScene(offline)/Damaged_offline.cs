@@ -14,6 +14,8 @@ public class Damaged_offline : MonoBehaviour
     Timer_offline timer_offline;
     //UserAuthのスクリプトの関数使用
     UserAuth userAuth;
+    //CameraShakeのスクリプトの関数使用
+    CameraShake cameraShake;
 
     //オフライン時はレコードtrueにしておく
     public static bool bestTimeRecode_Giraffe = false;
@@ -35,7 +37,8 @@ public class Damaged_offline : MonoBehaviour
         timer_offline = GameObject.Find("TimerCanvas").GetComponent<Timer_offline>();
         //UserAuthのスクリプトの関数使用
         userAuth = GameObject.Find("NCMBSettings").GetComponent<UserAuth>();
-
+        //CameraShakeのスクリプトの関数使用
+        cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
     }
 
     // Update is called once per frame
@@ -102,6 +105,8 @@ public class Damaged_offline : MonoBehaviour
         characterMainMove_offline.rb.velocity = new Vector3(0, characterMainMove_offline.rb.velocity.y, 0);
         //パーティクルの発生
         Instantiate(Resources.Load("Offline/Particle"), new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z), Quaternion.identity);
+        //画面を揺らす
+        cameraShake.Shake(0.25f,1.0f);
 
         //バトル終了フラグをtrueにする
         battleScene_offlineManager.battleFinishFlag = true;
